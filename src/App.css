@@ -1,38 +1,92 @@
-.App {
+*{
+  font-family: 'DM Sans', sans-serif;
+}
+.uploadcare--jcrop-holder>div>div{
+  border-radius: 50%;
+}
+.profilePicLarge{
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 1px solid black;
+}
+#authContainer{
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#register, #login{
+  width: 450px; 
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 30px;
+}
+#register > div, #login > div{
+  width: 100%;
+  padding: 4px 8px;
+  margin: 8px 0;
+  display: inline-block;
+  border-radius: 4px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-self: center;
+}
+#register > div > span{
+  margin-right: 10px;
+}
+#register > button{
+  width: 100px;
+}
+#register > div > input, #login > div > input{
+  width: 50%;
+  height: 25px;
+  border: 1px solid lightgray;
+  border-radius: 3px;
+}
+#register > div > div, #login > div > div{
+  width: 50%;
+  height: 25px;
+  border: 1px solid lightgray;
+  border-radius: 3px;
   text-align: center;
+  background-color: lightskyblue;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+#register > div > div:hover, #login > div > div:hover{
+  cursor: pointer;
+  background-color: rgb(80, 175, 235);
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+#newUserRegister{
+  width: 50%;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
 }
-
-.App-link {
-  color: #61dafb;
+#newUserRegister > :last-child{
+  border-bottom: 1px solid black;
+  
 }
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+#newUserRegister > :last-child:hover{
+  border-bottom: 1px solid black;
+  cursor: pointer;
+}
+.uploadcare--widget__button, .uploadcare--widget__button_type_open{
+  background-color: black;
+}
+.uploadcare--widget__button:hover, .uploadcare--widget__button_type_open:hover{
+  background-color: rgb(168, 162, 162);
+}
+.uploadcare--widget__button:focus, .uploadcare--widget__button_type_open:focus{
+  background-color: rgb(168, 162, 162);
+}
+@media (max-width:450px){
+  #register{
+      width: 100%;
   }
-  to {
-    transform: rotate(360deg);
+  #register > div > input{
+    width: 70%;
   }
 }
