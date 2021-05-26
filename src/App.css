@@ -1,6 +1,8 @@
 *{
   font-family: 'DM Sans', sans-serif;
 }
+          /*AUTH PAGE*/
+
 .uploadcare--jcrop-holder>div>div{
   border-radius: 50%;
 }
@@ -34,6 +36,9 @@
   justify-content: center;
   align-self: center;
 }
+#uploadImageWidget{
+  background-color: inh;
+}
 #register > div > span{
   margin-right: 10px;
 }
@@ -46,12 +51,15 @@
   border: 1px solid lightgray;
   border-radius: 3px;
 }
-#register > div > div, #login > div > div{
+
+.submitButton{
   width: 50%;
-  height: 25px;
+  height: 40px;
   border: 1px solid lightgray;
+  box-sizing: border-box;
   border-radius: 3px;
   text-align: center;
+  padding: 8px;
   background-color: lightskyblue;
 }
 #register > div > div:hover, #login > div > div:hover{
@@ -69,12 +77,18 @@
   border-bottom: 1px solid black;
   
 }
+#login > div > select, #register > div > select{
+    width: 100px;
+    margin-right: 8px;
+    margin-left:8px;
+}
 #newUserRegister > :last-child:hover{
   border-bottom: 1px solid black;
   cursor: pointer;
 }
 .uploadcare--widget__button, .uploadcare--widget__button_type_open{
   background-color: black;
+  width: 100%;
 }
 .uploadcare--widget__button:hover, .uploadcare--widget__button_type_open:hover{
   background-color: rgb(168, 162, 162);

@@ -29,3 +29,4 @@ massive({
 
 app.post('/auth/register',authController.register);
 app.post('/auth/login', authController.login);
+app.get('/auth/user', authController.checkSession);

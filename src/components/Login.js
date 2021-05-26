@@ -3,8 +3,12 @@ import { Widget } from "@uploadcare/react-widget";
 import axios from "axios";
 import user from "../svgs/user.svg";
 import { AiOutlineArrowLeft } from "react-icons/ai";
+import {setUser} from '../redux/authReducer';
+import {connect} from 'react-redux';
 
-const Login = () => {
+const Login = (props) => {
+  //check for user session
+
   //login
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,7 +23,8 @@ const Login = () => {
   for (let i = 0; i < 100; i++) {
     ageOptions.push(i);
   }
-  const handleLogin = () => {
+  const handleLogin = (e) => {
+      e.preventDefault();
     if (email === "" || password === "") {
       alert("please enter your email and password");
       return;
@@ -31,21 +36,24 @@ const Login = () => {
       })
       .then((res) => {
         console.log(res);
+        props.setUser(res.data)
+        props.history.push('/dash')
+
       })
       .catch((err) => {
         console.log(err);
       });
   };
-  const handlePicture = async (e)  => {
-        console.log(e)
-        await setPicture(e.cdnUrl);
-        document.getElementById('authProfilePic').src = e.cdnUrl;
-      
-  }
+  const handlePicture = async (e) => {
+    console.log(e);
+    await setPicture(e.cdnUrl);
+    document.getElementById("authProfilePic").src = e.cdnUrl;
+  };
 
-  const handleRegister = async () => {
-      console.log(email, password, username, birthDate,gender);
-    
+  const handleRegister = async (e) => {
+    e.preventDefault()
+    console.log(email, password, username, birthDate, gender);
+
     if (
       email === "" ||
       password === "" ||
@@ -65,11 +73,14 @@ const Login = () => {
       picture: picture,
     });
 
-    const response = await axios.post("/auth/login", {
+    const res = await axios.post("/auth/login", {
       email: email,
       password: password,
     });
-    console.log(response);
+    console.log(res);
+    props.setUser(res.data)
+    props.history.push('/dash')
+
   };
   return (
     <div id="authContainer">
@@ -82,7 +93,7 @@ const Login = () => {
             }}
           />
           <div>
-            <img id="authProfilePic"className="profilePicLarge" src={user} />
+            <img id="authProfilePic" className="profilePicLarge" src={user} alt="profile pic" />
           </div>
           <div>
             <input
@@ -121,12 +132,11 @@ const Login = () => {
             <select
               onChange={(e) => {
                 let currentYear = new Date().getFullYear();
-                console.log(currentYear);
                 setBirthDate(parseInt(currentYear) - e.target.value);
               }}
               id="ageSelect"
             >
-                <option value="">Age</option>
+              <option value="">Age</option>
               {ageOptions.map((el) => {
                 return (
                   <option key={el} value={el}>
@@ -135,9 +145,7 @@ const Login = () => {
                 );
               })}
             </select>
-          </div>
-          <div>
-            
+
             <select
               onChange={(e) => {
                 setGender(e.target.value);
@@ -149,7 +157,7 @@ const Login = () => {
               <option value="O">Other</option>
             </select>
           </div>
-          <div>
+          <div id="uploadImageWidget">
             <Widget
               imagesOnly="true"
               previewStep
@@ -160,14 +168,16 @@ const Login = () => {
             />
           </div>
           <div>
-            <div onClick={handleRegister}>Submit</div>
+            <div className="submitButton" onClick={handleRegister}>
+              Submit
+            </div>
           </div>
         </form>
       ) : (
         //login
         <form id="login">
           <div>
-            <img className="profilePicLarge" src={user} />
+            <img className="profilePicLarge" src={user} alt="profile pic" />
           </div>
           <div>
             <input
@@ -192,7 +202,9 @@ const Login = () => {
             />
           </div>
           <div>
-            <div onClick={handleLogin}>Submit</div>
+            <div className="submitButton" onClick={handleLogin}>
+              Submit
+            </div>
           </div>
           <div id="newUserRegister">
             <span>Not a Member?</span>
@@ -211,4 +223,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default connect(null, {setUser})(Login);
