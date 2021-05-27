@@ -55,10 +55,11 @@ const EditProfile = () => {
   };
 
   return (
-    <div>
-      <div id="chooseEditOptions">
+    <div id="editProfileContainer">
+      <div id="chooseProfileEditOptions">
         <h3>Choose edit options</h3>
         <div>
+          <div>
           <span>Username</span>
           <input
             onClick={() => {
@@ -70,6 +71,8 @@ const EditProfile = () => {
             type="checkbox"
             value="Username"
           />
+          </div>
+          <div>
           <span>Email</span>
           <input
             onClick={() => {
@@ -78,6 +81,8 @@ const EditProfile = () => {
             type="checkbox"
             value="Email"
           />
+          </div>
+          <div>
           <span>Profile picture</span>
           <input
             onClick={() => {
@@ -86,6 +91,8 @@ const EditProfile = () => {
             type="checkbox"
             value="picture"
           />
+          </div>
+          <div>
           <span>Password</span>
           <input
             onClick={() => {
@@ -97,8 +104,9 @@ const EditProfile = () => {
             type="checkbox"
             value="Password"
           />
-          <button onClick={submitChanges}>Submit Changes</button>
+          </div>
         </div>
+        <button onClick={submitChanges}>Submit Changes</button>
       </div>
       <div id="editOptions">
         {editOptions.username ? (

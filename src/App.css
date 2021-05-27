@@ -36,9 +36,7 @@
   justify-content: center;
   align-self: center;
 }
-#uploadImageWidget{
-  background-color: inh;
-}
+
 #register > div > span{
   margin-right: 10px;
 }
@@ -60,7 +58,7 @@
   border-radius: 3px;
   text-align: center;
   padding: 8px;
-  background-color: lightskyblue;
+  background-color: #5FBFF9;
 }
 #register > div > div:hover, #login > div > div:hover{
   cursor: pointer;
@@ -87,14 +85,14 @@
   cursor: pointer;
 }
 .uploadcare--widget__button, .uploadcare--widget__button_type_open{
-  background-color: black;
+  background-color: #171D1C;
   width: 100%;
 }
 .uploadcare--widget__button:hover, .uploadcare--widget__button_type_open:hover{
-  background-color: rgb(168, 162, 162);
+  background-color: #161d1c;
 }
 .uploadcare--widget__button:focus, .uploadcare--widget__button_type_open:focus{
-  background-color: rgb(168, 162, 162);
+  background-color: #1f2726;
 }
 @media (max-width:450px){
   #register{
@@ -103,4 +101,242 @@
   #register > div > input{
     width: 70%;
   }
+}
+
+/*NAVBAR*/
+#websiteLogoName{
+  position: fixed;
+  top:0%;
+  right: 1%;
+  width: 20px;
+  height: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  
+}
+#websiteLogoName > span{
+  display: none;
+}
+#navBar{
+  z-index: 5;
+  padding-left: 6px;
+  box-sizing: border-box;
+  padding-right: 6px;
+  position: fixed;
+  top:0%;
+  width: 100%;
+  height: 85px;
+  background-color: #171D1C;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+#navBar > div{
+  color: #EFE9F4;
+}
+.navBarLink > div{
+  color: #EFE9F4;
+  text-decoration: none;
+  
+}
+.navBarLink{
+  color: #EFE9F4;
+  text-decoration: none;
+  
+}
+
+.navBarLink > div:hover, #logout:hover, #navHamburger:hover{
+  color: #5FBFF9;
+  cursor: pointer;
+  border-bottom: 1px solid #5FBFF9;
+  
+}
+.profilePicMedium {
+  border-radius: 50%;
+  height: 60px;
+  width: 60px;
+}
+#navBarUserInfo{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#navBarPageLinks{
+  width: 50%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+#navBarAuthLinks{
+  flex-direction: row;
+  display: flex;
+  justify-content: space-around;
+  width: 20%;
+}
+#navHamburger{
+  color: #EFE9F4;
+  display: none;
+}
+@media (max-width: 675px){
+  #navBarPageLinks, #navBarAuthLinks{
+    display: none;
+  }
+  #navBar.active{
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: fit-content;
+  }
+  #navBarPageLinks.active, #navBarAuthLinks.active{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  #navHamburger{
+    position: absolute;
+    display: block;
+    top: 2%;
+    right: 2%;
+    height: 35px;
+    width: 35px;
+  }
+  #navHamburger.active{
+    position: absolute;
+    top: 2%;
+    right: 2%;
+  }
+  #websiteLogoName{
+    left: 35%;
+    width: 30%;
+    height: 60px;
+  }
+  #logo{
+    height: 30px;
+    width: 30px;
+  }
+  #websiteLogoName > span{
+    display: block;
+  }
+  #websiteLogoName.active > span{
+    display: none;
+  }
+  #websiteLogoName.active{
+    left: 2%;
+    top: 2%;
+    width: 30px;
+    height: 30px;
+  }
+  .navBarLink{
+    margin-top: 3px;
+    margin-bottom: 3px;
+    
+  }
+
+}
+/*EDIT PROFILE PAGE*/
+
+#editProfileContainer{
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+#chooseProfileEditOptions{
+  height: 30%;
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+#chooseProfileEditOptions > div{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+#chooseProfileEditOptions > div >div{
+  display: flex;
+  width: 100%;
+  align-items: flex-end;
+  justify-content: flex-end;
+  flex-direction: row-reverse;
+}
+#chooseProfileEditOptions > button {
+  width: 150px;
+  height: 30px;
+  background-color: #5FBFF9;
+  border: 1px solid black;
+  border-radius: 3px;
+}
+
+#editOptions{
+    height: 30%;
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+/*Create Game*/
+
+#createGame{
+  height: 100vh;
+  width: 50vw;
+  padding-top: 90px;
+  float: left;
+  background-color: rgb(136, 59, 59);
+}
+#createGameMapContainer{
+  height: 100vh;
+  width: 50vw;
+  float: right;
+}
+input[type=checkbox]{
+	height: 0;
+	width: 0;
+	visibility: hidden;
+}
+
+label {
+	cursor: pointer;
+	text-indent: -9999px;
+	width: 60px;
+	height: 30px;
+	background: rgb(248, 4, 4);
+	display: block;
+	border-radius: 100px;
+	position: relative;
+}
+
+label:after {
+	content: '';
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 30px;
+	height: 30px;
+	background: #fff;
+	border-radius: 50%;
+	transition: 0.3s;
+}
+
+input:checked + label {
+	background: #55da60;
+}
+
+input:checked + label:after {
+	left: calc(100%);
+	transform: translateX(-100%);
+}
+
+label:active:after {
+	width: 30px;
 }
