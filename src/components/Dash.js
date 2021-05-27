@@ -8,7 +8,6 @@ const Dash = (props) => {
     const {user} = useSelector((store)=>store.auth);
     console.log(user)
     
-    console.log(props)
     return (
         
         <div id="dashContainer">

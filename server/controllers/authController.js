@@ -11,14 +11,14 @@ module.exports = {
     } else {
       const salt = bcrypt.genSaltSync(10);
       const hash = bcrypt.hashSync(password, salt);
-      const [user] = await db.auth.register(
-        [username,
+      const [user] = await db.auth.register([
+        username,
         hash,
         email,
         birth_year,
         gender,
-        picture
-        ]);
+        picture,
+      ]);
       delete user.password;
       req.session.user = user;
       return res.status(200).send(req.session.user);
@@ -27,9 +27,9 @@ module.exports = {
   login: async (req, res) => {
     const db = req.app.get("db");
     const { email, password } = req.body;
-    
+
     const [user] = await db.auth.get_user(email);
-   
+
     if (!user) {
       return res.status(409).send("incorrect email and/or password");
     } else {
@@ -43,18 +43,38 @@ module.exports = {
       }
     }
   },
-  logout: (req,res)=>{
-      req.session.destroy();
-      res.sendStatus(200);
+  logout: (req, res) => {
+    req.session.destroy();
+    return res.sendStatus(200);
   },
-  checkSession: (req,res)=>{
-    console.log(req.session.user)
-    if (req.session.user){
-      res.status(200).send(req.session.user)
+  checkSession: (req, res) => {
+    if (req.session.user) {
+      return res.status(200).send(req.session.user);
+    } else {
+      return res.sendStatus(404);
     }
-    else{
-      res.sendStatus(404)
+  },
+  edit: async (req, res) => {
+    const db = req.app.get("db");
+    const { username, password, email, picture } = req.body;
+    const [user] = await db.auth.get_user(email);
+    let updatedPassword;
+    if (password === null) {
+      updatedPassword = user.password;
+    } else {
+      const salt = bcrypt.genSaltSync(10);
+      updatedPassword = bcrypt.hashSync(password, salt);
     }
-  }
+    const [updatedUser] = await db.auth.edit_user([
+      username,
+      updatedPassword,
+      email,
+      picture,
+      req.session.user.email,
+    ]);
 
+    delete updatedUser.password;
+    req.session.user = updatedUser
+    res.status(200).send(req.session.user);
+  },
 };

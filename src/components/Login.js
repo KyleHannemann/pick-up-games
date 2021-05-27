@@ -35,7 +35,6 @@ const Login = (props) => {
         password: password,
       })
       .then((res) => {
-        console.log(res);
         props.setUser(res.data)
         props.history.push('/dash')
 
@@ -45,14 +44,12 @@ const Login = (props) => {
       });
   };
   const handlePicture = async (e) => {
-    console.log(e);
     await setPicture(e.cdnUrl);
     document.getElementById("authProfilePic").src = e.cdnUrl;
   };
 
   const handleRegister = async (e) => {
     e.preventDefault()
-    console.log(email, password, username, birthDate, gender);
 
     if (
       email === "" ||
@@ -77,7 +74,6 @@ const Login = (props) => {
       email: email,
       password: password,
     });
-    console.log(res);
     props.setUser(res.data)
     props.history.push('/dash')
 
