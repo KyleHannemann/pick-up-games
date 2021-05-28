@@ -1,6 +1,9 @@
 *{
   font-family: 'DM Sans', sans-serif;
 }
+body{
+  background-color: #EFE9F4;
+}
           /*AUTH PAGE*/
 
 .uploadcare--jcrop-holder>div>div{
@@ -22,7 +25,7 @@
 #register, #login{
   width: 450px; 
   border-radius: 5px;
-  background-color: #f2f2f2;
+  background-color: #5FBFF9;
   padding: 30px;
 }
 #register > div, #login > div{
@@ -53,12 +56,13 @@
 .submitButton{
   width: 50%;
   height: 40px;
-  border: 1px solid lightgray;
+  
   box-sizing: border-box;
   border-radius: 3px;
   text-align: center;
   padding: 8px;
-  background-color: #5FBFF9;
+  color: #EFE9F4;
+  background-color: #171D1C;
 }
 #register > div > div:hover, #login > div > div:hover{
   cursor: pointer;
@@ -86,13 +90,16 @@
 }
 .uploadcare--widget__button, .uploadcare--widget__button_type_open{
   background-color: #171D1C;
+  color: #EFE9F4;
   width: 100%;
 }
 .uploadcare--widget__button:hover, .uploadcare--widget__button_type_open:hover{
   background-color: #161d1c;
+  color: #EFE9F4;
 }
 .uploadcare--widget__button:focus, .uploadcare--widget__button_type_open:focus{
   background-color: #1f2726;
+  color: #EFE9F4;
 }
 @media (max-width:450px){
   #register{
@@ -286,17 +293,63 @@
 }
 
 /*Create Game*/
-
-#createGame{
-  height: 100vh;
+#createGameIconSelection{
+  z-index: 10;
+  position: absolute;
+  height: 50vh;
   width: 50vw;
+  top: 50vh;
+  left: 25vw;
+  background-color: #5863F8;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+#createGameIconSelection > img {
+  margin-top: 20px;
+}
+#createGameIconSelection > img:hover {
+  opacity: .3;
+}
+#createGameContainer{
+  width: 100vw;
+  height: 100vh;
+  box-sizing: border-box;
+  background-color: #EFE9F4;
   padding-top: 90px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+#createGameStatusBar{
+  
+}
+#createGameStatusBar > span{
+    border: 1px solid black
+}
+#createGameStatusBar .active {
+    background-color: #3bec7f;
+}
+#createGame > form{
+  height: 50vh;
+  width: 50vw;
+  box-sizing: border-box;
   float: left;
-  background-color: rgb(136, 59, 59);
+  background-color: #16BAC5;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+ 
+}
+#createGame > form >div, #createGame > form >input{
+ padding: 5px;
+ 
 }
 #createGameMapContainer{
   height: 100vh;
   width: 50vw;
+  box-sizing: border-box;
   float: right;
 }
 input[type=checkbox]{
@@ -304,7 +357,10 @@ input[type=checkbox]{
 	width: 0;
 	visibility: hidden;
 }
-
+.createGameIconPreview{
+  height: 50px;
+  width: 50px;
+}
 label {
 	cursor: pointer;
 	text-indent: -9999px;

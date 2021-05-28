@@ -1,4 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
+import {useDispatch} from 'react-redux';
+import {setGameLocation} from '../redux/createGameReducer';
 import { mapStyles } from "./mapStyles/mapStyles";
 import axios from "axios";
 import {
@@ -33,9 +35,10 @@ const mapContainerStyle = {
   width: "100%",
 };
 
+
 const Map = (props) => {
-    console.log(props)
-  const [markers, setMarkers] = useState([])
+  const dispatch = useDispatch();
+  const [marker, setMarker] = useState([])
   const [center, setCenter] = useState({
     lat: 40.4193,
     lng: -111.8746,
@@ -68,12 +71,24 @@ const Map = (props) => {
   if (!isLoaded) {
     return "loading maps..";
   }
-//   const mapClick = useCallback((e) => {
-//       setMarkers((cur) => [...cur, {
-//           lat: e.latLng.lat(),
-//           lng: e.latLng.lng(),
-//       }])
-//   })
+  const mapClick = (e) => {
+      if (props.createGame !== true){
+          return;
+      }
+      else{
+        setMarker({
+            lat: e.latLng.lat(),
+            lng: e.latLng.lng() 
+        })
+        
+        dispatch(setGameLocation({
+          lat: e.latLng.lat(),
+          lng: e.latLng.lng() 
+      }))
+
+
+      }
+  }
 
   return (
     <div style={{height: props.height || '100vh', width: props.width || '100vw'}}>
@@ -82,8 +97,10 @@ const Map = (props) => {
         zoom={zoom}
         center={center}
         options={options}
-        // onClick={mapClick}
-      ></GoogleMap>
+        onClick={mapClick}
+      >
+          <Marker position={{lat: marker.lat, lng: marker.lng}}/>
+      </GoogleMap>
     </div>
   );
 };

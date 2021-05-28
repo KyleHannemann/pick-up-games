@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Widget } from "@uploadcare/react-widget";
 import axios from "axios";
-import user from "../svgs/user.svg";
+import user from "../imgs/user.svg";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import {setUser} from '../redux/authReducer';
 import {connect} from 'react-redux';
