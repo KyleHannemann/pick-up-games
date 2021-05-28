@@ -20,6 +20,7 @@ const Navbar = () => {
             }
         })
     }
+    
     const [navDrop, setNavDrop] = useState(false);
     const navDropDown = () =>{
         if (navDrop === false){

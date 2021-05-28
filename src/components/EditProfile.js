@@ -19,7 +19,7 @@ const EditProfile = () => {
     picture: false,
   });
   const submitChanges = () => {
-    let newUsername = user.username; 
+    let newUsername = user.username;
     let newEmail = user.email;
     let newPicture = user.picture;
     let newPassword = null;
@@ -28,27 +28,30 @@ const EditProfile = () => {
     }
     if (editOptions.password === true) {
       newPassword = password;
-    } 
+    }
     if (editOptions.email === true) {
       newEmail = email;
-    } 
+    }
     if (editOptions.picture === true) {
       newPicture = picture;
-    } 
+    }
 
-    axios.put('/auth/edit/profile', {
+    axios
+      .put("/auth/edit/profile", {
         username: newUsername,
         password: newPassword,
         email: newEmail,
-        picture: newPicture
-    }).then(res=>{
-        dispatch((setUser(res.data)));
-        alert('update success')
-        console.log(res)
-    }).catch(err=>{
-        console.log(err)
-        alert('update failed')
-    })
+        picture: newPicture,
+      })
+      .then((res) => {
+        dispatch(setUser(res.data));
+        alert("update success");
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("update failed");
+      });
   };
   const handlePicture = async (e) => {
     setPicture(e.cdnUrl);
@@ -60,50 +63,65 @@ const EditProfile = () => {
         <h3>Choose edit options</h3>
         <div>
           <div>
-          <span>Username</span>
-          <input
-            onClick={() => {
-              setEditOptions({
-                ...editOptions,
-                username: !editOptions.username,
-              });
-            }}
-            type="checkbox"
-            value="Username"
-          />
+            <span>Username</span>
+            <input
+              className="slider"
+              onClick={() => {
+                setEditOptions({
+                  ...editOptions,
+                  username: !editOptions.username,
+                });
+              }}
+              type="checkbox"
+              value="Username"
+              id="usernameEditSlider"
+            />
+            <label className="sliderLabel" htmlFor="usernameEditSlider"></label>
           </div>
           <div>
-          <span>Email</span>
-          <input
-            onClick={() => {
-              setEditOptions({ ...editOptions, email: !editOptions.email });
-            }}
-            type="checkbox"
-            value="Email"
-          />
+            <span>Email</span>
+            <input
+              className="slider"
+              onClick={() => {
+                setEditOptions({ ...editOptions, email: !editOptions.email });
+              }}
+              type="checkbox"
+              value="Email"
+              id="emailEditSlider"
+            />
+            <label className="sliderLabel" htmlFor="emailEditSlider"></label>
           </div>
           <div>
-          <span>Profile picture</span>
-          <input
-            onClick={() => {
-              setEditOptions({ ...editOptions, picture: !editOptions.picture });
-            }}
-            type="checkbox"
-            value="picture"
-          />
+            <span>Profile picture</span>
+            <input
+              className="slider"
+              onClick={() => {
+                setEditOptions({
+                  ...editOptions,
+                  picture: !editOptions.picture,
+                });
+              }}
+              type="checkbox"
+              value="picture"
+              id="pictureEditSlider"
+            />
+            <label className="sliderLabel" htmlFor="pictureEditSlider"></label>
           </div>
           <div>
-          <span>Password</span>
-          <input
-            onClick={() => {
-              setEditOptions({
-                ...editOptions,
-                password: !editOptions.password,
-              });
-            }}
-            type="checkbox"
-            value="Password"
-          />
+            <span>Password</span>
+            <input
+              className="slider"
+              onClick={() => {
+                setEditOptions({
+                  ...editOptions,
+                  password: !editOptions.password,
+                });
+              }}
+              type="checkbox"
+              value="Password"
+              id="passwordEditSlider"
+            />
+            <label className="sliderLabel" htmlFor="passwordEditSlider"></label>
           </div>
         </div>
         <button onClick={submitChanges}>Submit Changes</button>
@@ -126,6 +144,7 @@ const EditProfile = () => {
         {editOptions.email ? (
           <div>
             <input
+              className="slider"
               value={email}
               onChange={(e) => {
                 setEmail(e.target.value);

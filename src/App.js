@@ -17,6 +17,7 @@ function App(props) {
         if (res.status === 200) {
           console.log(res)
           props.setUser(res.data);
+          history.push('/dash')
           return;
         } else {
           history.push('/')

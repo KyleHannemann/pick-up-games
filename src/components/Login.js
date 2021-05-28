@@ -6,9 +6,9 @@ import { AiOutlineArrowLeft } from "react-icons/ai";
 import {setUser} from '../redux/authReducer';
 import {connect} from 'react-redux';
 
-const Login = (props) => {
-  //check for user session
 
+const Login = (props) => {
+  console.log(user)
   //login
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,7 +17,7 @@ const Login = (props) => {
   const [username, setUsername] = useState("");
   const [birthDate, setBirthDate] = useState("");
   const [gender, setGender] = useState("");
-  const [picture, setPicture] = useState("empty");
+  const [picture, setPicture] = useState("/static/media/user.80f5bb20.svg");
 
   const ageOptions = [];
   for (let i = 0; i < 100; i++) {

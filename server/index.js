@@ -29,6 +29,10 @@ massive({
 //endpoints
 //game
 app.post('/game/create', gameController.createGame )
+app.get('/game/joined', gameController.getJoinedGames)
+app.get('/game/players/:gameId', gameController.getPlayers);
+app.get('/game/all', gameController.getAllGames);
+app.get('/game/:gameId', gameController.getGame);
 //auth
 app.post('/auth/register',authController.register);
 app.post('/auth/login', authController.login);

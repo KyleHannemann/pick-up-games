@@ -119,7 +119,7 @@ const CreateGame = () => {
         </button>
       </div>
       {status === 1 ? (
-        <div>
+        <div className="createGameFormContainer">
           {selectingIcon ? (
             <div id="createGameIconSelection">
               {svg.map((el) => {
@@ -135,10 +135,10 @@ const CreateGame = () => {
               })}
             </div>
           ) : (
-            <p></p>
+            <p style={{display:"none"}}></p>
           )}
-          <div id="createGame">
-            <form>
+          
+            <div>
               <div>Title</div>
               <input
                 value={title}
@@ -147,6 +147,8 @@ const CreateGame = () => {
                 }}
                 type="text"
               />
+              </div>
+              <div>
               <div>Description</div>
               <input
                 value={description}
@@ -154,6 +156,8 @@ const CreateGame = () => {
                   setDescription(e.target.value);
                 }}
               />
+              </div>
+              <div>
               <div>Maximun Number of Players</div>
               <select
                 onChange={(e) => {
@@ -170,9 +174,11 @@ const CreateGame = () => {
                   );
                 })}
               </select>
+              </div>
+              <div>
               <div>Game Icon</div>
               <img className="createGameIconPreview" src={icon} />
-              <div>
+              
                 <button
                   onClick={() => {
                     setSelectingIcon(true);
@@ -181,14 +187,14 @@ const CreateGame = () => {
                   Change Icon
                 </button>
               </div>
-            </form>
-          </div>
+           
         </div>
       ) : (
         <div></div>
       )}
       {status === 2 ? (
-        <div>
+        <div className="createGameFormContainer">
+          <div>
           <div>Date</div>
           <DatePicker
             value={date}
@@ -196,6 +202,8 @@ const CreateGame = () => {
               setDate(e);
             }}
           />
+          </div>
+          <div>
           <div>Time</div>
           <TimePicker
             disableClock={true}
@@ -204,6 +212,7 @@ const CreateGame = () => {
               setTime(e);
             }}
           />
+          </div>
         </div>
       ) : (
         <div></div>
@@ -218,13 +227,14 @@ const CreateGame = () => {
         <div></div>
       )}
       {status === 4 ? (
-        <div>
-          {" "}
+        <div className="createGameFormContainer">
           <div>
+          
             <button>Invite Friends</button>
-          </div>
+          
           <div>list of invited friends scrollable</div>
-          <div>Make Public</div>
+          </div>
+          <div>
           <div>Gender</div>
           <select
             onChange={(e) => {
@@ -235,15 +245,21 @@ const CreateGame = () => {
             <option value="m">Male</option>
             <option value="f">Female</option>
           </select>
-          <input
+          </div>
+          <div>
+          <div>Make Public</div>
+          <input className="slider"
             onChange={() => {
               setPublicGame(!publicGame);
             }}
             type="checkbox"
             id="switch"
           />
-          <label htmlFor="switch"></label>
+          <label className="sliderLabel"htmlFor="switch"></label>
+          </div>
+          <div>
           <button onClick={handleSubmit}>CREATE</button>
+          </div>
         </div>
       ) : (
         <div></div>

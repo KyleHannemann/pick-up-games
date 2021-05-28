@@ -167,6 +167,11 @@ body{
   height: 60px;
   width: 60px;
 }
+.profilePicSmall {
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+}
 #navBarUserInfo{
   display: flex;
   flex-direction: column;
@@ -258,8 +263,8 @@ body{
   align-items: center;
 }
 #chooseProfileEditOptions{
-  height: 30%;
-  width: 30%;
+  height: 300px;
+  width: 300px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -267,15 +272,17 @@ body{
 #chooseProfileEditOptions > div{
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-evenly;
 }
 #chooseProfileEditOptions > div >div{
   display: flex;
   width: 100%;
+  margin-top: 15px;
   align-items: flex-end;
   justify-content: flex-end;
   flex-direction: row-reverse;
 }
+
 #chooseProfileEditOptions > button {
   width: 150px;
   height: 30px;
@@ -293,19 +300,47 @@ body{
 }
 
 /*Create Game*/
+.createGameFormContainer{
+  background-color: #5FBFF9;
+  padding: 24px 36px;
+  box-shadow: .25px .25px 10px .25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  margin-top: 20px;
+
+}
+.createGameFormContainer > div{
+  display: flex;
+  flex-direction: row;
+  border: 1px solid #171D1C;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  border-radius: 4px;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 8px;
+  background-color: #EFE9F4;
+
+}
+.createGameFormContainer > div > button{
+    background-color: #171D1C;
+    color: #EFE9F4;
+}
 #createGameIconSelection{
   z-index: 10;
   position: absolute;
-  height: 50vh;
-  width: 50vw;
-  top: 50vh;
-  left: 25vw;
-  background-color: #5863F8;
+  box-sizing: border-box;
+  width: 325px;
+  top: 25vh;
+  left: 50vw - 325px;
+  background-color: #16BAC5;
   display: flex;
   flex-wrap: wrap;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
+  flex-direction: row;
 }
 #createGameIconSelection > img {
   margin-top: 20px;
@@ -330,30 +365,19 @@ body{
     border: 1px solid black
 }
 #createGameStatusBar .active {
-    background-color: #3bec7f;
+    background-color: #55da60;
 }
-#createGame > form{
-  height: fit-content;
-  width: 50vw;
-  box-sizing: border-box;
-  float: left;
-  background-color: #5FBFF9;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  row-gap: 20px;
- 
-}
-#createGame > form >div, #createGame > form >input{
- padding: 5px;
- 
-}
+
+
 #createGameMapContainer{
-  height: 100vh;
-  width: 50vw;
-  box-sizing: border-box;
-  float: right;
+  margin-top: 15px;
+  border: 1px solid #171D1C;
+  height: 50vh;
+  width: 80vw;
+
 }
-input[type=checkbox]{
+/*Create game, button/slider*/
+.slider[type=checkbox]{
 	height: 0;
 	width: 0;
 	visibility: hidden;
@@ -362,7 +386,7 @@ input[type=checkbox]{
   height: 50px;
   width: 50px;
 }
-label {
+.sliderLabel {
 	cursor: pointer;
 	text-indent: -9999px;
 	width: 60px;
@@ -373,7 +397,7 @@ label {
 	position: relative;
 }
 
-label:after {
+.sliderLabel:after {
 	content: '';
 	position: absolute;
 	top: 0px;
@@ -385,15 +409,80 @@ label:after {
 	transition: 0.3s;
 }
 
-input:checked + label {
+.slider:checked + label {
 	background: #55da60;
 }
 
-input:checked + label:after {
+.slider:checked + label:after {
 	left: calc(100%);
 	transform: translateX(-100%);
 }
 
-label:active:after {
+.sliderLabel:active:after {
 	width: 30px;
+}
+
+/*DASH*/
+
+#dashContainer{
+  height: fit-content;
+  width: 100vw;
+  margin-top: 20px;
+  border-top: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+
+}
+.dashGameContainer{
+  margin-top: 15px;
+  width: 90vw;
+  padding: 12px;
+  background-color: #16BAC5;
+  border-radius: 4px;
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr;
+}
+/*titles*/
+.dashGameViewTitle{
+  text-align: center;
+  margin-top: 0px;
+}
+.dashGameDets, .dashGameOptions{
+  height: 100%;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+}
+.dashGamePlayers{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.indDashGamePlayer{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 3px;
+}
+.indDashGamePlayer > img{
+  
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid black;
+}
+.indDashGamePlayer > span{
+  font-size: 12px;
+}
+.dashGamePlayersContainer{
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  padding: 5px;
+}
+@media (max-width: 600px){
+  
 }
