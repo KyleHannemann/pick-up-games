@@ -3,6 +3,7 @@ const express = require('express');
 const massive = require('massive');
 const session = require('express-session');
 const authController = require('./controllers/authController');
+const gameController = require('./controllers/gameController');
 
 const {CONNECTION_STRING, SERVER_PORT, SESSION_SECRET} = process.env;
 
@@ -26,7 +27,9 @@ massive({
 }).catch(err=>{console.log(err)})
 
 //endpoints
-
+//game
+app.post('/game/create', gameController.createGame )
+//auth
 app.post('/auth/register',authController.register);
 app.post('/auth/login', authController.login);
 app.get('/auth/user', authController.checkSession);

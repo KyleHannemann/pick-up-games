@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import Map from "./Map";
+import axios from "axios";
 import DatePicker from "react-date-picker";
 import TimePicker from "react-time-picker";
 const reqSvgs = require.context("../imgs", true, /\.svg$/);
@@ -20,6 +21,7 @@ const CreateGame = () => {
   const [time, setTime] = useState("12:00");
   const [description, setDescription] = useState("");
   const [maxPlayers, setMaxPlayers] = useState("");
+  const [gender, setGender] = useState("coed");
 
   const handleIconChange = (e) => {
     e.preventDefault();
@@ -36,8 +38,25 @@ const CreateGame = () => {
       time: time,
       description: description,
       maxPlayers: maxPlayers,
+      gender: gender,
+      location: location,
     };
+    for (let el in createdGame) {
+      if (createdGame[el] === "") {
+        alert("please fill out all game details");
+        return;
+      }
+    }
+
     console.log(createdGame);
+    axios
+      .post("/game/create", createdGame)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const maxPlayersSelect = [];
   for (let i = 0; i < 20; i++) {
@@ -53,7 +72,6 @@ const CreateGame = () => {
             if (status === 1) {
               return;
             }
-        
 
             setStatus(status - 1);
             let items = document.querySelectorAll(".createGameStatusBarItems");
@@ -61,8 +79,8 @@ const CreateGame = () => {
               items[i].classList.remove("active");
             }
             document
-            .getElementById(`createGameStatusBar${status - 1 + ""}`)
-            .classList.add("active");
+              .getElementById(`createGameStatusBar${status - 1 + ""}`)
+              .classList.add("active");
           }}
         >
           ❮
@@ -74,14 +92,17 @@ const CreateGame = () => {
           Details
         </span>
         <span className="createGameStatusBarItems" id="createGameStatusBar2">
-          Location
+          Date/Time
         </span>
         <span className="createGameStatusBarItems" id="createGameStatusBar3">
+          Location
+        </span>
+        <span className="createGameStatusBarItems" id="createGameStatusBar4">
           Invites
         </span>
         <button
           onClick={() => {
-            if (status === 3) {
+            if (status === 4) {
               return;
             }
             setStatus(status + 1);
@@ -133,21 +154,6 @@ const CreateGame = () => {
                   setDescription(e.target.value);
                 }}
               />
-              <div>Date</div>
-              <DatePicker
-                value={date}
-                onChange={(e) => {
-                  setDate(e);
-                }}
-              />
-              <div>Time</div>
-              <TimePicker
-                disableClock={true}
-                value={time}
-                onChange={(e) => {
-                  setTime(e);
-                }}
-              />
               <div>Maximun Number of Players</div>
               <select
                 onChange={(e) => {
@@ -155,7 +161,7 @@ const CreateGame = () => {
                 }}
               >
                 <option>choose #</option>
-                <option value="unlimited">unlimited</option>
+                <option value={1000}>unlimited</option>
                 {maxPlayersSelect.map((el) => {
                   return (
                     <option key={el} value={el}>
@@ -183,6 +189,27 @@ const CreateGame = () => {
       )}
       {status === 2 ? (
         <div>
+          <div>Date</div>
+          <DatePicker
+            value={date}
+            onChange={(e) => {
+              setDate(e);
+            }}
+          />
+          <div>Time</div>
+          <TimePicker
+            disableClock={true}
+            value={time}
+            onChange={(e) => {
+              setTime(e);
+            }}
+          />
+        </div>
+      ) : (
+        <div></div>
+      )}
+      {status === 3 ? (
+        <div>
           <div id="createGameMapContainer">
             <Map createGame={true} height={"100%"} width={"100%"} />
           </div>
@@ -190,7 +217,7 @@ const CreateGame = () => {
       ) : (
         <div></div>
       )}
-      {status === 3 ? (
+      {status === 4 ? (
         <div>
           {" "}
           <div>
@@ -198,6 +225,16 @@ const CreateGame = () => {
           </div>
           <div>list of invited friends scrollable</div>
           <div>Make Public</div>
+          <div>Gender</div>
+          <select
+            onChange={(e) => {
+              setGender(e.target.value);
+            }}
+          >
+            <option value="coed">Coed</option>
+            <option value="m">Male</option>
+            <option value="f">Female</option>
+          </select>
           <input
             onChange={() => {
               setPublicGame(!publicGame);
