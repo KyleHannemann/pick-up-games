@@ -20,7 +20,9 @@ module.exports = {
         picture,
       ]);
       delete user.password;
+      const friends = await db.users.get_friends(user.user_id);
       req.session.user = user;
+      req.session.user.friends = friends;
       return res.status(200).send(req.session.user);
     }
   },
@@ -38,7 +40,9 @@ module.exports = {
         return res.status(409).send("incorrect email and/or password");
       } else {
         delete user.password;
+        const friends = await db.users.get_friends(user.user_id);
         req.session.user = user;
+        req.session.user.friends = friends;
         return res.status(200).send(req.session.user);
       }
     }
@@ -47,9 +51,13 @@ module.exports = {
     req.session.destroy();
     return res.sendStatus(200);
   },
-  checkSession: (req, res) => {
+  checkSession: async (req, res) => {
+    const db = req.app.get('db')
     if (req.session.user) {
+      const friends = await db.users.get_friends(req.session.user.user_id);
+      req.session.user.friends = friends;
       return res.status(200).send(req.session.user);
+    
     } else {
       return res.sendStatus(404);
     }

@@ -1,0 +1,1 @@
+SELECT * FROM friends_junction WHERE user_id = $1;

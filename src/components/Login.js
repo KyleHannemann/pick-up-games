@@ -8,7 +8,6 @@ import {connect} from 'react-redux';
 
 
 const Login = (props) => {
-  console.log(user)
   //login
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

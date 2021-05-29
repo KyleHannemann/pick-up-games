@@ -3,11 +3,12 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import axios from "axios";
 import { useEffect } from "react";
-import {connect} from 'react-redux';
+import {connect, useSelector} from 'react-redux';
 import { setUser} from './redux/authReducer';
 import {useHistory} from 'react-router-dom';
 
 function App(props) {
+  
   const history = useHistory();
   console.log(props)
   useEffect(() => {
@@ -15,7 +16,7 @@ function App(props) {
       .get("/auth/user")
       .then((res) => {
         if (res.status === 200) {
-          console.log(res)
+          console.log("thisisit",res)
           props.setUser(res.data);
           history.push('/dash')
           return;

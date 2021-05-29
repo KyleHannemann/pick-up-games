@@ -46,7 +46,6 @@ const EditProfile = () => {
       .then((res) => {
         dispatch(setUser(res.data));
         alert("update success");
-        console.log(res);
       })
       .catch((err) => {
         console.log(err);

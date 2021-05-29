@@ -6,8 +6,10 @@ import TimePicker from "react-time-picker";
 import {Link} from 'react-router-dom';
 
 const Dash = (props) => {
+  //Display tab for either joinedgames or invited games(alert for invites)
   const [games, setGames] = useState([]);
   const { user } = useSelector((store) => store.auth);
+  console.log(user)
 
   useEffect(() => {
     const getGamesAndPlayers = async () => {
@@ -47,7 +49,9 @@ const Dash = (props) => {
               <div className="dashGamePlayers">
               {game.players.map((player) => {
                 return (
-                  <div className="indDashGamePlayer" key={player.picture}>
+                  <div onClick={()=>{
+                    props.history.push(`/users/${player.user_id}`)
+                  }}className="indDashGamePlayer" key={player.picture}>
                     <img src={player.picture} />
                     <span>{player.username}</span>
                   </div>

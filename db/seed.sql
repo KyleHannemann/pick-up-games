@@ -28,3 +28,8 @@ CREATE TABLE player_game_junction (
 game_id INT references games(game_id),
 user_id INT references users(user_id)
 );
+
+CREATE TABLE friends_junction(
+user_id INT REFERENCES users(user_id),
+friend_id INT REFERENCES users(user_id),
+accepted BOOLEAN);
