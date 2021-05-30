@@ -427,7 +427,7 @@ body{
 #dashContainer{
   height: fit-content;
   width: 100vw;
-  margin-top: 20px;
+  margin-top: 70px;
   border-top: 1px solid black;
   display: flex;
   flex-direction: column;
@@ -496,5 +496,29 @@ body{
   padding-top: 80px;
   display: flex;
   justify-content: center;
+  align-items: center;
+}
+
+/*Game Page*/
+#gamePageContainer{
+  height: 100vh;
+  width: 100vw;
+  justify-content: center;
+  padding-top: 80px;  
+  box-sizing: border-box;
+  
+}
+#gamePageGameContainer{
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+}
+#gamePageGameContainer > div{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
   align-items: center;
 }

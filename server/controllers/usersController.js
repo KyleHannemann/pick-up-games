@@ -48,7 +48,7 @@ module.exports = {
   declineFriend: async (req, res) => {
     const db = req.app.get('db');
     const {friendId} = req.body;
-    await db.users.decline_friend(parseInt(friendId), [req.session.user.user_id]);
+    await db.users.decline_friend([parseInt(friendId), req.session.user.user_id]);
     const data =  await db.users.get_friends(req.session.user.user_id)
 
     res.status(200).send(data)

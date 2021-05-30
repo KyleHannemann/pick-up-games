@@ -8,6 +8,7 @@ import {Link} from 'react-router-dom';
 const Dash = (props) => {
   //Display tab for either joinedgames or invited games(alert for invites)
   const [games, setGames] = useState([]);
+  
   const { user } = useSelector((store) => store.auth);
   console.log(user)
 
@@ -30,7 +31,7 @@ const Dash = (props) => {
 
   return (
     <div id="dashContainer">
-      <h1>My Games</h1>
+      <h1>Scheduled Games</h1>
       {games.map((game) => {
         return (
           <div className="dashGameContainer" key={game.game_id}>
