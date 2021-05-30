@@ -1,0 +1,1 @@
+DELETE FROM player_game_junction WHERE user_id = $1 AND game_id = $2;

@@ -4,30 +4,40 @@ import axios from "axios";
 import DatePicker from "react-date-picker";
 import TimePicker from "react-time-picker";
 import {Link} from 'react-router-dom';
+import {setGamesRed} from '../redux/joinedGamesReducer';
 
 const Dash = (props) => {
   //Display tab for either joinedgames or invited games(alert for invites)
   const [games, setGames] = useState([]);
-  
+  const dispatch = useDispatch();
   const { user } = useSelector((store) => store.auth);
-  console.log(user)
-
+  const joinedGames = useSelector((store) => store.joinedGamesReducer);
+  console.log(joinedGames)
   useEffect(() => {
-    const getGamesAndPlayers = async () => {
-      let allGamesAndPlayers = [];
-      let allGames = await axios.get(`/game/joined`);
-      for (let i = 0; i < allGames.data.length; i++) {
-        let players = await axios.get(
-          `/game/players/${allGames.data[i].game_id}`
-        );
-        allGames.data[i].players = players.data;
-        allGamesAndPlayers.push(allGames.data[i]);
-      }
-      console.log(allGamesAndPlayers);
-      setGames(allGamesAndPlayers);
-    };
     getGamesAndPlayers();
   }, []);
+
+  const getGamesAndPlayers = async () => {
+    let allGamesAndPlayers = [];
+    let allGames = await axios.get(`/game/joined`);
+    dispatch(setGamesRed([...allGames.data]))
+    for (let i = 0; i < allGames.data.length; i++) {
+      let players = await axios.get(
+        `/game/players/${allGames.data[i].game_id}`
+      );
+      allGames.data[i].players = players.data;
+      allGamesAndPlayers.push(allGames.data[i]);
+    }
+    setGames(allGamesAndPlayers);
+  };
+  const leaveGame = (e) => {
+    axios.put(`/game/leave/${e.target.value}`).then(res=>{
+      console.log(res)
+      getGamesAndPlayers()
+    }).catch(err=>{
+      console.log(err)
+    })
+  }
 
   return (
     <div id="dashContainer">
@@ -38,6 +48,7 @@ const Dash = (props) => {
             <div className="dashGameDets">
               <h3 className="dashGameViewTitle">{game.title}</h3>
               <img src={game.icon} />
+              <span>{game.address}</span>
               <DatePicker
                 value={game.date}
                 disabled={true}
@@ -63,7 +74,7 @@ const Dash = (props) => {
             <div className="dashGameOptions">
               <h3 className="dashGameViewTitle">Options</h3>
               <Link to={`/game/${game.game_id}`}><button>Game Page</button></Link>
-              <button>Leave Game</button>
+              <button value={game.game_id} onClick={leaveGame}>Leave Game</button>
               {user ? (
                 
                   parseInt(game.creator) === parseInt(user.user_id) ? (

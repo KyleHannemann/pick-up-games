@@ -40,6 +40,8 @@ app.get('/game/joined', gameController.getJoinedGames)
 app.get('/game/players/:gameId', gameController.getPlayers);
 app.get('/game/all', gameController.getAllGames);
 app.get('/game/:gameId', gameController.getGame);
+app.put('/game/join/:gameId', gameController.joinGame)
+app.put('/game/leave/:gameId', gameController.leaveGame)
 //auth
 app.post('/auth/register',authController.register);
 app.post('/auth/login', authController.login);

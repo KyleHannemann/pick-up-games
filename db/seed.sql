@@ -10,18 +10,19 @@ picture VARCHAR(500)
 
 CREATE TABLE games (
 game_id SERIAL PRIMARY KEY,
-title VARCHAR(200),
-icon VARCHAR(500),
+title VARCHAR(1000),
+icon VARCHAR(1000),
 creator INT REFERENCES users (user_id),
 public BOOLEAN,
 gender VARCHAR(20),
-date VARCHAR(200),
-time VARCHAR(200),
+date VARCHAR(1000),
+time VARCHAR(1000),
+address VARCHAR(2000),
 latitude FLOAT,
 longitude FLOAT,
-description VARCHAR(1000),
+description VARCHAR(3000),
 player_count INT,
-max_players INT,
+max_players INT
 );
 
 CREATE TABLE player_game_junction (

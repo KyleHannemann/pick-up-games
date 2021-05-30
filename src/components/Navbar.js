@@ -5,7 +5,7 @@ import { setUser} from '../redux/authReducer';
 import {useHistory} from 'react-router-dom';
 import {Link} from 'react-router-dom';
 import {GiHamburgerMenu} from 'react-icons/gi';
-import {RiTeamLine} from 'react-icons/ri';
+import {IoIosNotificationsOutline} from 'react-icons/io';
 import {useState} from 'react';
 
 const Navbar = () => {
@@ -15,8 +15,13 @@ const Navbar = () => {
     const logout = () => {
         axios.get('/auth/logout').then(res=>{
             if (res.status === 200){
+                if (navDrop === false){
+                    return;
+                }
+                navDropDown()
                 dispatch(setUser(null));
                 history.push('/')
+               
             }
         })
     }
@@ -51,8 +56,8 @@ const Navbar = () => {
         <div>
         {user? <div id="navBar">
         <div id="websiteLogoName">
-            <RiTeamLine id="logo"/>
-            <span>Name Here</span>
+            <IoIosNotificationsOutline id="logo"/>
+            
         </div>
         <div id="navBarUserInfo"><img className="profilePicMedium" src={user.picture}/>
         <div>{user.username}</div>

@@ -1,11 +1,11 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { setGameLocation } from "../redux/createGameReducer";
 import { mapStyles } from "./mapStyles/mapStyles";
 import axios from "axios";
 import DatePicker from "react-date-picker";
 import TimePicker from "react-time-picker";
-import {Link} from 'react-router-dom'
+import {Link} from 'react-router-dom';
 
 import {
   GoogleMap,
@@ -57,6 +57,17 @@ const Map = (props) => {
     });
     setZoom(12);
   };
+
+  const mapRef = useRef();
+  const onMapLoad = useCallback((map) => {
+    mapRef.current = map;
+  }, []);
+
+  const panTo = useCallback(({ lat, lng }) => {
+    mapRef.current.panTo({ lat, lng });
+    mapRef.current.setZoom(14);
+  }, []);
+
   const denyLoc = () => {
     return;
   };
@@ -89,30 +100,44 @@ const Map = (props) => {
     if (props.createGame !== true) {
       return;
     } else {
+      addMarker(e.latLng.lat(),  e.latLng.lng() )
+    }
+  };
+  const addMarker = async(latitude, longitude) => {
+    try {
+      const addy = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${process.env.REACT_APP_GOOGLE_MAP_KEY}`)
       setMarker({
-        lat: e.latLng.lat(),
-        lng: e.latLng.lng(),
+        lat: latitude,
+        lng: longitude,
       });
+      
 
       dispatch(
         setGameLocation({
-          lat: e.latLng.lat(),
-          lng: e.latLng.lng(),
+          addy: addy.data.results[0].formatted_address || null,
+          lat: latitude,
+          lng: longitude,
         })
       );
+      
     }
-  };
+    catch (error){
+        console.log(error)
+    }
+  }
 
   return (
     <div
       style={{ height: props.height || "100vh", width: props.width || "100vw" }}
     >
+      <Search panTo={panTo} />
       <GoogleMap
         mapContainerStyle={mapContainerStyle}
         zoom={zoom}
         center={center}
         options={options}
         onClick={mapClick}
+        onLoad={onMapLoad}
       >
         <Marker position={{ lat: marker.lat, lng: marker.lng }} />
         {gameMarkers.map(game=>{
@@ -142,3 +167,58 @@ const Map = (props) => {
   );
 };
 export default Map;
+
+function Search({ panTo }) {
+  const {
+    ready,
+    value,
+    suggestions: { status, data },
+    setValue,
+    clearSuggestions,
+  } = usePlacesAutocomplete({
+    requestOptions: {
+      location: { lat: () => 43.6532, lng: () => -79.3832 },
+      radius: 100 * 1000,
+    },
+  });
+
+  // https://developers.google.com/maps/documentation/javascript/reference/places-autocomplete-service#AutocompletionRequest
+
+  const handleInput = (e) => {
+    setValue(e.target.value);
+  };
+
+  const handleSelect = async (address) => {
+    setValue(address, false);
+    clearSuggestions();
+
+    try {
+      const results = await getGeocode({ address });
+      const { lat, lng } = await getLatLng(results[0]);
+      panTo({ lat, lng });
+    } catch (error) {
+      console.log("😱 Error: ", error);
+    }
+  };
+
+  return (
+    <div className="mapSearchBar">
+      <Combobox onSelect={handleSelect}>
+        <ComboboxInput
+          value={value}
+          onChange={handleInput}
+          disabled={!ready}
+          placeholder="Search your location"
+        />
+        <ComboboxPopover>
+          <ComboboxList>
+            {status === "OK" &&
+              data.map(({ id, description }) => (
+                <ComboboxOption key={id} value={description} />
+              ))}
+          </ComboboxList>
+        </ComboboxPopover>
+      </Combobox>
+    </div>
+  );
+}

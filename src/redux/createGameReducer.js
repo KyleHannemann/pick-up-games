@@ -4,6 +4,8 @@ const initialState = {
 
 const SET_GAME_LOCATION = "SET_GAME_LOCATION";
 
+
+
 export function setGameLocation(location){
     return{
         type: SET_GAME_LOCATION,

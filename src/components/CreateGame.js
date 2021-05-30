@@ -20,7 +20,7 @@ const CreateGame = () => {
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState("12:00");
   const [description, setDescription] = useState("");
-  const [maxPlayers, setMaxPlayers] = useState("");
+  const [maxPlayers, setMaxPlayers] = useState(1000);
   const [gender, setGender] = useState("coed");
 
   const handleIconChange = (e) => {
@@ -41,14 +41,13 @@ const CreateGame = () => {
       gender: gender,
       location: location,
     };
-    for (let el in createdGame) {
-      if (createdGame[el] === "") {
-        alert("please fill out all game details");
-        return;
-      }
-    }
+    // for (let el in createdGame) {
+    //   if (createdGame[el] === "") {
+    //     alert("please fill out all game details");
+    //     return;
+    //   }
+    // }
 
-    console.log(createdGame);
     axios
       .post("/game/create", createdGame)
       .then((res) => {
@@ -194,6 +193,15 @@ const CreateGame = () => {
       )}
       {status === 2 ? (
         <div className="createGameFormContainer">
+  
+          <div>Time</div>
+          <TimePicker
+            disableClock={true}
+            value={time}
+            onChange={(e) => {
+              setTime(e);
+            }}
+          />
           <div>
           <div>Date</div>
           <DatePicker
@@ -204,14 +212,6 @@ const CreateGame = () => {
           />
           </div>
           <div>
-          <div>Time</div>
-          <TimePicker
-            disableClock={true}
-            value={time}
-            onChange={(e) => {
-              setTime(e);
-            }}
-          />
           </div>
         </div>
       ) : (
