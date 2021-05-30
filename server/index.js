@@ -31,6 +31,8 @@ massive({
 //users
 app.get('/users/:userId', usersController.getUser );
 app.post('/users/addFriend', usersController.addFriend);
+app.put('/users/addFriend/accept', usersController.acceptFriend);
+app.put('/users/addFriend/decline', usersController.declineFriend);
 app.get('/users/getFriends', usersController.getFriends);
 //game
 app.post('/game/create', gameController.createGame )

@@ -35,5 +35,22 @@ module.exports = {
   
   
 
+  },
+  acceptFriend: async (req, res) => {
+    const db = req.app.get('db');
+    const {friendId} = req.body;
+    console.log(friendId)
+    await db.users.accept_friend([parseInt(friendId), req.session.user.user_id]);
+    const data =  await db.users.get_friends(req.session.user.user_id)
+    
+    res.status(200).send(data)
+  },
+  declineFriend: async (req, res) => {
+    const db = req.app.get('db');
+    const {friendId} = req.body;
+    await db.users.decline_friend(parseInt(friendId), [req.session.user.user_id]);
+    const data =  await db.users.get_friends(req.session.user.user_id)
+
+    res.status(200).send(data)
   }
 };

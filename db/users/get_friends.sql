@@ -1,1 +1,1 @@
-SELECT * FROM friends_junction WHERE user_id = $1;
+SELECT * FROM friends_junction WHERE user_id = $1 OR friend_id = $1;

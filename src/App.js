@@ -10,13 +10,11 @@ import {useHistory} from 'react-router-dom';
 function App(props) {
   
   const history = useHistory();
-  console.log(props)
   useEffect(() => {
     axios
       .get("/auth/user")
       .then((res) => {
         if (res.status === 200) {
-          console.log("thisisit",res)
           props.setUser(res.data);
           history.push('/dash')
           return;
