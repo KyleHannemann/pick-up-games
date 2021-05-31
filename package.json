@@ -4,6 +4,9 @@
   "private": true,
   "proxy": "http://localhost:3122",
   "dependencies": {
+    "@fullcalendar/daygrid": "^5.7.0",
+    "@fullcalendar/interaction": "^5.7.0",
+    "@fullcalendar/react": "^5.7.0",
     "@reach/combobox": "^0.15.1",
     "@react-google-maps/api": "^2.2.0",
     "@testing-library/jest-dom": "^5.12.0",

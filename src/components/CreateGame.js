@@ -193,15 +193,6 @@ const CreateGame = () => {
       )}
       {status === 2 ? (
         <div className="createGameFormContainer">
-  
-          <div>Time</div>
-          <TimePicker
-            disableClock={true}
-            value={time}
-            onChange={(e) => {
-              setTime(e);
-            }}
-          />
           <div>
           <div>Date</div>
           <DatePicker
@@ -212,6 +203,14 @@ const CreateGame = () => {
           />
           </div>
           <div>
+          <div>Time</div>
+          <TimePicker
+            disableClock={true}
+            value={time}
+            onChange={(e) => {
+              setTime(e);
+            }}
+          />
           </div>
         </div>
       ) : (

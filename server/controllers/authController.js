@@ -4,7 +4,7 @@ module.exports = {
   register: async (req, res) => {
     const db = req.app.get("db");
     const { username, password, email, birth_year, gender, picture } = req.body;
-
+    try{
     const [checkExists] = await db.auth.get_user(email);
     if (checkExists) {
       return res.status(409).send("email already registered");
@@ -25,6 +25,10 @@ module.exports = {
       req.session.user.friends = friends;
       return res.status(200).send(req.session.user);
     }
+  }
+  catch(err){
+    res.status(409).send(err)
+  }
   },
   login: async (req, res) => {
     const db = req.app.get("db");

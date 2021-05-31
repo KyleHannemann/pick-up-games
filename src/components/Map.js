@@ -130,7 +130,6 @@ const Map = (props) => {
     <div
       style={{ height: props.height || "100vh", width: props.width || "100vw" }}
     >
-      <Search panTo={panTo} />
       <GoogleMap
         mapContainerStyle={mapContainerStyle}
         zoom={zoom}
@@ -139,6 +138,7 @@ const Map = (props) => {
         onClick={mapClick}
         onLoad={onMapLoad}
       >
+        <Search panTo={panTo} />
         <Marker position={{ lat: marker.lat, lng: marker.lng }} />
         {gameMarkers.map(game=>{
           return (<Marker 
@@ -182,7 +182,6 @@ function Search({ panTo }) {
     },
   });
 
-  // https://developers.google.com/maps/documentation/javascript/reference/places-autocomplete-service#AutocompletionRequest
 
   const handleInput = (e) => {
     setValue(e.target.value);
@@ -208,7 +207,7 @@ function Search({ panTo }) {
           value={value}
           onChange={handleInput}
           disabled={!ready}
-          placeholder="Search your location"
+          placeholder="Search"
         />
         <ComboboxPopover>
           <ComboboxList>
