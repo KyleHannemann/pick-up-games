@@ -56,7 +56,9 @@ module.exports = {
     return res.sendStatus(200);
   },
   checkSession: async (req, res) => {
+    console.log(req.session.user)
     const db = req.app.get('db')
+    try{
     if (req.session.user) {
       const friends = await db.users.get_friends(req.session.user.user_id);
       req.session.user.friends = friends;
@@ -65,6 +67,10 @@ module.exports = {
     } else {
       return res.sendStatus(404);
     }
+  }
+  catch (error){
+    console.log(error)
+  }
   },
   edit: async (req, res) => {
     const db = req.app.get("db");

@@ -11,20 +11,23 @@ function App(props) {
   
   const history = useHistory();
   useEffect(() => {
+    console.log('check')
     axios
       .get("/auth/user")
       .then((res) => {
         if (res.status === 200) {
           props.setUser(res.data);
-          history.push('/dash')
+          console.log('user')
+          //history.push('/dash')
           return;
         } else {
+          console.log('no user')
           history.push('/')
           return;
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.log('error on user find');
         history.push('/')
       });
   }, []);

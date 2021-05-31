@@ -112,9 +112,9 @@ body{
 
 /*NAVBAR*/
 #websiteLogoName{
-  position: fixed;
+  position: absolute;
   top:0%;
-  right: 1%;
+  left: 0%;
   width: 20px;
   height: 20px;
   box-sizing: border-box;
@@ -124,9 +124,11 @@ body{
   align-items: center;
   
 }
-#websiteLogoName > span{
-  display: none;
+#logo{
+  height: 30px;
+  width: 30px;
 }
+
 #navBar{
   z-index: 5;
   padding-left: 6px;
@@ -199,7 +201,7 @@ body{
   #navBarPageLinks, #navBarAuthLinks{
     display: none;
   }
-  #navBar.active{
+  #navBar{
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -225,15 +227,8 @@ body{
     top: 2%;
     right: 2%;
   }
-  #websiteLogoName{
-    left: 35%;
-    width: 30%;
-    height: 60px;
-  }
-  #logo{
-    height: 30px;
-    width: 30px;
-  }
+  
+  
   #websiteLogoName > span{
     display: block;
   }
@@ -420,10 +415,19 @@ body{
 }
 
 /*DASH*/
+#calendarTitle{
+  position:relative;
+  text-align: center;
+  margin-top: 5px;
+  margin-bottom: 0%;
+}
 
 #dashContainer{
-  height: 90vh;
+  height: fit-content;
   width: 100vw;
+  display: flex;
+  flex-direction: column;
+  
   
 
 }
@@ -497,24 +501,57 @@ body{
 #gamePageContainer{
   height: 100vh;
   width: 100vw;
-  justify-content: flex-start; 
-  box-sizing: border-box;
+  background-color: blueviolet;
   
 }
 #gamePageGameContainer{
-  width: 90%;
-  display: flex;
-  flex-direction: column;
+  background-color: cadetblue;
+  float: left;
+  box-sizing: border-box;
+  width: 75%;
   height: 100%;
-  justify-content: flex-start;
 }
-#gamePageGameContainer > div{
+#gamePagePlayerContainer{
+  background-color: coral;
+  float: right;
+  height: fit-content;
+  box-sizing: border-box;
+  width: 25%;
+  margin-top: 5px;
+
+}
+#gamePageGameDets{
+  padding-top: 5px;
+  background-color: cornsilk;
+  width: 100%;
+  height: 25%;
+  display: flex;
+  
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+#gamePageGameDets > div{
   width: 100%;
   display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 100%;
+  background-color: crimson;
   align-items: center;
 }
+#gamePageGameDets > div > p{
+  font-size: 12px;
+}
+#gamePageGameDets > div > h1{
+  margin-top: 0%;
+}
+#gamePagePlayerContainer >h1{
+  text-align: center;
+  margin-top: 0%;
+
+}
+
 
 /*Map*/
 

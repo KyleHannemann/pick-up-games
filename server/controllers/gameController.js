@@ -89,7 +89,7 @@ module.exports = {
         res.status(200).send(data);
       })
       .catch((err) => {
-        res.sendStatus(500);
+        res.sendStatus(411);
         console.log(err);
       });
   },

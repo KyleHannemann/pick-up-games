@@ -48,8 +48,15 @@ const Dash = (props) => {
 
   return (
     <div id="dashContainer">
+      <h2 id="calendarTitle">Scheduled Games</h2>
       <FullCalendar
-        height="100%"
+      
+      headerToolbar={{
+        start: 'title',
+        center: '',
+        end: 'prev,next'
+      }}
+        height="80vh"
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
         weekends={true}
