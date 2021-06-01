@@ -5,13 +5,76 @@ import TimePicker from "react-time-picker";
 import { useSelector, useDispatch } from "react-redux";
 import { addGamesRed, removeGameRed } from "../redux/joinedGamesReducer";
 import { Link } from "react-router-dom";
+import io from "socket.io-client";
 
 const Game = (props) => {
   const [game, setGame] = useState(null);
+
   const { user } = useSelector((store) => store.auth);
   const [joined, setJoined] = useState(false);
-  const dispatch = useDispatch();
 
+  const dispatch = useDispatch();
+//messaging
+const [comments, setComments] = useState([])
+const [socket, setSocket] = useState(null)
+const [newComment, setNewComment] = useState('')
+//get messages
+useEffect(()=>{
+  if (!user){
+    return
+  }
+  axios.get(`/game/comments/${props.match.params.gameId}`).then(res=>{
+    setComments(res.data)
+  }).catch(err=>{
+    console.log(err)
+  })
+}, [])
+//connect to io
+  useEffect(() => {
+    if (!user){
+      return
+    }
+    setSocket(io.connect());
+    return () => {
+      if (socket) {
+        socket.disconnect();
+        setSocket(null);
+      }
+    };
+  }, []);
+  //sumbit comment
+  const submitComment = () => {
+    
+    
+    if (newComment === ""){
+      return;
+    }
+
+    axios.post(`/game/comment/add/${props.match.params.gameId}`, {
+      content: newComment
+    }).then(res=>{
+      console.log(res)
+      //put socket emit in here
+      socket.emit("game comment", {user_id: user.user_id, comment_username: user.username, content: newComment,
+        user_id: user.user_id, game_id: props.match.params.gameId})
+    }).catch(err=>{
+      console.log(err)
+    })
+
+  }
+  useEffect(() => {
+   
+    if (socket) {
+      socket.on("game comment", (body) => {
+        console.log(body)
+        if (parseInt(body.game_id) === parseInt(props.match.params.gameId)){
+          setComments([...comments, body])
+         
+        };
+      });
+    }
+  }, [socket]);
+////////////////
   const getGameAndPlayers = async () => {
     let res = await axios.get(`/game/${props.match.params.gameId}`);
     let thisGame = res.data[0];
@@ -71,16 +134,19 @@ const Game = (props) => {
         console.log(err);
       });
   };
+
   return (
+    
     <div>
+      {console.log(comments)}
       {game ? (
         <div id="gamePageContainer">
           {" "}
           <div id="gamePageGameContainer">
             <div id="gamePageGameDets">
               <div>
-                <DatePicker disabled={true} value={game.date} />
-                <TimePicker disabled={true} value={game.time} />
+                <DatePicker clearIcon={false} calendarIcon={false} disabled={true} value={game.date} />
+                <TimePicker clearIcon={false} clockIcon={false} disabled={true} value={game.time} />
                 
               </div>
               <div>
@@ -104,10 +170,22 @@ const Game = (props) => {
               )}
               </div>
             </div>
-            <div id="gamePageChatContainer" />
+            <div id="gamePageChatContainer" >
+            <input value={newComment} onChange={(e)=>{
+              setNewComment(e.target.value)
+            }}placeholder="comment.." />
+            <button onClick={submitComment}>submit comment</button>
+            {comments.map(comment=>{
+              return <div key={comment.comment_id * Math.random()}>
+                <h3>{comment.comment_username}</h3>
+                <p>{comment.content}</p>
+                
+              </div>
+            })}
+            </div>
           </div>
           <div id="gamePagePlayerContainer">
-            <h1>Players</h1>
+            <h3>Players</h3>
             {game.players.map((player) => {
               return (
                 <Link key={player.user_id} to={`/users/${player.user_id}`}>

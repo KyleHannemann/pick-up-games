@@ -14,25 +14,26 @@ const Dash = (props) => {
   const [games, setGames] = useState([]);
   const dispatch = useDispatch();
   const { user } = useSelector((store) => store.auth);
+  
   const joinedGames = useSelector((store) => store.joinedGamesReducer);
   console.log(joinedGames);
   useEffect(() => {
-    getGamesAndPlayers();
-  }, []);
+    setGames(joinedGames.games);
+  }, [joinedGames]);
 
-  const getGamesAndPlayers = async () => {
-    let allGamesAndPlayers = [];
-    let allGames = await axios.get(`/game/joined`);
-    dispatch(setGamesRed([...allGames.data]));
-    for (let i = 0; i < allGames.data.length; i++) {
-      let players = await axios.get(
-        `/game/players/${allGames.data[i].game_id}`
-      );
-      allGames.data[i].players = players.data;
-      allGamesAndPlayers.push(allGames.data[i]);
-    }
-    setGames(allGamesAndPlayers);
-  };
+  // const getGamesAndPlayers = async () => {
+  //   let allGamesAndPlayers = [];
+  //   let allGames = await axios.get(`/game/joined`);
+  //   dispatch(setGamesRed([...allGames.data]));
+  //   for (let i = 0; i < allGames.data.length; i++) {
+  //     let players = await axios.get(
+  //       `/game/players/${allGames.data[i].game_id}`
+  //     );
+  //     allGames.data[i].players = players.data;
+  //     allGamesAndPlayers.push(allGames.data[i]);
+  //   }
+  //   setGames(allGamesAndPlayers);
+  // };
   // const leaveGame = (e) => {
   //   axios.put(`/game/leave/${e.target.value}`).then(res=>{
   //     console.log(res)

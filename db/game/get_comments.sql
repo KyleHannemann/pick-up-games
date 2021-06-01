@@ -1,0 +1,1 @@
+SELECT * FROM game_comments WHERE game_id = $1;

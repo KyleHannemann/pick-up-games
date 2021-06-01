@@ -1,6 +1,9 @@
 *{
   font-family: 'DM Sans', sans-serif;
 }
+a:hover, button:hover{
+  cursor: pointer;
+}
 body{
   background-color: #EFE9F4;
 }
@@ -131,9 +134,9 @@ body{
 
 #navBar{
   z-index: 5;
-  padding-left: 6px;
+  padding-left: 15px;
   box-sizing: border-box;
-  padding-right: 6px;
+  padding-right: 15px;
   position: relative;
   top:0%;
   width: 100%;
@@ -415,8 +418,13 @@ body{
 }
 
 /*DASH*/
+
 #calendarTitle{
-  position:relative;
+  position:absolute;
+  z-index: 4;
+  top: 80px;
+  width: 33%;
+  left: 33%;
   text-align: center;
   margin-top: 5px;
   margin-bottom: 0%;
@@ -501,28 +509,24 @@ body{
 #gamePageContainer{
   height: 100vh;
   width: 100vw;
-  background-color: blueviolet;
   
 }
 #gamePageGameContainer{
-  background-color: cadetblue;
   float: left;
   box-sizing: border-box;
   width: 75%;
   height: 100%;
 }
 #gamePagePlayerContainer{
-  background-color: coral;
   float: right;
-  height: fit-content;
+  height: 100vh;
   box-sizing: border-box;
   width: 25%;
-  margin-top: 5px;
+  border-left: 2px solid black;
+
 
 }
 #gamePageGameDets{
-  padding-top: 5px;
-  background-color: cornsilk;
   width: 100%;
   height: 25%;
   display: flex;
@@ -533,23 +537,42 @@ body{
 }
 #gamePageGameDets > div{
   width: 100%;
+  padding: 5px;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   height: 100%;
-  background-color: crimson;
   align-items: center;
 }
 #gamePageGameDets > div > p{
   font-size: 12px;
+  margin: 0px;
+  text-align: center;
 }
 #gamePageGameDets > div > h1{
-  margin-top: 0%;
+  margin: 0%;
+ 
 }
-#gamePagePlayerContainer >h1{
+#gamePageGameDets > div > a, #gamePageGameDets > div > button{
+  text-decoration: none;
+  background-color: #5FBFF9;
+  width: 115px;
   text-align: center;
-  margin-top: 0%;
+  color: black;
+  border: none;
+  font-size: 14px;
+}
 
+#gamePagePlayerContainer >h3{
+  text-align: center;
+  margin-top: 25px;
+
+}
+#gamePageChatContainer{
+  border-top: 2px solid black;
+  width: 100%;
+  height: 400px;
+  margin-top: 40px;
 }
 
 

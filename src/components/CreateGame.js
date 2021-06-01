@@ -87,16 +87,59 @@ const CreateGame = () => {
         <span
           className="createGameStatusBarItems active"
           id="createGameStatusBar1"
+          onClick={() => {
+            setStatus(1);
+            let items = document.querySelectorAll(".createGameStatusBarItems");
+            for (let i = 0; i < items.length; i++) {
+              items[i].classList.remove("active");
+            }
+            document
+              .getElementById(`createGameStatusBar1`)
+              .classList.add("active");
+          }}
         >
           Details
         </span>
-        <span className="createGameStatusBarItems" id="createGameStatusBar2">
+        <span
+          onClick={() => {
+            setStatus(2);
+            let items = document.querySelectorAll(".createGameStatusBarItems");
+            for (let i = 0; i < items.length; i++) {
+              items[i].classList.remove("active");
+            }
+            document
+              .getElementById(`createGameStatusBar2`)
+              .classList.add("active");
+          }}
+          className="createGameStatusBarItems"
+          id="createGameStatusBar2"
+        >
           Date/Time
         </span>
-        <span className="createGameStatusBarItems" id="createGameStatusBar3">
+        <span 
+        onClick={() => {
+          setStatus(3);
+          let items = document.querySelectorAll(".createGameStatusBarItems");
+          for (let i = 0; i < items.length; i++) {
+            items[i].classList.remove("active");
+          }
+          document
+            .getElementById(`createGameStatusBar3`)
+            .classList.add("active");
+        }}className="createGameStatusBarItems" id="createGameStatusBar3">
           Location
         </span>
-        <span className="createGameStatusBarItems" id="createGameStatusBar4">
+        <span 
+        onClick={() => {
+          setStatus(4);
+          let items = document.querySelectorAll(".createGameStatusBarItems");
+          for (let i = 0; i < items.length; i++) {
+            items[i].classList.remove("active");
+          }
+          document
+            .getElementById(`createGameStatusBar4`)
+            .classList.add("active");
+        }}className="createGameStatusBarItems" id="createGameStatusBar4">
           Invites
         </span>
         <button
@@ -134,59 +177,58 @@ const CreateGame = () => {
               })}
             </div>
           ) : (
-            <p style={{display:"none"}}></p>
+            <p style={{ display: "none" }}></p>
           )}
-          
-            <div>
-              <div>Title</div>
-              <input
-                value={title}
-                onChange={(e) => {
-                  setTitle(e.target.value);
-                }}
-                type="text"
-              />
-              </div>
-              <div>
-              <div>Description</div>
-              <input
-                value={description}
-                onChange={(e) => {
-                  setDescription(e.target.value);
-                }}
-              />
-              </div>
-              <div>
-              <div>Maximun Number of Players</div>
-              <select
-                onChange={(e) => {
-                  setMaxPlayers(e.target.value);
-                }}
-              >
-                <option>choose #</option>
-                <option value={1000}>unlimited</option>
-                {maxPlayersSelect.map((el) => {
-                  return (
-                    <option key={el} value={el}>
-                      {el}
-                    </option>
-                  );
-                })}
-              </select>
-              </div>
-              <div>
-              <div>Game Icon</div>
-              <img className="createGameIconPreview" src={icon} />
-              
-                <button
-                  onClick={() => {
-                    setSelectingIcon(true);
-                  }}
-                >
-                  Change Icon
-                </button>
-              </div>
-           
+
+          <div>
+            <div>Title</div>
+            <input
+              value={title}
+              onChange={(e) => {
+                setTitle(e.target.value);
+              }}
+              type="text"
+            />
+          </div>
+          <div>
+            <div>Description</div>
+            <input
+              value={description}
+              onChange={(e) => {
+                setDescription(e.target.value);
+              }}
+            />
+          </div>
+          <div>
+            <div>Maximun Number of Players</div>
+            <select
+              onChange={(e) => {
+                setMaxPlayers(e.target.value);
+              }}
+            >
+              <option>choose #</option>
+              <option value={1000}>unlimited</option>
+              {maxPlayersSelect.map((el) => {
+                return (
+                  <option key={el} value={el}>
+                    {el}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          <div>
+            <div>Game Icon</div>
+            <img className="createGameIconPreview" src={icon} />
+
+            <button
+              onClick={() => {
+                setSelectingIcon(true);
+              }}
+            >
+              Change Icon
+            </button>
+          </div>
         </div>
       ) : (
         <div></div>
@@ -194,23 +236,23 @@ const CreateGame = () => {
       {status === 2 ? (
         <div className="createGameFormContainer">
           <div>
-          <div>Date</div>
-          <DatePicker
-            value={date}
-            onChange={(e) => {
-              setDate(e);
-            }}
-          />
+            <div>Date</div>
+            <DatePicker
+              value={date}
+              onChange={(e) => {
+                setDate(e);
+              }}
+            />
           </div>
           <div>
-          <div>Time</div>
-          <TimePicker
-            disableClock={true}
-            value={time}
-            onChange={(e) => {
-              setTime(e);
-            }}
-          />
+            <div>Time</div>
+            <TimePicker
+              disableClock={true}
+              value={time}
+              onChange={(e) => {
+                setTime(e);
+              }}
+            />
           </div>
         </div>
       ) : (
@@ -218,6 +260,7 @@ const CreateGame = () => {
       )}
       {status === 3 ? (
         <div>
+          <h3 style={{textAlign: 'center'}}>Set Marker at Game Location</h3>
           <div id="createGameMapContainer">
             <Map createGame={true} height={"100%"} width={"100%"} />
           </div>
@@ -228,36 +271,36 @@ const CreateGame = () => {
       {status === 4 ? (
         <div className="createGameFormContainer">
           <div>
-          
             <button>Invite Friends</button>
-          
-          <div>list of invited friends scrollable</div>
+
+            <div>list of invited friends scrollable</div>
           </div>
           <div>
-          <div>Gender</div>
-          <select
-            onChange={(e) => {
-              setGender(e.target.value);
-            }}
-          >
-            <option value="coed">Coed</option>
-            <option value="m">Male</option>
-            <option value="f">Female</option>
-          </select>
+            <div>Gender</div>
+            <select
+              onChange={(e) => {
+                setGender(e.target.value);
+              }}
+            >
+              <option value="coed">Coed</option>
+              <option value="m">Male</option>
+              <option value="f">Female</option>
+            </select>
           </div>
           <div>
-          <div>Make Public</div>
-          <input className="slider"
-            onChange={() => {
-              setPublicGame(!publicGame);
-            }}
-            type="checkbox"
-            id="switch"
-          />
-          <label className="sliderLabel"htmlFor="switch"></label>
+            <div>Make Public</div>
+            <input
+              className="slider"
+              onChange={() => {
+                setPublicGame(!publicGame);
+              }}
+              type="checkbox"
+              id="switch"
+            />
+            <label className="sliderLabel" htmlFor="switch"></label>
           </div>
           <div>
-          <button onClick={handleSubmit}>CREATE</button>
+            <button onClick={handleSubmit}>CREATE</button>
           </div>
         </div>
       ) : (

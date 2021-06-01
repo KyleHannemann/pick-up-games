@@ -34,3 +34,10 @@ CREATE TABLE friends_junction(
 user_id INT REFERENCES users(user_id),
 friend_id INT REFERENCES users(user_id),
 accepted BOOLEAN);
+
+CREATE TABLE game_comments(
+comment_id SERIAL PRIMARY KEY,
+comment_username VARCHAR(2000),
+user_id INT REFERENCES users(user_id),
+content VARCHAR(2000),
+game_id INT REFERENCES games(game_id));

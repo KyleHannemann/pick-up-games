@@ -16,6 +16,9 @@ const Navbar = () => {
         axios.get('/auth/logout').then(res=>{
             if (res.status === 200){
                 if (navDrop === false){
+                   
+                    dispatch(setUser(null));
+                    history.push('/')
                     return;
                 }
                 navDropDown()
@@ -59,7 +62,9 @@ const Navbar = () => {
             <IoIosNotificationsOutline id="logo"/>
             
         </div>
-        <div id="navBarUserInfo"><img className="profilePicMedium" src={user.picture}/>
+        <div onClick={()=>{
+            history.push(`/users/${user.user_id}`)
+        }}id="navBarUserInfo"><img className="profilePicMedium" src={user.picture}/>
         <div>{user.username}</div>
         </div>
         <div id="navBarPageLinks">

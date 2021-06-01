@@ -2,8 +2,11 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { setUserFriends } from "../redux/authReducer";
+import io from "socket.io-client";
 
 const User = (props) => {
+  const [socket, setSocket] = useState(null);
+
   const { user } = useSelector((store) => store.auth);
   console.log(user);
   const dispatch = useDispatch();
@@ -22,6 +25,7 @@ const User = (props) => {
     if (!user) {
       return;
     }
+    console.log(props.match.params.userId)
     if (parseInt(user.user_id) === parseInt(props.match.params.userId)) {
       setOwnProfile(true);
       return;
@@ -53,7 +57,21 @@ const User = (props) => {
         }
       }
     }
-  }, [props.match.params.userId]);
+  }, [props.match.params.userId, user]);
+  
+  useEffect(() => {
+    if (!user){
+      return
+    }
+    setSocket(io.connect());
+    return () => {
+      if (socket) {
+        socket.disconnect();
+        setSocket(null);
+      }
+    };
+  }, [user]);
+
 
   useEffect(() => {
     axios
@@ -67,18 +85,25 @@ const User = (props) => {
   }, []);
 
   const addFriend = () => {
+    socket.emit('friend update', {user_id: user.user_id,
+    friend_id: parseInt(props.match.params.userId), accepted: false})
     axios
       .post("/users/addFriend", { friendId: userProfile.user_id })
       .then((res) => {
         console.log(res.data);
         dispatch(setUserFriends(res.data));
         setFriends("pending");
+
       })
       .catch((err) => {
         console.log(err);
       });
   };
   const handleFriendRequest = (e) => {
+    if(e.target.value === 'accept'){
+      socket.emit('friend accept', {user_id: parseInt(props.match.params.userId),
+        friend_id: user.user_id, accepted: true})
+      
       axios.put(`/users/addFriend/${e.target.value}`, {friendId : props.match.params.userId}).then((res) => {
         console.log(res.data);
         dispatch(setUserFriends(res.data));
@@ -87,7 +112,8 @@ const User = (props) => {
       .catch((err) => {
         console.log(err);
       });
-      if (e.target.value === "decline"){
+    }
+      else if (e.target.value === "decline"){
           setFriends(false)
           return;
 

@@ -111,5 +111,25 @@ module.exports = {
     }).catch(err=>{
       res.sendStatus(409)
     })
+  },
+  getComments: (req, res) => {
+    const db = req.app.get('db');
+    const {gameId} = req.params;
+    db.game.get_comments(gameId).then((data)=>{
+      res.status(200).send(data)
+    }).catch(err=>{
+      res.status(409).send(err)
+    })
+  },
+  addComments: (req, res) => {
+    const db = req.app.get('db');
+    const {gameId} = req.params;
+    const {content} = req.body
+    db.game.add_comment([req.session.user.username, req.session.user.user_id, content, gameId ])
+    .then(()=>{
+      res.sendStatus(200)
+    }).catch(err=>{
+      res.status(409).send(err)
+    })
   }
 };
