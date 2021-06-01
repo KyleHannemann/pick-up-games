@@ -40,4 +40,5 @@ comment_id SERIAL PRIMARY KEY,
 comment_username VARCHAR(2000),
 user_id INT REFERENCES users(user_id),
 content VARCHAR(2000),
-game_id INT REFERENCES games(game_id));
+game_id INT REFERENCES games(game_id),
+time_stamp VARCHAR(2000);

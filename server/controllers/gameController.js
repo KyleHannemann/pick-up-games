@@ -124,8 +124,8 @@ module.exports = {
   addComments: (req, res) => {
     const db = req.app.get('db');
     const {gameId} = req.params;
-    const {content} = req.body
-    db.game.add_comment([req.session.user.username, req.session.user.user_id, content, gameId ])
+    const {content, timeStamp} = req.body
+    db.game.add_comment([req.session.user.username, req.session.user.user_id, content, gameId, timeStamp ])
     .then(()=>{
       res.sendStatus(200)
     }).catch(err=>{

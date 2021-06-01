@@ -66,24 +66,7 @@ const CreateGame = () => {
     <div id="createGameContainer">
       <h3>Create Game</h3>
       <div id="createGameStatusBar">
-        <button
-          onClick={() => {
-            if (status === 1) {
-              return;
-            }
-
-            setStatus(status - 1);
-            let items = document.querySelectorAll(".createGameStatusBarItems");
-            for (let i = 0; i < items.length; i++) {
-              items[i].classList.remove("active");
-            }
-            document
-              .getElementById(`createGameStatusBar${status - 1 + ""}`)
-              .classList.add("active");
-          }}
-        >
-          ❮
-        </button>
+        
         <span
           className="createGameStatusBarItems active"
           id="createGameStatusBar1"
@@ -116,35 +99,78 @@ const CreateGame = () => {
         >
           Date/Time
         </span>
-        <span 
-        onClick={() => {
-          setStatus(3);
-          let items = document.querySelectorAll(".createGameStatusBarItems");
-          for (let i = 0; i < items.length; i++) {
-            items[i].classList.remove("active");
-          }
-          document
-            .getElementById(`createGameStatusBar3`)
-            .classList.add("active");
-        }}className="createGameStatusBarItems" id="createGameStatusBar3">
+        <span
+          onClick={() => {
+            setStatus(3);
+            let items = document.querySelectorAll(".createGameStatusBarItems");
+            for (let i = 0; i < items.length; i++) {
+              items[i].classList.remove("active");
+            }
+            document
+              .getElementById(`createGameStatusBar3`)
+              .classList.add("active");
+          }}
+          className="createGameStatusBarItems"
+          id="createGameStatusBar3"
+        >
           Location
         </span>
-        <span 
-        onClick={() => {
-          setStatus(4);
-          let items = document.querySelectorAll(".createGameStatusBarItems");
-          for (let i = 0; i < items.length; i++) {
-            items[i].classList.remove("active");
-          }
-          document
-            .getElementById(`createGameStatusBar4`)
-            .classList.add("active");
-        }}className="createGameStatusBarItems" id="createGameStatusBar4">
+        <span
+          onClick={() => {
+            setStatus(4);
+            let items = document.querySelectorAll(".createGameStatusBarItems");
+            for (let i = 0; i < items.length; i++) {
+              items[i].classList.remove("active");
+            }
+            document
+              .getElementById(`createGameStatusBar4`)
+              .classList.add("active");
+          }}
+          className="createGameStatusBarItems"
+          id="createGameStatusBar4"
+        >
           Invites
         </span>
-        <button
+        <span
           onClick={() => {
-            if (status === 4) {
+            setStatus(5);
+            let items = document.querySelectorAll(".createGameStatusBarItems");
+            for (let i = 0; i < items.length; i++) {
+              items[i].classList.remove("active");
+            }
+            document
+              .getElementById(`createGameStatusBar5`)
+              .classList.add("active");
+          }}
+          className="createGameStatusBarItems"
+          id="createGameStatusBar5"
+        >
+          Review/Submit
+        </span>
+       
+      </div>
+      <div className="createGameStatusBarButtons">
+      <button
+          onClick={() => {
+            if (status === 1) {
+              return;
+            }
+
+            setStatus(status - 1);
+            let items = document.querySelectorAll(".createGameStatusBarItems");
+            for (let i = 0; i < items.length; i++) {
+              items[i].classList.remove("active");
+            }
+            document
+              .getElementById(`createGameStatusBar${status - 1 + ""}`)
+              .classList.add("active");
+          }}
+        >
+          ❮
+        </button>
+      <button
+          onClick={() => {
+            if (status === 5) {
               return;
             }
             setStatus(status + 1);
@@ -159,7 +185,7 @@ const CreateGame = () => {
         >
           ❯
         </button>
-      </div>
+        </div>
       {status === 1 ? (
         <div className="createGameFormContainer">
           {selectingIcon ? (
@@ -260,7 +286,7 @@ const CreateGame = () => {
       )}
       {status === 3 ? (
         <div>
-          <h3 style={{textAlign: 'center'}}>Set Marker at Game Location</h3>
+          <h3 style={{ textAlign: "center" }}>Set Marker at Game Location</h3>
           <div id="createGameMapContainer">
             <Map createGame={true} height={"100%"} width={"100%"} />
           </div>
@@ -299,14 +325,57 @@ const CreateGame = () => {
             />
             <label className="sliderLabel" htmlFor="switch"></label>
           </div>
-          <div>
-            <button onClick={handleSubmit}>CREATE</button>
-          </div>
         </div>
       ) : (
         <div></div>
       )}
+      {status === 5 ? (
+        <div className="createGameReviewContainer">
+          <div>
+          <button onClick={handleSubmit}>CREATE</button>
+        </div>
+          <h1>{title}</h1>
+          <p>{description}</p>
+          <img className="createGameIconPreview" src={icon} />
+          <div>
+          <DatePicker
+            value={date}
+            disabled={true}
+            calendarIcon={false}
+            clearIcon={false}
+          />
+          </div>
+          <div>
+          <TimePicker
+            value={time}
+            disabled={true}
+            clockIcon={false}
+            clearIcon={false}
+          />
+          </div>
+          <div>
+            Max Players: {maxPlayers === 1000 ? "Unlimited" : maxPlayers}
+          </div>
+          <div>
+            Gender: {gender === "f" ? "Female" : null}
+            {gender === "m" ? "Male" : null}
+            {gender === "Coed" ? gender : null}
+          </div>
+          <div>{publicGame ? "Private Game" : "Public Game"}</div>
+          <div>{location.addy}</div>
+        
+        </div>
+      ) : null}
     </div>
   );
 };
 export default CreateGame;
+
+// const [title, setTitle] = useState("");
+// const [icon, setIcon] = useState(svg[0].default);
+// const [publicGame, setPublicGame] = useState(false);
+// const [date, setDate] = useState(new Date());
+// const [time, setTime] = useState("12:00");
+// const [description, setDescription] = useState("");
+// const [maxPlayers, setMaxPlayers] = useState(1000);
+// const [gender, setGender] = useState("coed");

@@ -14,25 +14,28 @@ const Game = (props) => {
   const [joined, setJoined] = useState(false);
 
   const dispatch = useDispatch();
-//messaging
-const [comments, setComments] = useState([])
-const [socket, setSocket] = useState(null)
-const [newComment, setNewComment] = useState('')
-//get messages
-useEffect(()=>{
-  if (!user){
-    return
-  }
-  axios.get(`/game/comments/${props.match.params.gameId}`).then(res=>{
-    setComments(res.data)
-  }).catch(err=>{
-    console.log(err)
-  })
-}, [])
-//connect to io
+  //messaging
+  const [comments, setComments] = useState([]);
+  const [socket, setSocket] = useState(null);
+  const [newComment, setNewComment] = useState("");
+  //get messages
   useEffect(() => {
-    if (!user){
-      return
+    if (!user) {
+      return;
+    }
+    axios
+      .get(`/game/comments/${props.match.params.gameId}`)
+      .then((res) => {
+        setComments(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+  //connect to io
+  useEffect(() => {
+    if (!user) {
+      return;
     }
     setSocket(io.connect());
     return () => {
@@ -44,37 +47,45 @@ useEffect(()=>{
   }, []);
   //sumbit comment
   const submitComment = () => {
-    
-    
-    if (newComment === ""){
+    if (newComment === "") {
       return;
     }
+    let timeStamp = new Date();
+    axios
+      .post(`/game/comment/add/${props.match.params.gameId}`, {
+        content: newComment,
+        timeStamp: timeStamp
+      })
+      .then((res) => {
+        console.log(res);
+        //put socket emit in here
+        socket.emit("game comment", {
+          user_id: user.user_id,
+          comment_username: user.username,
+          content: newComment,
+          user_id: user.user_id,
+          game_id: props.match.params.gameId,
+          time_stamp: timeStamp
+        });
+        setNewComment("")
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
-    axios.post(`/game/comment/add/${props.match.params.gameId}`, {
-      content: newComment
-    }).then(res=>{
-      console.log(res)
-      //put socket emit in here
-      socket.emit("game comment", {user_id: user.user_id, comment_username: user.username, content: newComment,
-        user_id: user.user_id, game_id: props.match.params.gameId})
-    }).catch(err=>{
-      console.log(err)
-    })
-
-  }
   useEffect(() => {
-   
     if (socket) {
       socket.on("game comment", (body) => {
-        console.log(body)
-        if (parseInt(body.game_id) === parseInt(props.match.params.gameId)){
-          setComments([...comments, body])
-         
-        };
+        console.log(body);
+        if (parseInt(body.game_id) === parseInt(props.match.params.gameId)) {
+          console.log(comments);
+          setComments((comments)=>[...comments, body]);
+        }
       });
     }
   }, [socket]);
-////////////////
+  ////////////////
   const getGameAndPlayers = async () => {
     let res = await axios.get(`/game/${props.match.params.gameId}`);
     let thisGame = res.data[0];
@@ -136,7 +147,6 @@ useEffect(()=>{
   };
 
   return (
-    
     <div>
       {console.log(comments)}
       {game ? (
@@ -145,9 +155,18 @@ useEffect(()=>{
           <div id="gamePageGameContainer">
             <div id="gamePageGameDets">
               <div>
-                <DatePicker clearIcon={false} calendarIcon={false} disabled={true} value={game.date} />
-                <TimePicker clearIcon={false} clockIcon={false} disabled={true} value={game.time} />
-                
+                <DatePicker
+                  clearIcon={false}
+                  calendarIcon={false}
+                  disabled={true}
+                  value={game.date}
+                />
+                <TimePicker
+                  clearIcon={false}
+                  clockIcon={false}
+                  disabled={true}
+                  value={game.time}
+                />
               </div>
               <div>
                 <h1>{game.title}</h1>
@@ -156,39 +175,72 @@ useEffect(()=>{
               </div>
 
               <div>
-              <p>{game.address}</p>
+                <p>{game.address}</p>
                 <a
                   href={`https://www.google.com/maps/dir/?api=1&destination=${game.latitude},${game.longitude}`}
                 >
                   get directions
                 </a>
-              
-              {joined ? (
-                <button onClick={leaveGame}>leave game</button>
-              ) : (
-                <button onClick={joinGame}>join game</button>
-              )}
+
+                {joined ? (
+                  <button onClick={leaveGame}>leave game</button>
+                ) : (
+                  <button onClick={joinGame}>join game</button>
+                )}
               </div>
             </div>
-            <div id="gamePageChatContainer" >
-            <input value={newComment} onChange={(e)=>{
-              setNewComment(e.target.value)
-            }}placeholder="comment.." />
-            <button onClick={submitComment}>submit comment</button>
-            {comments.map(comment=>{
-              return <div key={comment.comment_id * Math.random()}>
-                <h3>{comment.comment_username}</h3>
-                <p>{comment.content}</p>
-                
-              </div>
-            })}
+            <div id="gamePageChatContainer">
+              <input
+                value={newComment}
+                onChange={(e) => {
+                  setNewComment(e.target.value);
+                }}
+                placeholder="comment.."
+              />
+              <span id="gameCommentButtonsContainer">
+              <button id="gameCommentSendButton" onClick={submitComment}>send</button>
+              <button id="gameCommentClearButton" onClick={()=>{setNewComment("")}}>&#10005;</button>
+              </span>
+              {comments.map((comment) => {
+                let asDate = new Date(comment.time_stamp)
+                let amPm = 'am'
+                let hours = asDate.getHours();
+                let minutes = asDate.getMinutes();
+                if(minutes < 10){
+                  minutes = "0"+minutes;
+                }
+                if(hours >= 12){
+                  amPm = "pm"
+                }
+                hours = (hours % 12) || 12;
+                let readableTime = `${hours}:${minutes} ${amPm}`
+                return (
+                  <div key={comment.time_stamp}>
+                    <p>{comment.content}</p>
+                   <div>
+                      {game.players.map(player=>{
+                        if(parseInt(comment.user_id) === parseInt(player.user_id)){
+                          return  <Link to={`/users/${comment.user_id}`}><img src={player.picture}/> </Link>
+                        }
+                        return null
+                      })}
+                    <h3>{comment.comment_username}</h3>
+                    <span><span>{comment.time_stamp.slice(0, comment.time_stamp.indexOf("T"))}</span>
+                    <span>{readableTime}</span>
+                    </span>
+                    </div>
+                   
+                    
+                  </div>
+                );
+              })}
             </div>
           </div>
           <div id="gamePagePlayerContainer">
-            <h3>Players</h3>
+            <h3>{game.players.length} Players</h3>
             {game.players.map((player) => {
               return (
-                <Link key={player.user_id} to={`/users/${player.user_id}`}>
+                <Link style={{textDecoration: "none"}} key={player.user_id} to={`/users/${player.user_id}`}>
                   <div className="indDashGamePlayer">
                     <div>{player.username}</div>
                     <img src={player.picture} />
