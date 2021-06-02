@@ -20,7 +20,16 @@ module.exports = {
     db.users.get_friends(req.session.user.user_id).then((data) => {
         res.status(200).send(data)
     }).catch(err=>{
-        res.sendStatus(409)
+        res.sendStatus(419)
+        console.log(err)
+    });
+  },
+  getFriendsInfo: (req, res) => {
+    const db = req.app.get("db");
+    db.users.get_friends_info(req.session.user.user_id).then((data) => {
+        res.status(200).send(data)
+    }).catch(err=>{
+        res.sendStatus(419)
         console.log(err)
     });
   },
@@ -52,5 +61,14 @@ module.exports = {
     const data =  await db.users.get_friends(req.session.user.user_id)
 
     res.status(200).send(data)
+  },
+  getNotifications: (req, res) => {
+    const db = req.app.get('db');
+    const {userId} = req.params;
+    db.users.get_notifications(userId).then(data=>{
+      res.status(200).send(data)
+    }).catch(err=>{
+      console.log(err)
+    })
   }
 };

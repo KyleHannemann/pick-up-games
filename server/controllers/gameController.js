@@ -33,7 +33,7 @@ module.exports = {
         db.game
           .join_game([data[0].game_id, req.session.user.user_id])
           .then(() => {
-            res.sendStatus(200);
+            res.status(200).send(data[0]);
           })
           .catch((err) => {
             console.log(err);
@@ -123,14 +123,14 @@ module.exports = {
     })
   },
   addComments: (req, res) => {
-    const db = req.app.get('db');
-    const {gameId} = req.params;
-    const {content, timeStamp} = req.body
-    db.game.add_comment([req.session.user.username, req.session.user.user_id, content, gameId, timeStamp ])
-    .then(()=>{
-      res.sendStatus(200)
-    }).catch(err=>{
-      res.status(409).send(err)
-    })
+    // const db = req.app.get('db');
+    // const {gameId} = req.params;
+    // const {content, timeStamp} = req.body
+    // // db.game.add_comment([req.session.user.username, req.session.user.user_id, content, gameId, timeStamp ])
+    // // .then(()=>{
+    // //   res.sendStatus(200)
+    // // }).catch(err=>{
+    // //   res.status(409).send(err)
+    // // })
   }
 };

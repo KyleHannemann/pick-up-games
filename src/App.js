@@ -9,6 +9,8 @@ import { useHistory } from "react-router-dom";
 import io from "socket.io-client";
 import {setGamesRed} from './redux/joinedGamesReducer';
 import {updateFriends} from './redux/authReducer';
+import {placeSocket} from './redux/socketReducer'
+import {setNotifications} from './redux/notificationsReducer'
 //Get User INFO, FRIENDS, GAMES JOINED, SAVE TO STATE 
 function App(props) {
   const dispatch = useDispatch()
@@ -22,7 +24,8 @@ function App(props) {
     const getGamesAndPlayers = async () => {
       let allGames = await axios.get(`/game/joined/${user.user_id}`);
       dispatch(setGamesRed([...allGames.data]));
-      
+      let notifications = await axios.get(`users/notifications/${user.user_id}`);
+      dispatch(setNotifications(notifications.data))
     };
     getGamesAndPlayers();
   }, [user]);
@@ -31,7 +34,9 @@ function App(props) {
       return
     }
     //setSocket(io.connect("", {username: 'kyle'}))
-    setSocket(io.connect());
+    const sock = io.connect()
+    setSocket(sock)
+    dispatch(placeSocket(sock));
     return () => {
       if (socket) {
         socket.disconnect();
@@ -43,16 +48,12 @@ function App(props) {
    
     if (socket) {
       socket.on("friend added", (body) => {
-        console.log(body)
         if (parseInt(body.friend_id) === parseInt(user.user_id)){
-          console.log(body)
           dispatch(updateFriends(body))
         };
       });
       socket.on("friend accept", (body) => {
-        console.log(body)
         if (parseInt(body.user_id) === parseInt(user.user_id)){
-          console.log(body)
           dispatch(updateFriends(body))
         };
       });
@@ -61,13 +62,13 @@ function App(props) {
 
   const history = useHistory();
   useEffect(() => {
-    console.log("check");
     axios
       .get("/auth/user")
       .then((res) => {
         if (res.status === 200) {
           props.setUser(res.data);
-          console.log("user");
+          console.log("user", res.data)
+          
           //history.push('/dash')
           return;
         } else {
@@ -82,6 +83,7 @@ function App(props) {
       });
   }, []);
   return (
+    
     <div className="App">
       <Navbar />
       {routes}

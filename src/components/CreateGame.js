@@ -1,18 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Map from "./Map";
 import axios from "axios";
 import DatePicker from "react-date-picker";
 import TimePicker from "react-time-picker";
+import io from 'socket.io'
 const reqSvgs = require.context("../imgs", true, /\.svg$/);
 const paths = reqSvgs.keys();
 const svg = paths.map((path) => reqSvgs(path));
 
+
 const CreateGame = () => {
   const [selectingIcon, setSelectingIcon] = useState(false);
   const { location } = useSelector((store) => store.createGameReducer);
+  const {user} = useSelector((store)=>store.auth);
+  const {socket} = useSelector((store)=>store.socketReducer);
+  console.log(socket)
+  console.log(user)
   //status bar
   const [status, setStatus] = useState(1);
+  const [friends, setFriends] = useState([])
   //game details
   const [title, setTitle] = useState("");
   const [icon, setIcon] = useState(svg[0].default);
@@ -22,7 +29,40 @@ const CreateGame = () => {
   const [description, setDescription] = useState("");
   const [maxPlayers, setMaxPlayers] = useState(1000);
   const [gender, setGender] = useState("Coed");
+  const [invites, setInvites] = useState([])
 
+  const updateInvites = (e) => {
+    console.log(e.target.checked)
+    if (e.target.checked === true){
+    console.log(e.target.value)
+    setInvites([...invites, e.target.value])
+    }
+    else{
+      let newInvites = invites.filter(el=>el !== e.target.value)
+      setInvites(newInvites)
+    }
+  }
+  useEffect(()=>{
+    axios.get("/users/friends/all").then(res=>{
+      // let data = res.data;
+      // // let friendsArr = [{key: 'invite all friends', id: 'all'}]
+      // // for (let i = 0; i < data.length; i++){
+      // //   if(parseInt(data[i].user_id) !== parseInt(user.user_id)){
+      // //      friendsArr.push({
+      // //        key: data[i].username,
+      // //        id: data[i].user_id
+      // //      })
+      // //   }
+      // // }
+      // console.log(friendsArr)
+      let data = res.data.filter(el=>el.user_id !== user.user_id)
+      
+      setFriends(data)
+      console.log(res.data)
+    }).catch(err=>{
+      console.log(err)
+    })
+  }, [])
   const handleIconChange = (e) => {
     e.preventDefault();
     setIcon(e.target.dataset.id);
@@ -41,17 +81,27 @@ const CreateGame = () => {
       gender: gender,
       location: location,
     };
-    // for (let el in createdGame) {
-    //   if (createdGame[el] === "") {
-    //     alert("please fill out all game details");
-    //     return;
-    //   }
-    // }
+    for (let el in createdGame) {
+      if (createdGame[el] === "") {
+        alert("please fill out all game details");
+        return;
+      }
+    }
 
     axios
       .post("/game/create", createdGame)
       .then((res) => {
         console.log(res);
+        let finalInvites;
+    if (invites.includes('all') === true){
+      finalInvites = friends.map(el=>{
+        return el.user_id
+      })
+    }
+    else{
+      finalInvites = invites;
+    }
+    socket.emit('invites', {invites: finalInvites, game_id: res.data.game_id, username: user.username, user_id: user.user_id})
       })
       .catch((err) => {
         console.log(err);
@@ -230,7 +280,7 @@ const CreateGame = () => {
             </div>
             <div>
               <div>Description</div>
-              <input
+              <textarea id="createGameFormDescription"
                 value={description}
                 onChange={(e) => {
                   setDescription(e.target.value);
@@ -311,9 +361,23 @@ const CreateGame = () => {
         {status === 4 ? (
           <div className="createGameFormContainer">
             <div>
-              <button>Invite Friends</button>
-
-              <div>list of invited friends scrollable</div>
+            <div>Invite Friends</div>
+            <span>{invites.includes('all') === true? "All" : invites.length}</span>
+            <div id="createGameSelectInvitesContainer">
+              <div>
+              <input value="all" onChange={updateInvites} type="checkbox"/>
+              <div>Invite all</div>
+              <span></span></div>
+              {friends.map(f=>{
+                return(
+                  <div>
+                    <input value={f.user_id} onChange={updateInvites} type="checkbox"/>
+                    <span>{f.username}</span>
+                    <img className="profilePicSmall"src={f.picture}/>
+                  </div>
+                )
+              })}
+            </div>
             </div>
             <div>
               <div>Gender</div>

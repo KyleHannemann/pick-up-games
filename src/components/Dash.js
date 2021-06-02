@@ -16,7 +16,6 @@ const Dash = (props) => {
   const { user } = useSelector((store) => store.auth);
   
   const joinedGames = useSelector((store) => store.joinedGamesReducer);
-  console.log(joinedGames);
   useEffect(() => {
     setGames(joinedGames.games);
   }, [joinedGames]);

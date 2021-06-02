@@ -54,25 +54,56 @@ io.on('connection', (socket)=>{
         io.emit('friend accept', body)
     })
     socket.on('game comment', (body)=>{
-        console.log(body)
-        io.emit('game comment', body)
+        const db = app.get('db')
+        db.game.add_comment([body.comment_username, body.user_id, body.content,
+           body.game_id, body.time_stamp, body.reply, body.reply_to])
+        .then((data)=>{
+          
+          io.emit('game comment', data)
+          
+        }).catch(err=>{
+          io.emit('game comment', err)
+        })
+        
+        
     })
+    socket.on('notification', async (body) => {
+      const db = app.get('db')
+      await db.users.add_notification([body.user_id,
+        body.description, body.game_id, body.user_interaction])
+      db.users.get_notifications(body.user_id).then(data=>{
+        io.emit('notification', data)
+      }).catch(err=>{
+        console.log(err)
+      })
+    })
+    socket.on('invites', async (body)=>{
+      const db = app.get('db')
+      console.log(body);
+      const {invites, game_id, username, user_id} = body;
+      for (let i = 0; i < invites.length; i++){
+        await db.users.add_notification([parseInt(invites[i]),
+        "invited to game", game_id, user_id] )
+      }
+
+    });
     
 
     
 })
 //endpoints
 //users
+app.get("/users/notifications/:userId", usersController.getNotifications)
 app.get("/users/:userId", usersController.getUser);
 app.post("/users/addFriend", usersController.addFriend);
 app.put("/users/addFriend/accept", usersController.acceptFriend);
 app.put("/users/addFriend/decline", usersController.declineFriend);
-app.get("/users/getFriends", usersController.getFriends);
+app.get("/users/friends/all", usersController.getFriendsInfo);
 //game
 app.post("/game/create", gameController.createGame);
 app.get("/game/joined/:userId", gameController.getJoinedGames);
 app.get("/game/players/:gameId", gameController.getPlayers);
-app.get("/game/all", gameController.getAllGames);
+app.get("/games/a", gameController.getAllGames);
 app.get("/game/:gameId", gameController.getGame);
 app.put("/game/join/:gameId", gameController.joinGame);
 app.put("/game/leave/:gameId", gameController.leaveGame);

@@ -11,6 +11,7 @@ const Game = (props) => {
   const [game, setGame] = useState(null);
 
   const { user } = useSelector((store) => store.auth);
+
   const [joined, setJoined] = useState(false);
 
   const dispatch = useDispatch();
@@ -18,6 +19,8 @@ const Game = (props) => {
   const [comments, setComments] = useState([]);
   const [socket, setSocket] = useState(null);
   const [newComment, setNewComment] = useState("");
+  const [reply, setReply] = useState("");
+  const [replyArray, setReplyArray] = useState([]);
   //get messages
   useEffect(() => {
     if (!user) {
@@ -27,11 +30,12 @@ const Game = (props) => {
       .get(`/game/comments/${props.match.params.gameId}`)
       .then((res) => {
         setComments(res.data);
+        console.log(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [user]);
   //connect to io
   useEffect(() => {
     if (!user) {
@@ -46,41 +50,67 @@ const Game = (props) => {
     };
   }, []);
   //sumbit comment
-  const submitComment = () => {
-    if (newComment === "") {
-      return;
+  const submitComment = (e) => {
+    let replyCheck = false;
+    let repliedTo = null;
+    let whichContent = newComment;
+    if (e.target.value) {
+      replyCheck = true;
+      repliedTo = e.target.value;
+      whichContent = reply;
+    } else {
+      if (newComment === "") {
+        return;
+      }
     }
     let timeStamp = new Date();
-    axios
-      .post(`/game/comment/add/${props.match.params.gameId}`, {
-        content: newComment,
-        timeStamp: timeStamp
-      })
-      .then((res) => {
-        console.log(res);
-        //put socket emit in here
-        socket.emit("game comment", {
-          user_id: user.user_id,
-          comment_username: user.username,
-          content: newComment,
-          user_id: user.user_id,
-          game_id: props.match.params.gameId,
-          time_stamp: timeStamp
-        });
-        setNewComment("")
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (!socket) {
+      console.log("no socket");
+      return;
+    }
+    socket.emit("game comment", {
+      user_id: user.user_id,
+      comment_username: user.username,
+      content: whichContent,
+      game_id: props.match.params.gameId,
+      time_stamp: timeStamp,
+      reply: replyCheck,
+      reply_to: repliedTo,
+    });
+    // axios
+    //   .post(`/game/comment/add/${props.match.params.gameId}`, {
+    //     content: newComment,
+    //     timeStamp: timeStamp
+    //   })
+    //   .then((res) => {
+    //     console.log(res);
+    //     //put socket emit in here
+    //     socket.emit("game comment", {
+    //       user_id: user.user_id,
+    //       comment_username: user.username,
+    //       content: newComment,
+    //       user_id: user.user_id,
+    //       game_id: props.match.params.gameId,
+    //       time_stamp: timeStamp,
+    //       reply: replyCheck,
+    //       reply_to: repliedTo
+
+    //     });
+    //     setNewComment("")
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+    setNewComment("")
   };
 
   useEffect(() => {
     if (socket) {
       socket.on("game comment", (body) => {
         console.log(body);
-        if (parseInt(body.game_id) === parseInt(props.match.params.gameId)) {
+        if (parseInt(body[0].game_id) === parseInt(props.match.params.gameId)) {
           console.log(comments);
-          setComments((comments)=>[...comments, body]);
+          setComments((comments) => [...comments, body[0]]);
         }
       });
     }
@@ -198,49 +228,152 @@ const Game = (props) => {
                 placeholder="comment.."
               />
               <span id="gameCommentButtonsContainer">
-              <button id="gameCommentSendButton" onClick={submitComment}>send</button>
-              <button id="gameCommentClearButton" onClick={()=>{setNewComment("")}}>&#10005;</button>
+                <button id="gameCommentSendButton" onClick={submitComment}>
+                  send
+                </button>
+                <button
+                  id="gameCommentClearButton"
+                  onClick={() => {
+                    setNewComment("");
+                  }}
+                >
+                  &#10005;
+                </button>
               </span>
               {comments.map((comment) => {
-                let asDate = new Date(comment.time_stamp)
-                let amPm = 'am'
+                if (comment.reply === true) {
+                  return null;
+                }
+                let asDate = new Date(comment.time_stamp);
+                let amPm = "am";
                 let hours = asDate.getHours();
                 let minutes = asDate.getMinutes();
-                if(minutes < 10){
-                  minutes = "0"+minutes;
+                if (minutes < 10) {
+                  minutes = "0" + minutes;
                 }
-                if(hours >= 12){
-                  amPm = "pm"
+                if (hours >= 12) {
+                  amPm = "pm";
                 }
-                hours = (hours % 12) || 12;
-                let readableTime = `${hours}:${minutes} ${amPm}`
+                hours = hours % 12 || 12;
+                let readableTime = `${hours}:${minutes} ${amPm}`;
                 return (
-                  <div key={comment.time_stamp}>
+                  <div key={comment.comment_id}>
                     <p>{comment.content}</p>
-                   <div>
-                      {game.players.map(player=>{
-                        if(parseInt(comment.user_id) === parseInt(player.user_id)){
-                          return  <Link to={`/users/${comment.user_id}`}><img src={player.picture}/> </Link>
+                    <div>
+                      {game.players.map((player) => {
+                        if (
+                          parseInt(comment.user_id) === parseInt(player.user_id)
+                        ) {
+                          return (
+                            <Link to={`/users/${comment.user_id}`}>
+                              <img src={player.picture} />{" "}
+                            </Link>
+                          );
                         }
-                        return null
+                        return null;
                       })}
-                    <h3>{comment.comment_username}</h3>
-                    <span><span>{comment.time_stamp.slice(0, comment.time_stamp.indexOf("T"))}</span>
-                    <span>{readableTime}</span>
-                    </span>
+                      <h3>{comment.comment_username}</h3>
+                      <span>
+                        <span>
+                          {comment.time_stamp.slice(
+                            0,
+                            comment.time_stamp.indexOf("T")
+                          )}
+                        </span>
+                        <span>{readableTime}</span>
+                      </span>
+                      {/* {//For Adding comments will probably want a seperate component
+                        comments.map((comment2) => {
+                        if (
+                          comment2.reply === true &&
+                          parseInt(comment2.reply_to) ===
+                            parseInt(comment.comment_id)
+                        ) {
+                          let asDate = new Date(comment2.time_stamp);
+                          let amPm = "am";
+                          let hours = asDate.getHours();
+                          let minutes = asDate.getMinutes();
+                          if (minutes < 10) {
+                            minutes = "0" + minutes;
+                          }
+                          if (hours >= 12) {
+                            amPm = "pm";
+                          }
+                          hours = hours % 12 || 12;
+                          let readableTime = `${hours}:${minutes} ${amPm}`;
+                          return (
+                            <div key={comment2.comment_id}>
+                              <p>{comment2.content}</p>
+                              <div>
+                                {game.players.map((player) => {
+                                  if (
+                                    parseInt(comment2.user_id) ===
+                                    parseInt(player.user_id)
+                                  ) {
+                                    return (
+                                      <Link to={`/users/${comment2.user_id}`}>
+                                        <img src={player.picture} />{" "}
+                                      </Link>
+                                    );
+                                  }
+                                  return null;
+                                })}
+                                <h3>{comment2.comment_username}</h3>
+                                <span>
+                                  <span>
+                                    {comment2.time_stamp.slice(
+                                      0,
+                                      comment2.time_stamp.indexOf("T")
+                                    )}
+                                  </span>
+                                  <span>{readableTime}</span>
+                                </span>
+                              </div>
+                            </div>
+                          );
+                        } else {
+                          return null;
+                        } */}
+                      {/* }
+                      )} */}
+                      {/* <button
+                        onClick={() => {
+                          setReplyArray([...replyArray, comment.comment_id]);
+                        }}
+                      >
+                        reply
+                      </button>
+                      {replyArray.includes(comment.comment_id) === true ? (
+                        <div>
+                          <input
+                            onChange={(e) => {
+                              setReply(e.target.value);
+                            }}
+                          />
+                          <button
+                            value={comment.comment_id}
+                            onClick={submitComment}
+                          >
+                            send
+                          </button>
+                        </div>
+                      ) : null} */}
                     </div>
-                   
-                    
                   </div>
                 );
-              })}
+              })
+              }
             </div>
           </div>
           <div id="gamePagePlayerContainer">
             <h3>{game.players.length} Players</h3>
             {game.players.map((player) => {
               return (
-                <Link style={{textDecoration: "none"}} key={player.user_id} to={`/users/${player.user_id}`}>
+                <Link
+                  style={{ textDecoration: "none" }}
+                  key={player.user_id}
+                  to={`/users/${player.user_id}`}
+                >
                   <div className="indDashGamePlayer">
                     <div>{player.username}</div>
                     <img src={player.picture} />
