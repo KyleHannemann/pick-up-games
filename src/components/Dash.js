@@ -62,8 +62,10 @@ const Dash = (props) => {
         initialView="dayGridMonth"
         weekends={true}
         displayEventTime={true}
-        eventBackgroundColor={"blue"}
+        eventBackgroundColor={"#5FBFF9"}
         eventClick={eventClick}
+        eventTextColor={"black"}
+        eventDisplay={"block"}
         events={[
           ...games.map((game) => {
             let date = game.date.slice(0, game.date.indexOf("T"));
@@ -72,6 +74,7 @@ const Dash = (props) => {
               title: game.title,
               date: date,
               id: game.game_id,
+              
             };
           }),
         ]}

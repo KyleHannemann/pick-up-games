@@ -1,37 +1,40 @@
-*{
-  font-family: 'DM Sans', sans-serif;
+* {
+  font-family: "DM Sans", sans-serif;
 }
-a:hover, button:hover{
+a:hover,
+button:hover {
   cursor: pointer;
 }
-body{
-  background-color: #EFE9F4;
+body {
+  background-color: #efe9f4;
 }
-          /*AUTH PAGE*/
+/*AUTH PAGE*/
 
-.uploadcare--jcrop-holder>div>div{
+.uploadcare--jcrop-holder > div > div {
   border-radius: 50%;
 }
-.profilePicLarge{
+.profilePicLarge {
   width: 100px;
   height: 100px;
   border-radius: 50%;
   border: 1px solid black;
 }
-#authContainer{
+#authContainer {
   height: 100vh;
   width: 100vw;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-#register, #login{
-  width: 450px; 
+#register,
+#login {
+  width: 450px;
   border-radius: 5px;
-  background-color: #5FBFF9;
+  background-color: #5fbff9;
   padding: 30px;
 }
-#register > div, #login > div{
+#register > div,
+#login > div {
   width: 100%;
   padding: 4px 8px;
   margin: 8px 0;
@@ -43,80 +46,85 @@ body{
   align-self: center;
 }
 
-#register > div > span{
+#register > div > span {
   margin-right: 10px;
 }
-#register > button{
+#register > button {
   width: 100px;
 }
-#register > div > input, #login > div > input{
+#register > div > input,
+#login > div > input {
   width: 50%;
   height: 25px;
   border: 1px solid lightgray;
   border-radius: 3px;
 }
 
-.submitButton{
+.submitButton {
   width: 50%;
   height: 40px;
-  
+
   box-sizing: border-box;
   border-radius: 3px;
   text-align: center;
   padding: 8px;
-  color: #EFE9F4;
-  background-color: #171D1C;
+  color: #efe9f4;
+  background-color: #171d1c;
 }
-#register > div > div:hover, #login > div > div:hover{
+#register > div > div:hover,
+#login > div > div:hover {
   cursor: pointer;
   background-color: rgb(80, 175, 235);
 }
-#newUserRegister{
+#newUserRegister {
   width: 50%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
-#newUserRegister > :last-child{
+#newUserRegister > :last-child {
   border-bottom: 1px solid black;
-  
 }
-#login > div > select, #register > div > select{
-    width: 100px;
-    margin-right: 8px;
-    margin-left:8px;
+#login > div > select,
+#register > div > select {
+  width: 100px;
+  margin-right: 8px;
+  margin-left: 8px;
 }
-#newUserRegister > :last-child:hover{
+#newUserRegister > :last-child:hover {
   border-bottom: 1px solid black;
   cursor: pointer;
 }
-.uploadcare--widget__button, .uploadcare--widget__button_type_open{
-  background-color: #171D1C;
-  color: #EFE9F4;
+.uploadcare--widget__button,
+.uploadcare--widget__button_type_open {
+  background-color: #171d1c;
+  color: #efe9f4;
   width: 100%;
 }
-.uploadcare--widget__button:hover, .uploadcare--widget__button_type_open:hover{
+.uploadcare--widget__button:hover,
+.uploadcare--widget__button_type_open:hover {
   background-color: #161d1c;
-  color: #EFE9F4;
+  color: #efe9f4;
 }
-.uploadcare--widget__button:focus, .uploadcare--widget__button_type_open:focus{
+.uploadcare--widget__button:focus,
+.uploadcare--widget__button_type_open:focus {
   background-color: #1f2726;
-  color: #EFE9F4;
+  color: #efe9f4;
 }
-@media (max-width:450px){
-  #register{
-      width: 100%;
+@media (max-width: 450px) {
+  #register {
+    width: 100%;
   }
-  #register > div > input{
+  #register > div > input {
     width: 70%;
   }
 }
 
 /*NAVBAR*/
-#websiteLogoName{
+#websiteLogoName {
   position: absolute;
-  top:0%;
+  top: 0%;
   left: 0%;
   width: 20px;
   height: 20px;
@@ -125,47 +133,45 @@ body{
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  
 }
-#logo{
+#logo {
   height: 30px;
   width: 30px;
 }
 
-#navBar{
+#navBar {
   z-index: 5;
   padding-left: 15px;
   box-sizing: border-box;
   padding-right: 15px;
   position: relative;
-  top:0%;
+  top: 0%;
   width: 100%;
   height: 85px;
-  background-color: #171D1C;
+  background-color: #171d1c;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 }
-#navBar > div{
-  color: #EFE9F4;
+#navBar > div {
+  color: #efe9f4;
 }
-.navBarLink > div{
-  color: #EFE9F4;
+.navBarLink > div {
+  color: #efe9f4;
   text-decoration: none;
-  
 }
-.navBarLink{
-  color: #EFE9F4;
+.navBarLink {
+  color: #efe9f4;
   text-decoration: none;
-  
 }
 
-.navBarLink > div:hover, #logout:hover, #navHamburger:hover{
-  color: #5FBFF9;
+.navBarLink > div:hover,
+#logout:hover,
+#navHamburger:hover {
+  color: #5fbff9;
   cursor: pointer;
-  border-bottom: 1px solid #5FBFF9;
-  
+  border-bottom: 1px solid #5fbff9;
 }
 .profilePicMedium {
   border-radius: 50%;
@@ -177,47 +183,49 @@ body{
   height: 40px;
   width: 40px;
 }
-#navBarUserInfo{
+#navBarUserInfo {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
-#navBarPageLinks{
+#navBarPageLinks {
   width: 50%;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
 }
-#navBarAuthLinks{
+#navBarAuthLinks {
   flex-direction: row;
   display: flex;
   justify-content: space-around;
   width: 20%;
 }
-#navHamburger{
-  color: #EFE9F4;
+#navHamburger {
+  color: #efe9f4;
   display: none;
 }
-@media (max-width: 675px){
-  #navBarPageLinks, #navBarAuthLinks{
+@media (max-width: 675px) {
+  #navBarPageLinks,
+  #navBarAuthLinks {
     display: none;
   }
-  #navBar{
+  #navBar {
     flex-direction: column;
     justify-content: center;
     align-items: center;
     height: fit-content;
   }
-  #navBarPageLinks.active, #navBarAuthLinks.active{
+  #navBarPageLinks.active,
+  #navBarAuthLinks.active {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100%;
   }
-  #navHamburger{
+  #navHamburger {
     position: absolute;
     display: block;
     top: 2%;
@@ -225,54 +233,51 @@ body{
     height: 35px;
     width: 35px;
   }
-  #navHamburger.active{
+  #navHamburger.active {
     position: absolute;
     top: 2%;
     right: 2%;
   }
-  
-  
-  #websiteLogoName > span{
+
+  #websiteLogoName > span {
     display: block;
   }
-  #websiteLogoName.active > span{
+  #websiteLogoName.active > span {
     display: none;
   }
-  #websiteLogoName.active{
+  #websiteLogoName.active {
     left: 2%;
     top: 2%;
     width: 30px;
     height: 30px;
   }
-  .navBarLink{
+  .navBarLink {
     margin-top: 3px;
     margin-bottom: 3px;
-    
   }
-
 }
 /*EDIT PROFILE PAGE*/
 
-#editProfileContainer{
+#editProfileContainer {
   height: fit-content;
   width: 100vw;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
 }
-#chooseProfileEditOptions{
+#chooseProfileEditOptions {
   height: 300px;
   width: 300px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
-#chooseProfileEditOptions > div{
+#chooseProfileEditOptions > div {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
 }
-#chooseProfileEditOptions > div >div{
+#chooseProfileEditOptions > div > div {
   display: flex;
   width: 100%;
   margin-top: 15px;
@@ -284,36 +289,36 @@ body{
 #chooseProfileEditOptions > button {
   width: 150px;
   height: 30px;
-  background-color: #5FBFF9;
+  background-color: #5fbff9;
   border: 1px solid black;
   border-radius: 3px;
 }
 
-#editOptions{
-    height: 30%;
-    width: 30%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
+#editOptions {
+  height: 30%;
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 }
 
 /*Create Game*/
-.createGameFormContainer{
-  background-color: #5FBFF9;
+.createGameFormContainer {
+  background-color: #5fbff9;
   padding: 24px 36px;
-  box-shadow: .25px .25px 10px .25px;
+  box-shadow: 0.25px 0.25px 10px 0.25px;
   display: flex;
+  width: 45vw;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   border-radius: 4px;
-  margin-top: 10px;
-
+  margin-top: px;
 }
-.createGameReviewContainer{
-  background-color: #5FBFF9;
+.createGameReviewContainer {
+  background-color: #5fbff9;
   padding: 12px 36px;
-  box-shadow: .25px .25px 10px .25px;
+  box-shadow: 0.25px 0.25px 10px 0.25px;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -321,31 +326,35 @@ body{
   border-radius: 4px;
   margin-top: 10px;
 }
-.createGameReviewContainer > div{
+.createGameReviewContainer > div {
   padding: 4px;
 }
-.createGameReviewContainer > h1{
+.createGameReviewContainer > h1 {
   margin: 2px;
-  
 }
-.createGameReviewContainer > div> button{
-  background-color: #EFE9F4;
+#createGameCreateButton {
+  background-color: #5fbff9;
   border: none;
-  width: 100px;
+  width: 150px;
   height: 40px;
   font-size: 16px;
   font-weight: 700;
   border-radius: 5px;
   box-shadow: 2px 2px 2px;
+}
+#createGameCreateButtonContainer {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 
-  
 }
-.createGameReviewContainer > div> button:hover{
-  background-color: #5FBFF9 ;
-  border: 2px solid #EFE9F4;
-  
+#createGameCreateButton:hover {
+  background-color: #efe9f4;
+  border: 2px solid #5fbff9;
 }
-.createGameFormContainer > div{
+.createGameFormContainer > div {
   display: flex;
   flex-direction: row;
   text-align: center;
@@ -356,19 +365,18 @@ body{
   justify-content: space-between;
   align-items: center;
   padding: 8px 8px;
-
 }
-.createGameFormContainer > div > button{
-    background-color: #171D1C;
-    color: #EFE9F4;
+.createGameFormContainer > div > button {
+  background-color: #171d1c;
+  color: #efe9f4;
 }
-#createGameIconSelection{
+#createGameIconSelection {
   z-index: 10;
   position: relative;
   box-sizing: border-box;
   width: 325px;
   left: 50vw - 325px;
-  background-color: #EFE9F4;
+  background-color: #efe9f4;
   display: flex;
   flex-wrap: wrap;
   border: 4px solid black;
@@ -378,87 +386,120 @@ body{
   margin-top: 20px;
 }
 #createGameIconSelection > img:hover {
-  opacity: .3;
+  opacity: 0.3;
 }
-#createGameContainer{
+#createGameContainer {
   width: 100vw;
   height: 100vh;
   box-sizing: border-box;
-  background-color: #EFE9F4;
+  background-color: #efe9f4;
   display: flex;
   align-items: center;
   flex-direction: column;
 }
+
 .createGameStatusBarButtons{
-  margin-top: 10px;
+  z-index: 5;
+  border: none;
+  background-color: inherit;
+ position: relative;
+top: 15%;
+ display: flex;
+ justify-content: space-between;
 }
-#createGameStatusBar > span{
-    border: 1px solid black;
-    font-size: 14px;
-    padding: 2px;
+.createGameStatusBarButtons > button{
+  border: none;
+  background-color: inherit;
+  font-size: 22px;
 }
+@media (max-width: 430px) {
+  .createGameStatusBarItems > span {
+    font-size: 11px !important;
+    padding: 2px !important;
+  }
+  .createGameStatusBarItems {
+    border: 4px double black;
+    display: inline-block;
+    transform: skewX(150deg);
+  }
+}
+.createGameStatusBarItems {
+  border: 4px double black;
+  display: inline-block;
+  transform: skewX(150deg);
+  transition: .25s;
+}
+.createGameStatusBarItems:hover {
+  cursor: pointer;
+}
+.createGameStatusBarItems > span {
+  font-size: 14px;
+  display: inline-block;
+  padding: 5px;
+  transform: skewX(-150deg);
+
+}
+
 #createGameStatusBar .active {
-    background-color: #55da60;
+  background-color: #5fbff9;
 }
 
-
-#createGameMapContainer{
-  margin-top: 15px;
-  border: 1px solid #171D1C;
+#createGameMapContainer {
+  margin-top: 0px;
+  border: 1px solid #171d1c;
   height: 50vh;
   width: 80vw;
-
 }
 /*Create game, button/slider*/
-.slider[type=checkbox]{
-	height: 0;
-	width: 0;
-	visibility: hidden;
+.slider[type="checkbox"] {
+  height: 0;
+  width: 0;
+  visibility: hidden;
 }
-.createGameIconPreview{
+.createGameIconPreview {
   height: 50px;
   width: 50px;
 }
 .sliderLabel {
-	cursor: pointer;
-	text-indent: -9999px;
-	width: 60px;
-	height: 30px;
-	background: rgb(248, 4, 4);
-	display: block;
-	border-radius: 100px;
-	position: relative;
+  cursor: pointer;
+  text-indent: -9999px;
+  width: 60px;
+  height: 30px;
+  background: rgb(248, 4, 4);
+  display: block;
+  border-radius: 100px;
+  position: relative;
 }
 
 .sliderLabel:after {
-	content: '';
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	width: 30px;
-	height: 30px;
-	background: #fff;
-	border-radius: 50%;
-	transition: 0.3s;
+  content: "";
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 30px;
+  height: 30px;
+  background: #fff;
+  border-radius: 50%;
+  transition: 0.3s;
 }
 
 .slider:checked + label {
-	background: #55da60;
+  background: #55da60;
 }
 
 .slider:checked + label:after {
-	left: calc(100%);
-	transform: translateX(-100%);
+  left: calc(100%);
+  transform: translateX(-100%);
 }
 
 .sliderLabel:active:after {
-	width: 30px;
+  width: 30px;
 }
 
 /*DASH*/
 
-#calendarTitle{
-  position:absolute;
+#calendarTitle {
+  position: absolute;
   z-index: 4;
   top: 80px;
   width: 33%;
@@ -468,44 +509,41 @@ body{
   margin-bottom: 0%;
 }
 
-#dashContainer{
+#dashContainer {
   height: fit-content;
   width: 100vw;
   display: flex;
   flex-direction: column;
-  
-  
-
 }
 
-
-.dashGameContainer{
+.dashGameContainer {
   margin-top: 15px;
   width: 90vw;
   padding: 12px;
-  background-color: #16BAC5;
+  background-color: #16bac5;
   border-radius: 4px;
   display: grid;
   grid-template-columns: 1fr 3fr 1fr;
 }
 /*titles*/
-.dashGameViewTitle{
+.dashGameViewTitle {
   text-align: center;
   margin-top: 0px;
 }
-.dashGameDets, .dashGameOptions{
+.dashGameDets,
+.dashGameOptions {
   height: 100%;
   padding: 5px;
   display: flex;
   flex-direction: column;
 }
-.dashGamePlayers{
+.dashGamePlayers {
   display: flex;
   flex-direction: row;
   justify-content: center;
   flex-wrap: wrap;
 }
-.indDashGamePlayer{
+.indDashGamePlayer {
   display: flex;
   background-color: black;
   border-radius: 4px;
@@ -514,27 +552,25 @@ body{
   align-items: center;
   margin: 3px;
 }
-.indDashGamePlayer > img{
-  
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    border: 1px solid black;
+.indDashGamePlayer > img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 1px solid black;
 }
-.indDashGamePlayer > span{
+.indDashGamePlayer > span {
   font-size: 12px;
   color: white;
 }
-.dashGamePlayersContainer{
+.dashGamePlayersContainer {
   border-left: 1px solid black;
   border-right: 1px solid black;
   padding: 5px;
 }
-@media (max-width: 600px){
-  
+@media (max-width: 600px) {
 }
 /*User Profile*/
-#userProfilePageContainer { 
+#userProfilePageContainer {
   width: 100vw;
   height: 100vh - 80px;
   padding-top: 80px;
@@ -544,25 +580,21 @@ body{
 }
 
 /*Game Page*/
-@media (max-width: 600px){
-  #gamePageGameContainer{
+@media (max-width: 600px) {
+  #gamePageGameContainer {
     height: fit-content;
     box-sizing: border-box;
     width: 100vw;
-    
   }
- 
-  #gamePagePlayerContainer{
+
+  #gamePagePlayerContainer {
     float: none;
     margin-top: 10px !important;
     height: fit-content !important;
     box-sizing: border-box;
     width: 100vw !important;
-    
-    
-  
   }
-  #gamePageGameDets{
+  #gamePageGameDets {
     width: 100vw !important;
     height: fit-content !important;
     display: flex;
@@ -571,15 +603,14 @@ body{
     justify-content: space-between;
     align-items: flex-start;
   }
-  #gamePageContainer{
+  #gamePageContainer {
     height: fit-content !important;
     width: 100vw;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    
   }
-  #gamePageChatContainer{
+  #gamePageChatContainer {
     border: 3px solid black;
     width: 100vw !important;
     box-sizing: border-box;
@@ -588,26 +619,23 @@ body{
     padding: 6px;
   }
 }
-#gamePageContainer{
+#gamePageContainer {
   height: 100vh;
   width: 100vw;
-  
 }
-#gamePageGameContainer{
+#gamePageGameContainer {
   float: left;
   box-sizing: border-box;
   width: 75%;
   height: 100%;
 }
-#gamePagePlayerContainer{
+#gamePagePlayerContainer {
   float: right;
   height: 100vh;
   box-sizing: border-box;
   width: 25%;
-
-
 }
-.indDashGamePlayer{
+.indDashGamePlayer {
   display: flex;
   background-color: black;
   border-radius: 4px;
@@ -619,33 +647,27 @@ body{
 }
 .indDashGamePlayer:hover {
   display: flex;
-  background-color: #EFE9F4;
+  background-color: #efe9f4;
   border: 1px solid black;
-  
-  
 }
-.indDashGamePlayer:hover > div{
+.indDashGamePlayer:hover > div {
   color: black;
-  
-  
 }
-.indDashGamePlayer > div{
+.indDashGamePlayer > div {
   text-decoration: none;
   color: white;
-  
 }
 
-
-#gamePageGameDets{
+#gamePageGameDets {
   width: 100%;
   height: 25%;
   display: flex;
-  
+
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
 }
-#gamePageGameDets > div{
+#gamePageGameDets > div {
   width: 100%;
   padding: 5px;
   display: flex;
@@ -654,32 +676,31 @@ body{
   height: 100%;
   align-items: center;
 }
-#gamePageGameDets > div > p{
+#gamePageGameDets > div > p {
   font-size: 12px;
   margin: 0px;
   text-align: center;
 }
-#gamePageGameDets > div > h1{
+#gamePageGameDets > div > h1 {
   margin: 0%;
- 
 }
-#gamePageGameDets > div > a, #gamePageGameDets > div > button{
+#gamePageGameDets > div > a,
+#gamePageGameDets > div > button {
   text-decoration: none;
-  background-color: #5FBFF9;
+  background-color: #5fbff9;
   width: 115px;
   text-align: center;
   color: black;
   border-radius: 3px;
-  border: 1px solid black; 
+  border: 1px solid black;
   font-size: 14px;
 }
 
-#gamePagePlayerContainer >h3{
+#gamePagePlayerContainer > h3 {
   text-align: center;
   margin-top: 25px;
-
 }
-#gamePageChatContainer{
+#gamePageChatContainer {
   border: 3px solid black;
   width: 100%;
   box-sizing: border-box;
@@ -688,25 +709,25 @@ body{
   padding: 6px;
 }
 
-#gamePageChatContainer > input{
+#gamePageChatContainer > input {
   width: 99%;
   height: 80px;
 }
-#gameCommentSendButton{
+#gameCommentSendButton {
   margin-right: 2px;
-  background-color: #5FBFF9;
+  background-color: #5fbff9;
   border: 1px solid black;
   border-radius: 2px;
   color: black;
 }
-#gameCommentClearButton{
+#gameCommentClearButton {
   margin-right: 2px;
   background-color: #f15252;
   border: 1px solid black;
   border-radius: 2px;
   color: black;
 }
-#gameCommentButtonsContainer{
+#gameCommentButtonsContainer {
   width: 100%;
   display: flex;
   align-items: center;
@@ -715,17 +736,17 @@ body{
   margin-bottom: 8px;
 }
 
-#gamePageChatContainer >div{
+#gamePageChatContainer > div {
   display: flex;
   flex-direction: column;
   border: 2px solid black;
   border-radius: 3px;
   margin-bottom: 10px;
 }
-#gamePageChatContainer >div > p{
+#gamePageChatContainer > div > p {
   text-align: center;
 }
-#gamePageChatContainer >div > div{
+#gamePageChatContainer > div > div {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -733,26 +754,25 @@ body{
   justify-content: center;
   padding: 6px;
 }
-#gamePageChatContainer >div > div > span >span{
+#gamePageChatContainer > div > div > span > span {
   margin-left: 12px;
   font-size: 12px;
 }
-#gamePageChatContainer >div > div > h3{
+#gamePageChatContainer > div > div > h3 {
   font-size: 16px;
   margin: 0px;
 }
-#gamePageChatContainer >div > div > a > img{
+#gamePageChatContainer > div > div > a > img {
   height: 30px;
   width: 30px;
   border-radius: 50%;
   margin-right: 10px;
 }
 
-
 /*Map*/
 
 .mapSearchBar {
-  position:relative;
+  position: relative;
   top: 10px;
   left: 50%;
   height: 50px;
