@@ -18,6 +18,7 @@ const User = (props) => {
   //eventually transfer edit page to user page;
   const userId = props.match.params.userId;
   const [userProfile, setUserProfile] = useState(null);
+  const [joinedGames, setJoinedGames] = useState([])
   const [friends, setFriends] = useState(false);
   const [ownProfile, setOwnProfile] = useState(false);
 
@@ -29,6 +30,9 @@ const User = (props) => {
     if (parseInt(user.user_id) === parseInt(props.match.params.userId)) {
       setOwnProfile(true);
       return;
+    }
+    else{
+      setOwnProfile(false)
     }
     for (let i = 0; i < user.friends.length; i++) {
       if (
@@ -73,16 +77,22 @@ const User = (props) => {
   }, [user]);
 
 
-  useEffect(() => {
+  useEffect(()  => {
     axios
       .get(`/users/${userId}`)
       .then((res) => {
         setUserProfile(res.data);
+        axios.get(`game/joined/${userId}`).then(res=>{
+          setJoinedGames(res.data)
+          console.log(res.data)
+        }).catch(err=>{
+          console.log(err)
+        })
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [props.match.params.userId, user]);
 
   const addFriend = () => {
     socket.emit('friend update', {user_id: user.user_id,
@@ -146,6 +156,14 @@ const User = (props) => {
               ) : null}
             </div>
           )}
+        {friends === true ? <div>
+          {joinedGames.map(game=>{
+            return(<div>
+              <h1>{game.title}</h1>
+              <h2>{game.date}</h2>
+            </div>)
+          })}
+        </div>: null}
         </div>
       ) : null}
     </div>

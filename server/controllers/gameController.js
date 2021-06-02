@@ -46,8 +46,9 @@ module.exports = {
   },
   getJoinedGames: (req, res) => {
     const db = req.app.get("db");
+    const {userId} = req.params
     db.game
-      .get_joined_games(req.session.user.user_id)
+      .get_joined_games(userId)
       .then((data) => {
         res.status(200).send(data);
       })

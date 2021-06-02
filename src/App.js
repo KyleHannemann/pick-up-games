@@ -20,7 +20,7 @@ function App(props) {
       return;
     }
     const getGamesAndPlayers = async () => {
-      let allGames = await axios.get(`/game/joined`);
+      let allGames = await axios.get(`/game/joined/${user.user_id}`);
       dispatch(setGamesRed([...allGames.data]));
       
     };

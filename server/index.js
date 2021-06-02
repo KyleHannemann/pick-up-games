@@ -70,7 +70,7 @@ app.put("/users/addFriend/decline", usersController.declineFriend);
 app.get("/users/getFriends", usersController.getFriends);
 //game
 app.post("/game/create", gameController.createGame);
-app.get("/game/joined", gameController.getJoinedGames);
+app.get("/game/joined/:userId", gameController.getJoinedGames);
 app.get("/game/players/:gameId", gameController.getPlayers);
 app.get("/game/all", gameController.getAllGames);
 app.get("/game/:gameId", gameController.getGame);
