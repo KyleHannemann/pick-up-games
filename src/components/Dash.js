@@ -14,7 +14,7 @@ const Dash = (props) => {
   const [games, setGames] = useState([]);
   const dispatch = useDispatch();
   const { user } = useSelector((store) => store.auth);
-  
+
   const joinedGames = useSelector((store) => store.joinedGamesReducer);
   useEffect(() => {
     setGames(joinedGames.games);
@@ -50,12 +50,11 @@ const Dash = (props) => {
     <div id="dashContainer">
       <h2 id="calendarTitle">Scheduled Games</h2>
       <FullCalendar
-      
-      headerToolbar={{
-        start: 'title',
-        center: '',
-        end: 'prev,next'
-      }}
+        headerToolbar={{
+          start: "title",
+          center: "",
+          end: "prev,next",
+        }}
         height="80vh"
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
@@ -66,16 +65,24 @@ const Dash = (props) => {
         eventTextColor={"black"}
         eventDisplay={"block"}
         events={[
-          ...games.map((game) => {
-            let date = game.date.slice(0, game.date.indexOf("T"));
-            date += " " + game.time;
-            return {
-              title: game.title,
-              date: date,
-              id: game.game_id,
-              
-            };
-          }),
+          ...games
+            .filter((game) => {
+              let today = new Date();
+              let comp = new Date(game.date);
+              if (comp >= today) {
+                return comp;
+              }
+            })
+            .map((game) => {
+              let date = game.date.slice(0, game.date.indexOf("T"));
+              date += " " + game.time;
+
+              return {
+                title: game.title,
+                date: date,
+                id: game.game_id,
+              };
+            }),
         ]}
       />
     </div>

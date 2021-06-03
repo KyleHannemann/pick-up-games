@@ -155,6 +155,7 @@ const User = (props) => {
           <h1>
             <img className="profilePicLarge" src={userProfile.picture} />
           </h1>
+          <h3>{user.email}</h3>
           <h3>{userProfile.email}</h3>
           {ownProfile ? null : (
             <div>

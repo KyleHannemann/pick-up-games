@@ -278,6 +278,7 @@ const CreateGame = (props) => {
             <div>
               <div>Title</div>
               <input
+              maxLength="20"
                 value={title}
                 onChange={(e) => {
                   setTitle(e.target.value);
@@ -288,6 +289,7 @@ const CreateGame = (props) => {
             <div>
               <div>Description</div>
               <textarea id="createGameFormDescription"
+              maxLength="100"
                 value={description}
                 onChange={(e) => {
                   setDescription(e.target.value);

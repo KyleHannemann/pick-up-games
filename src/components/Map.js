@@ -140,7 +140,13 @@ const Map = (props) => {
       >
         <Search panTo={panTo} />
         <Marker position={{ lat: marker.lat, lng: marker.lng }} />
-        {gameMarkers.map(game=>{
+        {gameMarkers.filter((game) => {
+              let today = new Date();
+              let comp = new Date(game.date);
+              if (comp >= today) {
+                return comp;
+              }
+            }).map(game=>{
           return (<Marker 
             onClick={()=>{setSelected(game)}}
             icon={{
@@ -155,11 +161,13 @@ const Map = (props) => {
             setSelected(null)
           }}
          position={{lat: selected.latitude, lng: selected.longitude}}>
-        <div>
+        <div className="mapInfoWindow">
           <h2>{selected.title}</h2>
-          <DatePicker value={selected.date} disableCalendar={true} disabled={true}/>
-          <TimePicker value={selected.time} disableClock={true} disabled={true}/>
-          <Link to={`/game/${selected.game_id}`}><button>view game details</button></Link>
+          <div>
+          <DatePicker value={selected.date} disableCalendar={true} clearIcon={false} disabled={true}/>
+          <TimePicker value={selected.time} disableClock={true} clearIcon={false} disabled={true}/>
+          </div>
+          <Link to={`/game/${selected.game_id}`}><button>game page</button></Link>
         </div>
         </InfoWindow>: null}
       </GoogleMap>

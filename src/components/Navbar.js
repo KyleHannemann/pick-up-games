@@ -111,7 +111,10 @@ const Navbar = () => {
             <Link className="navBarLink" onClick={linkClick} to="/dash">
               <div>Home</div>
             </Link>
-            <div>Friends</div>
+            
+            <Link onClick={linkClick} className="navBarLink" to="/friends">
+              <div>Friends</div>
+            </Link>
             <Link onClick={linkClick} className="navBarLink" to="/create/game">
               <div>Create Game</div>
             </Link>

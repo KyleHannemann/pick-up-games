@@ -588,7 +588,7 @@ top: 15%;
   width: 80vw;
 }
 /*Create game, button/slider*/
-.slider[type="checkbox"] {
+.slider[type="checkbox"] , .sliderFriends[type="checkbox"]{
   height: 0;
   width: 0;
   visibility: hidden;
@@ -607,8 +607,29 @@ top: 15%;
   border-radius: 100px;
   position: relative;
 }
+.sliderLabelFriends{
 
+  cursor: pointer;
+  text-indent: -9999px;
+  width: 60px;
+  height: 30px;
+  background: #aeadaf;
+  display: block;
+  border-radius: 100px;
+  position: relative;
+}
 .sliderLabel:after {
+  content: "";
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 30px;
+  height: 30px;
+  background: #fff;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+.sliderLabelFriends:after {
   content: "";
   position: absolute;
   top: 0px;
@@ -630,6 +651,18 @@ top: 15%;
 }
 
 .sliderLabel:active:after {
+  width: 30px;
+}
+.sliderFriends:checked + label {
+  background: #5fbff9;
+}
+
+.sliderFriends:checked + label:after {
+  left: calc(100%);
+  transform: translateX(-100%);
+}
+
+.sliderLabelFriends:active:after {
   width: 30px;
 }
 
@@ -722,6 +755,9 @@ top: 15%;
     height: fit-content;
     box-sizing: border-box;
     width: 100vw;
+  }
+  #gamePageGameDets > div > h1 {
+    font-size: 18px;
   }
 
   #gamePagePlayerContainer {
@@ -952,4 +988,32 @@ top: 15%;
   padding: 0.5rem;
   font-size: 1rem;
   width: 100%;
+}
+.mapInfoWindow{
+  display: flex;
+  min-height: fit-content;
+  width: 100%;
+  box-sizing: border-box;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  
+}
+.mapInfoWindow > div{
+  width: 100%;
+  display: flex;
+  box-sizing: border-box;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.mapInfoWindow > a > button{
+  
+  background-color: #5fbff9;
+  width: 100px;
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+  border: 1px solid black
 }

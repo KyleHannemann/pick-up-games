@@ -92,6 +92,7 @@ const Login = (props) => {
           </div>
           <div>
             <input
+            maxLength="150"
               type="text"
               name="email"
               placeholder="Email"
@@ -103,6 +104,7 @@ const Login = (props) => {
           </div>
           <div>
             <input
+            maxLength="100"
               type="password"
               name="password"
               placeholder="Password"
@@ -114,6 +116,7 @@ const Login = (props) => {
           </div>
           <div>
             <input
+            maxLength="20"
               type="text"
               name="Username"
               placeholder="Username"
