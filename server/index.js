@@ -67,26 +67,35 @@ io.on('connection', (socket)=>{
         
         
     })
-    socket.on('notification', async (body) => {
-      const db = app.get('db')
-      await db.users.add_notification([body.user_id,
-        body.description, body.game_id, body.user_interaction])
-      db.users.get_notifications(body.user_id).then(data=>{
-        io.emit('notification', data)
-      }).catch(err=>{
-        console.log(err)
-      })
-    })
+    // socket.on('notification', async (body) => {
+    //   const db = app.get('db')
+    //   await db.users.add_notification([body.user_id,
+    //     body.description, body.game_id, body.user_interaction])
+    //   db.users.get_notifications(body.user_id).then(data=>{
+    //     io.emit('notification', data)
+    //   }).catch(err=>{
+    //     console.log(err)
+    //   })
+    // })
     socket.on('invites', async (body)=>{
       const db = app.get('db')
       console.log(body);
-      const {invites, game_id, username, user_id} = body;
+      const {invites, game_id, username, user_id, picture} = body;
       for (let i = 0; i < invites.length; i++){
-        await db.users.add_notification([parseInt(invites[i]),
-        "invited to game", game_id, user_id] )
+         const noti = await db.users.add_notification([parseInt(invites[i]),
+        "invited you to a game", game_id, user_id, username, picture] )
+        io.emit("notification", noti)
       }
-
+    
     });
+    socket.on('friend request notification', async (body) => {
+      const db = app.get('db')
+      console.log(body)
+      const {user_id, description, game_id, username, user_interaction_id, picture} = body
+      const noti =  await db.users.add_notification([user_id,
+      description, game_id, user_interaction_id, username, picture])
+      io.emit("notification", noti)
+    })
     
 
     
@@ -94,6 +103,7 @@ io.on('connection', (socket)=>{
 //endpoints
 //users
 app.get("/users/notifications/:userId", usersController.getNotifications)
+app.delete("/users/notifications/delete/:notificationId", usersController.deleteNotification)
 app.get("/users/:userId", usersController.getUser);
 app.post("/users/addFriend", usersController.addFriend);
 app.put("/users/addFriend/accept", usersController.acceptFriend);
@@ -103,7 +113,7 @@ app.get("/users/friends/all", usersController.getFriendsInfo);
 app.post("/game/create", gameController.createGame);
 app.get("/game/joined/:userId", gameController.getJoinedGames);
 app.get("/game/players/:gameId", gameController.getPlayers);
-app.get("/games/a", gameController.getAllGames);
+app.get("/game/all/games", gameController.getAllGames);
 app.get("/game/:gameId", gameController.getGame);
 app.put("/game/join/:gameId", gameController.joinGame);
 app.put("/game/leave/:gameId", gameController.leaveGame);

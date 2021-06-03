@@ -4,19 +4,21 @@ import Map from "./Map";
 import axios from "axios";
 import DatePicker from "react-date-picker";
 import TimePicker from "react-time-picker";
-import io from 'socket.io'
+import {Link} from 'react-router-dom';
 const reqSvgs = require.context("../imgs", true, /\.svg$/);
 const paths = reqSvgs.keys();
 const svg = paths.map((path) => reqSvgs(path));
 
 
-const CreateGame = () => {
+const CreateGame = (props) => {
   const [selectingIcon, setSelectingIcon] = useState(false);
   const { location } = useSelector((store) => store.createGameReducer);
   const {user} = useSelector((store)=>store.auth);
   const {socket} = useSelector((store)=>store.socketReducer);
-  console.log(socket)
-  console.log(user)
+  
+  if(!user){
+    props.history.push('/')
+  }
   //status bar
   const [status, setStatus] = useState(1);
   const [friends, setFriends] = useState([])
@@ -31,6 +33,8 @@ const CreateGame = () => {
   const [gender, setGender] = useState("Coed");
   const [invites, setInvites] = useState([])
 
+  const [success, setSuccess] = useState(false)
+  const [createdGameId, setCreatedGameId] = useState(null)
   const updateInvites = (e) => {
     console.log(e.target.checked)
     if (e.target.checked === true){
@@ -82,7 +86,7 @@ const CreateGame = () => {
       location: location,
     };
     for (let el in createdGame) {
-      if (createdGame[el] === "") {
+      if (createdGame[el] === "" || createdGame[el] === null) {
         alert("please fill out all game details");
         return;
       }
@@ -92,6 +96,8 @@ const CreateGame = () => {
       .post("/game/create", createdGame)
       .then((res) => {
         console.log(res);
+        setSuccess(true)
+        setCreatedGameId(res.data.game_id)
         let finalInvites;
     if (invites.includes('all') === true){
       finalInvites = friends.map(el=>{
@@ -101,7 +107,8 @@ const CreateGame = () => {
     else{
       finalInvites = invites;
     }
-    socket.emit('invites', {invites: finalInvites, game_id: res.data.game_id, username: user.username, user_id: user.user_id})
+    socket.emit('invites', {invites: finalInvites, game_id: res.data.game_id, 
+      username: user.username, user_id: user.user_id, picture: user.picture})
       })
       .catch((err) => {
         console.log(err);
@@ -407,7 +414,12 @@ const CreateGame = () => {
         ) : null}
 
         {status === 5 ? (
+          
           <div className="createGameReviewContainer">
+            {success ?  <div id="createGameSuccessBox">
+             <div><Link to={`/game/${createdGameId}`}><button>view game page</button></Link></div>
+              <h1>Game Successfully Created!</h1>
+            </div> : null}
             <button id="createGameCreateButton" onClick={handleSubmit}>
               Create
             </button>

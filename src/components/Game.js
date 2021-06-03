@@ -5,11 +5,10 @@ import TimePicker from "react-time-picker";
 import { useSelector, useDispatch } from "react-redux";
 import { addGamesRed, removeGameRed } from "../redux/joinedGamesReducer";
 import { Link } from "react-router-dom";
-import io from "socket.io-client";
 
 const Game = (props) => {
   const [game, setGame] = useState(null);
-
+  const {socket} = useSelector((store)=>store.socketReducer)
   const { user } = useSelector((store) => store.auth);
 
   const [joined, setJoined] = useState(false);
@@ -17,10 +16,10 @@ const Game = (props) => {
   const dispatch = useDispatch();
   //messaging
   const [comments, setComments] = useState([]);
-  const [socket, setSocket] = useState(null);
   const [newComment, setNewComment] = useState("");
   const [reply, setReply] = useState("");
   const [replyArray, setReplyArray] = useState([]);
+  
   //get messages
   useEffect(() => {
     if (!user) {
@@ -35,20 +34,9 @@ const Game = (props) => {
       .catch((err) => {
         console.log(err);
       });
-  }, [user]);
-  //connect to io
-  useEffect(() => {
-    if (!user) {
-      return;
-    }
-    setSocket(io.connect());
-    return () => {
-      if (socket) {
-        socket.disconnect();
-        setSocket(null);
-      }
-    };
-  }, []);
+  }, [user, props.match.params.gameId]);
+
+  
   //sumbit comment
   const submitComment = (e) => {
     let replyCheck = false;
@@ -141,7 +129,7 @@ const Game = (props) => {
 
   useEffect(() => {
     getGameAndPlayers();
-  }, [user]);
+  }, [user, props.match.params.gameId]);
 
   const joinGame = () => {
     axios

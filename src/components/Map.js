@@ -73,7 +73,7 @@ const Map = (props) => {
   };
   useEffect(() => {
     axios
-      .get("/game/all")
+      .get("/game/all/games")
       .then((res) => {
         console.log(res);
         setGameMarkers(res.data)

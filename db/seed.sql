@@ -50,4 +50,6 @@ notification_id SERIAL PRIMARY KEY,
 user_id INT REFERENCES users(user_id),
 description VARCHAR(200),
 game_id INT REFERENCES games(game_id),
-user_interaction_id INT REFERENCES users(user_id));
+user_interaction_id INT REFERENCES users(user_id),
+user_interaction_username VARCHAR(500),
+user_interaction_picture VARCHAR(2000));

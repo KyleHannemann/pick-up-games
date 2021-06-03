@@ -5,7 +5,7 @@ const initialState = {
 const SET_USER = "SET_USER";
 const SET_FRIENDS = "SET_FRIENDS";
 const UPDATE_FRIENDS = "UPDATE_FRIENDS";
-
+const REMOVE_FRIEND = "REMOVE_FRIEND";
 export function setUserFriends(friends) {
   return {
     type: SET_FRIENDS,
@@ -18,7 +18,12 @@ export function updateFriends(friend) {
     payload: friend,
   };
 }
-
+export function removeFriend(friend) {
+  return {
+    type: REMOVE_FRIEND,
+    payload: friend,
+  };
+}
 export function setUser(user) {
   return {
     type: SET_USER,
@@ -46,7 +51,7 @@ export default function authReducer(state = initialState, action) {
           }
           return null;
         });
-        newFriendsState.push(action.payload)
+        newFriendsState.push(action.payload);
         updatedFriends = {
           ...state.user,
           friends: newFriendsState,
@@ -55,6 +60,15 @@ export default function authReducer(state = initialState, action) {
         updatedFriends = { ...state.user, friends: [action.payload] };
       }
       return { ...state, user: updatedFriends };
+    case REMOVE_FRIEND:
+      let removeFriends = [...state.user.friends];
+      removeFriends = removeFriends.filter((f) => {
+        if (
+          f.friend_id !== action.payload.friend_id &&
+          f.user_id !== action.payload.user_id
+        ) {
+        }
+      });
     default:
       return { ...state };
   }

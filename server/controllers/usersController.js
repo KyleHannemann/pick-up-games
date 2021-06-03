@@ -36,7 +36,7 @@ module.exports = {
   addFriend: async (req, res) => {
       const db = req.app.get('db');
       const {friendId} = req.body;
-    
+    console.log(friendId)
     await db.users.add_friend([req.session.user.user_id, friendId]);
     const data =  await db.users.get_friends(req.session.user.user_id)
 
@@ -56,8 +56,8 @@ module.exports = {
   },
   declineFriend: async (req, res) => {
     const db = req.app.get('db');
-    const {friendId} = req.body;
-    await db.users.decline_friend([parseInt(friendId), req.session.user.user_id]);
+    const {friend_id, user_id} = req.body;
+    await db.users.decline_friend([parseInt(friend_id), parseInt(user_id)]);
     const data =  await db.users.get_friends(req.session.user.user_id)
 
     res.status(200).send(data)
@@ -69,6 +69,16 @@ module.exports = {
       res.status(200).send(data)
     }).catch(err=>{
       console.log(err)
+    })
+  },
+  deleteNotification: (req, res) => {
+    const db = req.app.get("db");
+    const {notificationId} = req.params;
+    db.users.delete_notification(notificationId).then(()=>{
+      res.sendStatus(200)
+    }).catch(err=>{
+      console.log(err)
+      res.status(409).send(err)
     })
   }
 };

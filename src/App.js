@@ -10,7 +10,7 @@ import io from "socket.io-client";
 import {setGamesRed} from './redux/joinedGamesReducer';
 import {updateFriends} from './redux/authReducer';
 import {placeSocket} from './redux/socketReducer'
-import {setNotifications} from './redux/notificationsReducer'
+import {setNotifications, addNotification} from './redux/notificationsReducer'
 //Get User INFO, FRIENDS, GAMES JOINED, SAVE TO STATE 
 function App(props) {
   const dispatch = useDispatch()
@@ -57,6 +57,12 @@ function App(props) {
           dispatch(updateFriends(body))
         };
       });
+      socket.on('notification', (body) => {
+        console.log(body)
+        if (parseInt(body[0].user_id) === parseInt(user.user_id)){
+          dispatch(addNotification(body[0]))
+        }
+      })
     }
   }, [socket]);
 

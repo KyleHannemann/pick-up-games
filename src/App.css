@@ -122,6 +122,7 @@ body {
 }
 
 /*NAVBAR*/
+
 #websiteLogoName {
   position: absolute;
   top: 0%;
@@ -134,14 +135,39 @@ body {
   cursor: pointer;
 }
 #notiDropDown{
-  background-color: chartreuse;
+  background-color: #efe9f4;
+  border-right: 2px solid black;
+  border-bottom: 2px solid black;
   width: 33vw;
+  min-width: fit-content;
   height: 100vh;
-  z-index: 20;
+  z-index: 25;
+  box-sizing: border-box;
   position: absolute;
+  display: flex;
+  flex-direction: column;
+  padding: 6px;
+  padding-top: 50px;
   top: 0%;
   animation: myslidein 1s;
   
+}
+#notiDropDown > button{
+  position: absolute;
+  top: 0%;
+  right: 0%;
+  width: 50px;
+}
+#notiDropDown > div{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 8px;
+}
+#notiDropDown > div > span{
+  margin-left: 6px;
+  margin-right: 6px;
 }
 @keyframes myslidein {
   from{
@@ -166,7 +192,7 @@ body {
 
 #navBar {
   z-index: 5;
-  padding-left: 15px;
+  padding-left: 40px;
   box-sizing: border-box;
   padding-right: 15px;
   position: relative;
@@ -328,6 +354,50 @@ body {
 }
 
 /*Create Game*/
+#createGameSuccessBox{
+  position:absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 60vw;
+  border-radius: 10px;
+  height: 250px;
+  padding: 16px;
+  box-sizing: border-box;
+  z-index: 25;
+  left: 20vw;
+  top: 25vh;
+  border: 2px solid black;
+  background-color:#efe9f4;
+  animation: success .5s;
+}
+@keyframes success{
+  from{
+    transform: scale(0);
+    
+  } 
+  to{
+    transform: scale(1);
+   
+  }
+}
+#createGameSuccessBox > h1{
+  text-align: center;
+}
+#createGameSuccessBox > div > a > button{
+  padding: 10px;
+  border: 1px solid black;
+  background-color: #5fbff9;
+  font-size: 16px;
+  border-radius: 6px;
+  box-shadow: 1px 1px 1px;
+}
+#createGameSuccessBox > div > a > button:hover{
+  padding: 10px;
+  border: 1px solid black;
+  background-color: #a9d8f5 ;
+  
+}
 .createGameFormContainer {
   background-color: #5fbff9;
   padding: 24px 36px;
