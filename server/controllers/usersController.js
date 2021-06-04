@@ -33,6 +33,16 @@ module.exports = {
         console.log(err)
     });
   },
+  getOtherUsersFriendsInfo: (req, res) => {
+    const db = req.app.get("db");
+    const {user_id} = req.params;
+    db.users.get_friends_info(user_id).then((data) => {
+        res.status(200).send(data)
+    }).catch(err=>{
+        res.sendStatus(419)
+        console.log(err)
+    });
+  },
   addFriend: async (req, res) => {
       const db = req.app.get('db');
       const {friendId} = req.body;

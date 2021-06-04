@@ -1,8 +1,13 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { setUserFriends } from "../redux/authReducer";
-
+import { AiOutlineEdit } from "react-icons/ai";
+import { FaRegHandshake } from "react-icons/fa";
+import { IconContext } from "react-icons";
+import DatePicker from "react-date-picker";
+import TimePicker from "react-time-picker";
 const User = (props) => {
   const { socket } = useSelector((store) => store.socketReducer);
   const { user } = useSelector((store) => store.auth);
@@ -18,12 +23,22 @@ const User = (props) => {
   const [joinedGames, setJoinedGames] = useState([]);
   const [friends, setFriends] = useState(false);
   const [ownProfile, setOwnProfile] = useState(false);
-  const [friendSql, setFriendSql] = useState(null)
+  const [friendSql, setFriendSql] = useState(null);
+  const [thisUserFriends, setThisUserFriends] = useState([]);
 
   useEffect(() => {
     if (!user) {
       return;
     }
+    axios
+      .get(`/users/get/users/friends/${props.match.params.userId}`)
+      .then((res) => {
+        console.log(res);
+        setThisUserFriends(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     console.log(props.match.params.userId);
     if (parseInt(user.user_id) === parseInt(props.match.params.userId)) {
       setOwnProfile(true);
@@ -38,7 +53,7 @@ const User = (props) => {
       ) {
         if (user.friends[i].accepted === true) {
           setFriends(true);
-          setFriendSql(user.friends[i])
+          setFriendSql(user.friends[i]);
           return;
         } else {
           setFriends("pending");
@@ -51,7 +66,7 @@ const User = (props) => {
       ) {
         if (user.friends[i].accepted === false) {
           setFriends("requested");
-          setFriendSql(user.friends[i])
+          setFriendSql(user.friends[i]);
 
           return;
         }
@@ -134,7 +149,8 @@ const User = (props) => {
       setFriends(false);
       axios
         .put(`/users/addFriend/${e.target.value}`, {
-          friend_id: friendSql.friend_id, user_id: friendSql.user_id
+          friend_id: friendSql.friend_id,
+          user_id: friendSql.user_id,
         })
         .then((res) => {
           console.log(res);
@@ -149,24 +165,225 @@ const User = (props) => {
 
   return (
     <div>
-
       {userProfile ? (
         <div id="userProfilePageContainer">
           <div id="topHalfContainerProfile">
             <div id="topHalfTopHalfProfile">
-              <div></div>
-              <div></div>
-              <div></div>
-            </div>
-            <div id="bottomHalfTopHalfProfil">
+              <div>
+                <h1>{userProfile.username}</h1>
+                <div>
+                  {
+                    joinedGames.filter((game) => {
+                      let today = new Date();
+                      let comp = new Date(game.date);
+                      if (comp <= today) {
+                        return game;
+                      }
+                    }).length
+                  }
+                </div>
+                <div>Games Played</div>
+              </div>
+              <div>
+                <img src={userProfile.picture} />
+              </div>
 
+              {ownProfile ? (
+                <div>
+                  <span>Edit</span>
+                  <IconContext.Provider
+                    value={{ style: { height: "50px", width: "50px" } }}
+                  >
+                    <AiOutlineEdit />
+                  </IconContext.Provider>{" "}
+                </div>
+              ) : (
+                <div id="profilePageFriendActions">
+                  {friends === true ? (
+                    <div>
+                      <div>Friends</div>
+                      <IconContext.Provider
+                        value={{
+                          style: {
+                            height: "70px",
+                            width: "70px",
+                            color: "#228209",
+                          },
+                        }}
+                      >
+                        <FaRegHandshake />
+                      </IconContext.Provider>
+                    </div>
+                  ) : null}
+                  {friends === "pending" ? (
+                    <div>
+                      <div>Requested</div>
+                      <IconContext.Provider
+                        value={{
+                          style: {
+                            height: "70px",
+                            width: "70px",
+                            color: "#D52217",
+                          },
+                        }}
+                      >
+                        <FaRegHandshake />
+                      </IconContext.Provider>
+                    </div>
+                  ) : null}
+                  {friends === false ? (
+                    <div>
+                      <div>Not Friends Yet</div>
+                      <IconContext.Provider
+                        value={{
+                          style: {
+                            height: "70px",
+                            width: "70px",
+                            color: "#D52217",
+                          },
+                        }}
+                      >
+                        <FaRegHandshake />
+                      </IconContext.Provider>
+                      <div className="friendActionButtons">
+                        <button
+                          className="posFriendRequest"
+                          onClick={addFriend}
+                        >
+                          Add
+                        </button>
+                      </div>
+                    </div>
+                  ) : null}
+                  {friends === "requested" ? (
+                    <div>
+                      <div>{userProfile.username}</div>
+                      <div> Requested To Be Your Friend</div>
+                      <IconContext.Provider
+                        value={{
+                          style: {
+                            height: "70px",
+                            width: "70px",
+                            color: "#D52217",
+                          },
+                        }}
+                      >
+                        <FaRegHandshake />
+                      </IconContext.Provider>
+                      <div className="friendActionButtons">
+                        <button
+                          className="posFriendRequest"
+                          value="accept"
+                          onClick={handleFriendRequest}
+                        >
+                          Accept
+                        </button>
+                        <button
+                          id="declineFriendRequest"
+                          value="decline"
+                          onClick={handleFriendRequest}
+                        >
+                          Decline
+                        </button>
+                      </div>
+                    </div>
+                  ) : null}
+                </div>
+              )}
             </div>
+            <div id="bottomHalfTopHalfProfil"></div>
           </div>
           <div id="bottomHalfContainerProfile">
-          <div id="bottomHalfGamesContainerProfile"></div>
-          <div id="bottomHalfFriendsContainerProfile"></div>
+            <div id="bottomHalfGamesContainerProfile">
+              <h2>{userProfile.username}'s Scheduled Games</h2>
+              {joinedGames
+                .filter((game) => {
+                  let today = new Date();
+                  let comp = new Date(game.date);
+                  console.log(game);
+                  if (comp >= today) {
+                    console.log("dasfjldsafj");
+                    return game;
+                  }
+                }).sort((a,b)=>{
+                  if (new Date(a.date) >= new Date(b.date)){
+                    return 1;
+                  }
+                  else{
+                    return -1
+                  }
+                })
+                .map((game) => {
+                  return (
+                    <div>
+                      <Link  to={`/game/${game.game_id}`}><img src={game.icon} /></Link>
+                      <Link to={`/game/${game.game_id}`}><span>{game.title}</span></Link>
+                      <div>
+                        <DatePicker
+                          value={game.date}
+                          disabled={true}
+                          clearIcon={false}
+                        />
+                        <TimePicker value={game.time} disabled={true}clearIcon={false} />
+                      </div>
+                    </div>
+                  );
+                })}
+            </div>
+            <div id="bottomHalfFriendsContainerProfile">
+              <h2>{userProfile.username}'s Friends</h2>
+              {thisUserFriends.map((el) => {
+                let areFriends = false;
+                if (el.user_id === userProfile.user_id) {
+                  return null;
+                }
+                for (let i = 0; i < user.friends.length; i++) {
+                  if (
+                    (user.friends[i].user_id === el.user_id ||
+                      user.friends[i].friend_id === el.user_id) &&
+                    user.friends[i].accepted === true
+                  ) {
+                    areFriends = true;
+                  }
+                }
+                return (
+                  <div>
+                    <Link to={`users/${el.user_id}`}>
+                      <img className="profilePicSmall" src={el.picture} />
+                    </Link>
+                    <span>{el.username}</span>
+                    {friends ? (
+                      <IconContext.Provider
+                        value={{
+                          style: {
+                            height: "25px",
+                            width: "25px",
+                            color: "#228209",
+                          },
+                        }}
+                      >
+                        <FaRegHandshake />
+                      </IconContext.Provider>
+                    ) : (
+                      <IconContext.Provider
+                        value={{
+                          style: {
+                            height: "25px",
+                            width: "25px",
+                            color: "#D52217",
+                          },
+                        }}
+                      >
+                        <FaRegHandshake />
+                      </IconContext.Provider>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
+      ) : (
         // <div>
         //   <h1>{userProfile.username}</h1>
         //   <h1>
@@ -174,25 +391,25 @@ const User = (props) => {
         //   </h1>
         //   <h3>{user.email}</h3>
         //   <h3>{userProfile.email}</h3>
-        //   {ownProfile ? null : (
-        //     <div>
-        //       {friends === true ? <div>you are friends</div> : null}
-        //       {friends === "pending" ? <div>request sent</div> : null}
-        //       {friends === false ? (
-        //         <button onClick={addFriend}>add friend</button>
-        //       ) : null}
-        //       {friends === "requested" ? (
-        //         <div>
-        //           <button value="accept" onClick={handleFriendRequest}>
-        //             accept friend request
-        //           </button>
-        //           <button value="decline" onClick={handleFriendRequest}>
-        //             decline friend request
-        //           </button>
-        //         </div>
-        //       ) : null}
-        //     </div>
-        //   )}
+        // {ownProfile ? null : (
+        //   <div>
+        //     {friends === true ? <div>you are friends</div> : null}
+        //     {friends === "pending" ? <div>request sent</div> : null}
+        //     {friends === false ? (
+        //       <button onClick={addFriend}>add friend</button>
+        //     ) : null}
+        //     {friends === "requested" ? (
+        //       <div>
+        //         <button value="accept" onClick={handleFriendRequest}>
+        //           accept friend request
+        //         </button>
+        //         <button value="decline" onClick={handleFriendRequest}>
+        //           decline friend request
+        //         </button>
+        //       </div>
+        //     ) : null}
+        //   </div>
+        // )}
         //   {friends === true ? (
         //     <div>
         //       {joinedGames.map((game) => {
@@ -206,7 +423,8 @@ const User = (props) => {
         //     </div>
         //   ) : null}
         // </div>
-      ) : <div>Loading...</div>}
+        <div>Loading...</div>
+      )}
     </div>
   );
 };

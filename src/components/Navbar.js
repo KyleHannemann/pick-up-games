@@ -50,7 +50,14 @@ const Navbar = () => {
       setNavDrop(false);
     }
   };
-  const linkClick = () => {
+  const linkClick = (e) => {
+    document.getElementById("navBarUserName").style.color = "white"
+
+    let links = Array.from(document.querySelectorAll('.navBarLink > div'))
+    for (let i = 0; i < links.length; i++){
+      links[i].style.color = "white"
+    }
+    e.target.style.color = "#5fbff9"
     if (navDrop === false) {
       return;
     }
@@ -120,12 +127,17 @@ const Navbar = () => {
 
           <div
             onClick={() => {
+              let links = Array.from(document.querySelectorAll('.navBarLink > div'))
+    for (let i = 0; i < links.length; i++){
+      links[i].style.color = "white"
+    }
+    document.getElementById("navBarUserName").style.color = "#5fbff9"
               history.push(`/users/${user.user_id}`);
             }}
             id="navBarUserInfo"
           >
             <img className="profilePicMedium" src={user.picture} />
-            <div>{user.username}</div>
+            <div id="navBarUserName">{user.username}</div>
           </div>
           <div id="navBarPageLinks">
             <Link className="navBarLink" onClick={linkClick} to="/dash">

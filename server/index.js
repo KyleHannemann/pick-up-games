@@ -110,6 +110,7 @@ app.put("/users/addFriend/accept", usersController.acceptFriend);
 app.put("/users/addFriend/decline", usersController.declineFriend);
 app.get("/users/friends/all", usersController.getFriendsInfo);
 app.get("/users/get/all", usersController.getAllUsers);
+app.get("/users/get/users/friends/:user_id", usersController.getOtherUsersFriendsInfo)
 //game
 app.post("/game/create", gameController.createGame);
 app.get("/game/joined/:userId", gameController.getJoinedGames);

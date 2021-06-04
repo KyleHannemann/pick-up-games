@@ -278,7 +278,7 @@ const CreateGame = (props) => {
             <div>
               <div>Title</div>
               <input
-              maxLength="20"
+              maxLength="18"
                 value={title}
                 onChange={(e) => {
                   setTitle(e.target.value);

@@ -70,7 +70,7 @@ const Dash = (props) => {
               let today = new Date();
               let comp = new Date(game.date);
               if (comp >= today) {
-                return comp;
+                return game;
               }
             })
             .map((game) => {

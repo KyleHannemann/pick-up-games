@@ -218,11 +218,17 @@ body {
 }
 
 .navBarLink > div:hover,
-#logout:hover,
+#logout:hover, #navBarUserName:hover
+ {
+ 
+  cursor: pointer;
+  border-bottom: 1px solid #5fbff9;
+}
+
 #navHamburger:hover {
   color: #5fbff9;
   cursor: pointer;
-  border-bottom: 1px solid #5fbff9;
+  
 }
 .profilePicMedium {
   border-radius: 50%;
@@ -755,11 +761,173 @@ top: 100%;
 /*User Profile*/
 #userProfilePageContainer {
   width: 100vw;
-  height: 100vh - 80px;
-  padding-top: 80px;
+  height: fit-content;
+  padding-top: 10px;
+  background-color: coral;
+  box-sizing: border-box;
+}
+#topHalfContainerProfile{
+  background-color: cornflowerblue;
+  width: 100vw;
+  height: fit-content;
+  box-sizing: border-box;
+  
+}
+#topHalfTopHalfProfile{
+  background-color: rgb(204, 74, 187);
+  width: 100vw;
+  height: 160px;
+  padding-left: 10px;
+  padding-right: 10px;
+  box-sizing: border-box;
   display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+#topHalfTopHalfProfile > div{
+  box-sizing: border-box;
+  width: 33%;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 4px;
+  background-color: crimson;
+
+}
+#topHalfTopHalfProfile > div >div{
+  box-sizing: border-box;
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  
+
+}
+.friendActionButtons{
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-evenly;
+  background-color: darkgoldenrod;
+}
+.friendActionButtons > button{
+  width: 75px;
+  padding: 8px;
+  box-sizing: border-box;
+  border-radius: 3px;
+  box-shadow: 1px 1px 1px 1px;
+  border: none;
+  height: 35px; 
+}
+#declineFriendRequest{
+   background-color: #D52217;
+}
+.posFriendRequest{
+   background-color: #228209;
+}
+#topHalfTopHalfProfile > div > img{
+  height: 150px;
+  width: 150px;
+  border-radius: 50%;
+
+}
+#topHalfTopHalfProfile > div > h1{ 
+  margin: 0px;
+
+}
+
+#bottomHalfTopHalfProfil{
+  background-color: rgb(125, 190, 4);
+  width: 100vw;
+  height: 100px;
+  box-sizing: border-box;
+
+}
+#bottomHalfContainerProfile{
+  background-color: teal;
+  width: 100vw;
+  box-sizing: border-box;
+  height: 60vh;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  padding-left: 10px;
+  padding-right: 10px;
+
+}
+#bottomHalfGamesContainerProfile{
+  box-sizing: border-box;
+  width: 66%;
+  height: 100%;
+  background-color: tomato;
+
+}
+#bottomHalfGamesContainerProfile{
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+  align-items: center;
+  width: 66%;
+  height: 100%;
+  background-color: tomato;
+
+}
+#bottomHalfGamesContainerProfile > div{
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  background-color: turquoise;
+  margin-bottom: 10px;
+
+}
+#bottomHalfGamesContainerProfile > div > a > img{
+  box-sizing: border-box;
+  width: 40px;
+  height: 40px;
+
+}
+#bottomHalfGamesContainerProfile > div > a{
+  text-decoration: none;
+
+}
+#bottomHalfGamesContainerProfile > div > a > span{
+  color: black;
+  font-size: 22px;
+
+}
+#bottomHalfFriendsContainerProfile{
+  box-sizing: border-box;
+  overflow: scroll;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 33%;
+  height: 100%;
+  background-color: thistle;
+
+}
+#bottomHalfFriendsContainerProfile > div{
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row;
+  background-color: rgb(155, 43, 145);
+
+}
+#bottomHalfFriendsContainerProfile > div > span{
+  margin-left: 5px;
+  margin-right: 5px;
+
 }
 
 /*Game Page*/
@@ -1018,7 +1186,7 @@ top: 100%;
 .mapInfoWindow{
   display: flex;
   min-height: fit-content;
-  width: 100%;
+  width: 200px;
   box-sizing: border-box;
   flex-direction: column;
   justify-content: center;
@@ -1142,3 +1310,4 @@ top: 100%;
   
   font-size: 18px;
 }
+
