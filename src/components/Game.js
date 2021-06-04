@@ -194,8 +194,9 @@ const Game = (props) => {
 
               <div>
                 <p>{game.address}</p>
-                <a
-                  href={`https://www.google.com/maps/dir/?api=1&destination=${game.latitude},${game.longitude}`}
+                <a onClick={()=>{
+                  window.open(`https://www.google.com/maps/dir/?api=1&destination=${game.latitude},${game.longitude}`)
+                }}
                 >
                   get directions
                 </a>

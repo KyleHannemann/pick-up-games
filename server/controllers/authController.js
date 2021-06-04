@@ -7,7 +7,7 @@ module.exports = {
     try{
     const [checkExists] = await db.auth.get_user(email);
     if (checkExists) {
-      return res.status(409).send("email already registered");
+      return res.status(411).send("email already registered");
     } else {
       const salt = bcrypt.genSaltSync(10);
       const hash = bcrypt.hashSync(password, salt);
@@ -20,14 +20,13 @@ module.exports = {
         picture,
       ]);
       delete user.password;
-      const friends = await db.users.get_friends(user.user_id);
-      req.session.user = user;
-      req.session.user.friends = friends;
+      req.session.user = user
+      req.session.user.friends = [];
       return res.status(200).send(req.session.user);
     }
   }
   catch(err){
-    res.status(409).send(err)
+    res.status(419).send(err)
   }
   },
   login: async (req, res) => {

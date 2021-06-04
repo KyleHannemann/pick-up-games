@@ -8,7 +8,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { useState } from "react";
 import { IconContext } from "react-icons";
-import {removeNotification} from '../redux/notificationsReducer';
+import { removeNotification } from "../redux/notificationsReducer";
 
 const Navbar = () => {
   const { user } = useSelector((store) => store.auth);
@@ -21,17 +21,17 @@ const Navbar = () => {
     axios.get("/auth/logout").then((res) => {
       if (res.status === 200) {
         if (navDrop === false) {
-          dispatch(setUser(null));
           history.push("/");
+          dispatch(setUser(null));
           return;
         }
         navDropDown();
-        dispatch(setUser(null));
         history.push("/");
+        dispatch(setUser(null));
       }
     });
   };
-  
+
   const [navDrop, setNavDrop] = useState(false);
   //change to conditional rendering
   const navDropDown = () => {
@@ -57,39 +57,59 @@ const Navbar = () => {
     navDropDown();
   };
 
-  const handleNotificationRemoval = (e) =>{
-      console.log(e.target.value)
-     setNotiDropDown(false)
+  const handleNotificationRemoval = (e) => {
+    console.log(e.target.value);
+    setNotiDropDown(false);
     dispatch(removeNotification(parseInt(e.target.value)));
-    axios.delete(`/users/notifications/delete/${e.target.value}`).then(res=>{
-      console.log(res)
-    }).catch(err=>console.log(err))
-  }
+    axios
+      .delete(`/users/notifications/delete/${e.target.value}`)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => console.log(err));
+  };
   return (
     <div>
       {user ? (
         <div id="navBar">
-          {notifications?  notifications.length < 1? <div id="websiteLogoName">
-              <IconContext.Provider
-                value={{ style: { height: "35px", width: "35px" } }}
+          {notifications ? (
+            notifications.length < 1 ? (
+              <div
+                onClick={() => {
+                  setNotiDropDown(true);
+                }}
+                id="websiteLogoName"
               >
-                <IoIosNotificationsOutline />
-              </IconContext.Provider>
-            </div> : (
-            <div id="websiteLogoName" onClick={()=>{
-                setNotiDropDown(true)
-            }}>
-              <IconContext.Provider
-                value={{
-                  style: { color: "red", height: "35px", width: "35px" },
+                <IconContext.Provider
+                  value={{ style: { height: "35px", width: "35px" } }}
+                >
+                  <IoIosNotificationsOutline />
+                </IconContext.Provider>
+              </div>
+            ) : (
+              <div
+                id="websiteLogoName"
+                onClick={() => {
+                  setNotiDropDown(true);
                 }}
               >
-                <IoIosNotificationsOutline />
-              </IconContext.Provider>
-              <span id="notificationsAlerts">{notifications.length}</span>
-            </div>
+                <IconContext.Provider
+                  value={{
+                    style: { color: "red", height: "35px", width: "35px" },
+                  }}
+                >
+                  <IoIosNotificationsOutline />
+                </IconContext.Provider>
+                <span id="notificationsAlerts">{notifications.length}</span>
+              </div>
+            )
           ) : (
-            <div id="websiteLogoName">
+            <div
+              id="websiteLogoName"
+              onClick={() => {
+                setNotiDropDown(true);
+              }}
+            >
               <IconContext.Provider
                 value={{ style: { height: "35px", width: "35px" } }}
               >
@@ -111,7 +131,7 @@ const Navbar = () => {
             <Link className="navBarLink" onClick={linkClick} to="/dash">
               <div>Home</div>
             </Link>
-            
+
             <Link onClick={linkClick} className="navBarLink" to="/friends">
               <div>Friends</div>
             </Link>
@@ -136,28 +156,53 @@ const Navbar = () => {
       ) : (
         <div></div>
       )}
-      {notiDropDown? <div id="notiDropDown">
-        
-          <button onClick={()=>{
-              setNotiDropDown(false)
-          }}>X</button>
-          {notifications ? notifications.map(n=>{
-              return(
-                  <div key={n.notification_id}>
-                      <img className="profilePicSmall" src={n.user_interaction_picture}></img>
-                      <span>{n.user_interaction_username + " " + n.description}</span>
-                      {n.description === "invited you to a game" ? 
-                      <Link to={`/game/${n.game_id}`}>
-                      <button  value={n.notification_id} onClick={handleNotificationRemoval}>view</button>
-                      </Link> : <Link to={`/users/${n.user_interaction_id}`}>
-                      <button  value={n.notification_id} onClick={handleNotificationRemoval}>view</button>
-                      </Link>}
-                  </div>
-              )
-          }): <div>
-              you have 0 notifications</div>}
-          
-      </div> : null}
+      {notiDropDown ? (
+        <div id="notiDropDown">
+          <button
+            onClick={() => {
+              setNotiDropDown(false);
+            }}
+          >
+            X
+          </button>
+          {notifications ? (
+            notifications.map((n) => {
+              return (
+                <div key={n.notification_id}>
+                  <img
+                    className="profilePicSmall"
+                    src={n.user_interaction_picture}
+                  ></img>
+                  <span>
+                    {n.user_interaction_username + " " + n.description}
+                  </span>
+                  {n.description === "invited you to a game" ? (
+                    <Link to={`/game/${n.game_id}`}>
+                      <button
+                        value={n.notification_id}
+                        onClick={handleNotificationRemoval}
+                      >
+                        view
+                      </button>
+                    </Link>
+                  ) : (
+                    <Link to={`/users/${n.user_interaction_id}`}>
+                      <button
+                        value={n.notification_id}
+                        onClick={handleNotificationRemoval}
+                      >
+                        view
+                      </button>
+                    </Link>
+                  )}
+                </div>
+              );
+            })
+          ) : (
+            <div>you have 0 notifications</div>
+          )}
+        </div>
+      ) : null}
     </div>
   );
 };

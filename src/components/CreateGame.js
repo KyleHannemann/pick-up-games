@@ -314,7 +314,7 @@ const CreateGame = (props) => {
               </select>
             </div>
             <div>
-              <div>Game Icon</div>
+              <div>Game Type</div>
               <img className="createGameIconPreview" src={icon} />
 
               <button
@@ -322,7 +322,7 @@ const CreateGame = (props) => {
                   setSelectingIcon(true);
                 }}
               >
-                Change Icon
+                Change Game Type
               </button>
             </div>
           </div>
@@ -356,9 +356,9 @@ const CreateGame = (props) => {
         ) : null}
         {status === 3 ? (
           <div>
-            <h2 style={{ textAlign: "center" }}>
-              {" "}
-              * Click Map To Set Location
+            <h2 id="createGameMapHint">
+              
+              * Click Location To Set Game
             </h2>
             <div id="createGameMapContainer">
               <Map createGame={true} height={"100%"} width={"100%"} />
@@ -419,7 +419,7 @@ const CreateGame = (props) => {
           
           <div className="createGameReviewContainer">
             {success ?  <div id="createGameSuccessBox">
-             <div><Link to={`/game/${createdGameId}`}><button>view game page</button></Link></div>
+             <div><Link to={`/game/${createdGameId}`}><button>View Game Page</button></Link></div>
               <h1>Game Successfully Created!</h1>
             </div> : null}
             <button id="createGameCreateButton" onClick={handleSubmit}>

@@ -40,6 +40,7 @@ const Login = (props) => {
       })
       .catch((err) => {
         console.log(err);
+        alert('invalid username and/or password')
       });
   };
   const handlePicture = async (e) => {
@@ -47,7 +48,7 @@ const Login = (props) => {
     document.getElementById("authProfilePic").src = e.cdnUrl;
   };
 
-  const handleRegister = async (e) => {
+  const handleRegister = (e) => {
     e.preventDefault()
 
     if (
@@ -60,21 +61,21 @@ const Login = (props) => {
       alert("please enter an email, password, username, gender, and age ");
       return;
     }
-    await axios.post("/auth/register", {
+   
+    axios.post("/auth/register", {
       username: username,
       password: password,
       email: email,
       birth_year: birthDate,
       gender: gender,
       picture: picture,
-    });
-
-    const res = await axios.post("/auth/login", {
-      email: email,
-      password: password,
-    });
-    props.setUser(res.data)
+    }).then(res=>{
+      props.setUser(res.data)
     props.history.push('/dash')
+    }).catch(err=>{
+      alert('email already in use')
+      console.log(err)
+    })
 
   };
   return (
