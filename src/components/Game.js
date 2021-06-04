@@ -5,6 +5,8 @@ import TimePicker from "react-time-picker";
 import { useSelector, useDispatch } from "react-redux";
 import { addGamesRed, removeGameRed } from "../redux/joinedGamesReducer";
 import { Link } from "react-router-dom";
+import {FaRegHandshake} from 'react-icons/fa'
+import {IconContext} from 'react-icons'
 
 const Game = (props) => {
   const [game, setGame] = useState(null);
@@ -357,6 +359,18 @@ const Game = (props) => {
           <div id="gamePagePlayerContainer">
             <h3>{game.players.length} Players</h3>
             {game.players.map((player) => {
+              let friends = false;
+              for(let i = 0; i < user.friends.length; i ++){
+                if ((user.friends[i].friend_id === player.user_id ||
+                  user.friends[i].user_id === player.user_id) &&
+                  user.friends[i].accepted === true){
+                    
+                    friends = true;
+                  }
+              }
+              if (player.user_id === user.user_id){
+                friends = null
+              }
               return (
                 <Link
                   style={{ textDecoration: "none" }}
@@ -366,6 +380,24 @@ const Game = (props) => {
                   <div className="indDashGamePlayer">
                     <div>{player.username}</div>
                     <img src={player.picture} />
+                    {friends === true ?<span>
+                      {/* <span  style={{color: "#2D8C23 "}}>Friends</span> */}
+                      
+                      <IconContext.Provider
+                value={{ style: { height: "35px", width: "35px" , color: "#228209"} }}
+              >
+                <FaRegHandshake />
+              </IconContext.Provider> </span>: null}
+                    {friends === false ?<span> 
+                      {/* <span style={{color: "red"}}>Not Friends Yet</span> */}
+                       
+                      <IconContext.Provider
+                value={{ style: { height: "35px", width: "35px" , color: "#D52217"} }}
+              >
+                <FaRegHandshake />
+              </IconContext.Provider>
+                    </span>: null}
+
                   </div>
                 </Link>
               );

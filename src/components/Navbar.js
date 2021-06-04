@@ -129,7 +129,7 @@ const Navbar = () => {
           </div>
           <div id="navBarPageLinks">
             <Link className="navBarLink" onClick={linkClick} to="/dash">
-              <div>Home</div>
+              <div>My Games</div>
             </Link>
 
             <Link onClick={linkClick} className="navBarLink" to="/friends">

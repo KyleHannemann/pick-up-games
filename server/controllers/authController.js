@@ -22,6 +22,7 @@ module.exports = {
       delete user.password;
       req.session.user = user
       req.session.user.friends = [];
+      req.session.user.friends.mutualFriends = [];
       return res.status(200).send(req.session.user);
     }
   }
@@ -45,6 +46,20 @@ module.exports = {
         delete user.password;
         const friends = await db.users.get_friends(user.user_id);
         req.session.user = user;
+        
+        
+        for (let i = 0; i < friends.length; i++){
+          let query = friends[i].user_id
+            if (friends[i].user_id === req.session.user.user_id){
+              query = friends[i].friend_id
+            }
+            const mutualFriends = await db.users.get_friends_info(query);
+            
+            const [friendInfo] = await db.users.get_user(query);
+            delete friendInfo.password;
+            friends[i].friendInfo = friendInfo;
+            friends[i].mutualFriends = mutualFriends;
+        }
         req.session.user.friends = friends;
         return res.status(200).send(req.session.user);
       }
@@ -60,6 +75,18 @@ module.exports = {
     try{
     if (req.session.user) {
       const friends = await db.users.get_friends(req.session.user.user_id);
+      for (let i = 0; i < friends.length; i++){
+        let query = friends[i].user_id
+          if (friends[i].user_id === req.session.user.user_id){
+            query = friends[i].friend_id
+          }
+          const mutualFriends = await db.users.get_friends_info(query);
+          
+          const [friendInfo] = await db.users.get_user(query);
+          delete friendInfo.password;
+          friends[i].friendInfo = friendInfo;
+          friends[i].mutualFriends = mutualFriends;
+      }
       req.session.user.friends = friends;
       return res.status(200).send(req.session.user);
     

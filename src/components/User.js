@@ -148,48 +148,65 @@ const User = (props) => {
   };
 
   return (
-    <div id="userProfilePageContainer">
+    <div>
+
       {userProfile ? (
-        <div>
-          <h1>{userProfile.username}</h1>
-          <h1>
-            <img className="profilePicLarge" src={userProfile.picture} />
-          </h1>
-          <h3>{user.email}</h3>
-          <h3>{userProfile.email}</h3>
-          {ownProfile ? null : (
-            <div>
-              {friends === true ? <div>you are friends</div> : null}
-              {friends === "pending" ? <div>request sent</div> : null}
-              {friends === false ? (
-                <button onClick={addFriend}>add friend</button>
-              ) : null}
-              {friends === "requested" ? (
-                <div>
-                  <button value="accept" onClick={handleFriendRequest}>
-                    accept friend request
-                  </button>
-                  <button value="decline" onClick={handleFriendRequest}>
-                    decline friend request
-                  </button>
-                </div>
-              ) : null}
+        <div id="userProfilePageContainer">
+          <div id="topHalfContainerProfile">
+            <div id="topHalfTopHalfProfile">
+              <div></div>
+              <div></div>
+              <div></div>
             </div>
-          )}
-          {friends === true ? (
-            <div>
-              {joinedGames.map((game) => {
-                return (
-                  <div>
-                    <h1>{game.title}</h1>
-                    <h2>{game.date}</h2>
-                  </div>
-                );
-              })}
+            <div id="bottomHalfTopHalfProfil">
+
             </div>
-          ) : null}
+          </div>
+          <div id="bottomHalfContainerProfile">
+          <div id="bottomHalfGamesContainerProfile"></div>
+          <div id="bottomHalfFriendsContainerProfile"></div>
+          </div>
         </div>
-      ) : null}
+        // <div>
+        //   <h1>{userProfile.username}</h1>
+        //   <h1>
+        //     <img className="profilePicLarge" src={userProfile.picture} />
+        //   </h1>
+        //   <h3>{user.email}</h3>
+        //   <h3>{userProfile.email}</h3>
+        //   {ownProfile ? null : (
+        //     <div>
+        //       {friends === true ? <div>you are friends</div> : null}
+        //       {friends === "pending" ? <div>request sent</div> : null}
+        //       {friends === false ? (
+        //         <button onClick={addFriend}>add friend</button>
+        //       ) : null}
+        //       {friends === "requested" ? (
+        //         <div>
+        //           <button value="accept" onClick={handleFriendRequest}>
+        //             accept friend request
+        //           </button>
+        //           <button value="decline" onClick={handleFriendRequest}>
+        //             decline friend request
+        //           </button>
+        //         </div>
+        //       ) : null}
+        //     </div>
+        //   )}
+        //   {friends === true ? (
+        //     <div>
+        //       {joinedGames.map((game) => {
+        //         return (
+        //           <div>
+        //             <h1>{game.title}</h1>
+        //             <h2>{game.date}</h2>
+        //           </div>
+        //         );
+        //       })}
+        //     </div>
+        //   ) : null}
+        // </div>
+      ) : <div>Loading...</div>}
     </div>
   );
 };

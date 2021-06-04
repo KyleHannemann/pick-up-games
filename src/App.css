@@ -240,6 +240,9 @@ body {
   justify-content: center;
   align-items: center;
 }
+#navBarUserInfo:hover {
+  cursor: pointer;
+}
 #navBarPageLinks {
   width: 50%;
   display: flex;
@@ -257,7 +260,7 @@ body {
   color: #efe9f4;
   display: none;
 }
-@media (max-width: 675px) {
+@media (max-width: 850px) {
   #navBarPageLinks,
   #navBarAuthLinks {
     display: none;
@@ -684,7 +687,11 @@ top: 100%;
   margin-top: 5px;
   margin-bottom: 0%;
 }
-
+@media (max-width: 450px){
+  #calendarTitle {
+    font-size: 18px;
+  }
+}
 #dashContainer {
   height: fit-content;
   width: 100vw;
@@ -768,6 +775,7 @@ top: 100%;
 
   #gamePagePlayerContainer {
     float: none;
+    border-left: none !important;
     margin-top: 10px !important;
     height: fit-content !important;
     box-sizing: border-box;
@@ -824,18 +832,26 @@ top: 100%;
 #gamePagePlayerContainer {
   float: right;
   height: 100vh;
+  margin-left: 1%;
   box-sizing: border-box;
-  width: 25%;
+  width: 24%;
+  border-left: 3px double black;
 }
 .indDashGamePlayer {
   display: flex;
-  background-color: black;
+  background-color: #5fbff9;
   border-radius: 4px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   margin: 3px;
   text-decoration: none;
+}
+.indDashGamePlayer > span {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 .indDashGamePlayer:hover {
   display: flex;
@@ -847,7 +863,7 @@ top: 100%;
 }
 .indDashGamePlayer > div {
   text-decoration: none;
-  color: white;
+  color: black;
 }
 
 #gamePageGameDets {
@@ -858,6 +874,10 @@ top: 100%;
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
+}
+#gamePageGameDets > div >img {
+  height: 50px;
+  width: 50px;
 }
 #gamePageGameDets > div {
   width: 100%;
@@ -1024,6 +1044,7 @@ top: 100%;
   border: 1px solid black
 }
 /*Friends Page*/
+
 #friendsPageContainer{
   width: 100vw;
   display: flex;
@@ -1031,7 +1052,23 @@ top: 100%;
   flex-direction: column;
   align-items: center;
 }
-
+@media (max-width: 650px){
+  .friendsPageFriendBox{
+    width: 300px !important;
+    border: 1px solid black;
+    box-sizing: border-box;
+    height: fit-content;
+    background-color: #efe9f4;
+    box-shadow: 3px 3px 6px;
+    padding: 10px;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    border-radius: 5px;
+    display: flex !important;
+    align-items: center;
+    flex-direction: column !important;
+  }
+}
 .friendsPageFriendsContainer{
   display: flex;
   flex-direction: column;
@@ -1043,22 +1080,24 @@ top: 100%;
   width: 100%;
 }
 .friendsPageFriendBox{
-  width: 50%;
+  width: 600px;
   border: 1px solid black;
+  box-sizing: border-box;
   background-color: #efe9f4;
+  box-shadow: 3px 3px 6px;
   padding: 10px;
   margin-bottom: 15px;
   margin-top: 15px;
   border-radius: 5px;
-  min-width: fit-content;
   display: grid;
-  grid-template-columns: 1fr 3fr 1fr;
+  grid-template-columns: 1fr 2fr 2fr;
   grid-template-rows: 1fr;
 }
-.friendsPageFriendBox > a > h2{
+.friendsPageFriendBox > div > h2{
   text-align: center;
   text-decoration: none;
   color: black;
+
 }
 .friendsPageFriendBox > a{
 
@@ -1068,7 +1107,28 @@ top: 100%;
   display: flex;
   flex-direction: column;
   height: 100%;
+  align-items: center;
+}
+.friendsPageFriendBox > div > div > div{
+  display: flex;
+  flex-direction: row;
+  
+  
   justify-content: space-evenly;
+}
+.friendsPageFriendBox > div > div{
+  display: flex;
+  flex-direction: row;
+  margin-top: 4px;
+  height: 100%;
+  width: 100%;
+  overflow: scroll;
+  justify-content: space-evenly;
+}
+.friendsPageFriendBox > div > div > div > img{
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
 }
 #friendsPageSearchContainer{
   margin-top: 5px;
