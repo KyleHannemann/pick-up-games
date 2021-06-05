@@ -96,8 +96,10 @@ const Navbar = () => {
             ) : (
               <div
                 id="websiteLogoName"
+                className="notiAnimation"
                 onClick={() => {
                   setNotiDropDown(true);
+
                 }}
               >
                 <IconContext.Provider

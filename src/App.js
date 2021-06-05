@@ -48,13 +48,25 @@ function App(props) {
    
     if (socket) {
       socket.on("friend added", (body) => {
-        if (parseInt(body.friend_id) === parseInt(user.user_id)){
-          dispatch(updateFriends(body))
+        if (parseInt(body.friend_id) === parseInt(user.user_id) ||
+        parseInt(body.user_id) === parseInt(user.user_id)){
+          axios.get("/auth/user").then(res=>{
+            dispatch(setUser(res.data))
+          }).catch(err=>{
+            console.log(err)
+          })
+         // dispatch(updateFriends(body))
         };
       });
       socket.on("friend accept", (body) => {
-        if (parseInt(body.user_id) === parseInt(user.user_id)){
-          dispatch(updateFriends(body))
+        if (parseInt(body.friend_id) === parseInt(user.user_id) ||
+        parseInt(body.user_id) === parseInt(user.user_id)){
+          axios.get("/auth/user").then(res=>{
+            dispatch(setUser(res.data))
+          }).catch(err=>{
+            console.log(err)
+          })
+          //dispatch(updateFriends(body))
         };
       });
       socket.on('notification', (body) => {

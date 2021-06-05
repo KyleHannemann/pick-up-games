@@ -107,7 +107,7 @@ const Friends = (props) => {
             placeholder="search all people.."
             onChange={handleSearchPeople}
           />
-          <h2>{allUsers.length} Friend Suggestions</h2>
+          <h2>{allUsers.length - friends.length} Friend Suggestions</h2>
           {searchPeople
             .filter((u) => {
               for (let i = 0; i < friends.length; i++) {

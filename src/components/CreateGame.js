@@ -333,6 +333,7 @@ const CreateGame = (props) => {
               <div>Date</div>
               <div style={{ backgroundColor: "white" }}>
                 <DatePicker
+                
                   value={date}
                   onChange={(e) => {
                     setDate(e);

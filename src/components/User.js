@@ -3,12 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { setUserFriends } from "../redux/authReducer";
+import { BiLock } from "react-icons/bi";
 import { AiOutlineEdit } from "react-icons/ai";
 import { FaRegHandshake } from "react-icons/fa";
 import { IconContext } from "react-icons";
 import DatePicker from "react-date-picker";
 import TimePicker from "react-time-picker";
-import EditProfile from './EditProfile';
+import EditProfile from "./EditProfile";
 const User = (props) => {
   const { socket } = useSelector((store) => store.socketReducer);
   const { user } = useSelector((store) => store.auth);
@@ -30,8 +31,8 @@ const User = (props) => {
   //edit own profile
   const [edit, setEdit] = useState(false);
 
-
   useEffect(() => {
+    console.log("user check", user);
     if (!user) {
       return;
     }
@@ -84,8 +85,8 @@ const User = (props) => {
   }, [props.match.params.userId, user]);
 
   useEffect(() => {
-    if (!user){
-      return
+    if (!user) {
+      return;
     }
     axios
       .get(`/users/${userId}`)
@@ -126,7 +127,7 @@ const User = (props) => {
       .post("/users/addFriend", { friendId: userProfile.user_id })
       .then((res) => {
         console.log(res.data);
-        dispatch(setUserFriends(res.data));
+        //dispatch(setUserFriends(res.data));
         setFriends("pending");
       })
       .catch((err) => {
@@ -147,7 +148,7 @@ const User = (props) => {
         })
         .then((res) => {
           console.log(res.data);
-          dispatch(setUserFriends(res.data));
+          //dispatch(setUserFriends(res.data));
         })
         .catch((err) => {
           console.log(err);
@@ -173,33 +174,53 @@ const User = (props) => {
 
   return (
     <div>
-      {edit ? <div id="userPageEditProfileFauxContainer">
-        <button id="closeProfileEditScreen"onClick={ async ()=>{
-          await document.getElementById("editProfileContainer").classList.add("editExit")
-          await document.getElementById("closeProfileEditScreen").classList.add("editExit")
-          setTimeout( async ()=>{
-            await document.getElementById("editProfileContainer").classList.remove("editExit")
-            await document.getElementById("closeProfileEditScreen").classList.remove("editExit")
+      {edit ? (
+        <div id="userPageEditProfileFauxContainer">
+          <button
+            id="closeProfileEditScreen"
+            onClick={async () => {
+              await document
+                .getElementById("editProfileContainer")
+                .classList.add("editExit");
+              await document
+                .getElementById("closeProfileEditScreen")
+                .classList.add("editExit");
+              setTimeout(async () => {
+                await document
+                  .getElementById("editProfileContainer")
+                  .classList.remove("editExit");
+                await document
+                  .getElementById("closeProfileEditScreen")
+                  .classList.remove("editExit");
 
-            setEdit(false)
+                setEdit(false);
+              }, 150);
+            }}
+          >
+            &#215;
+          </button>
+          <EditProfile
+            closeEdit={async () => {
+              await document
+                .getElementById("editProfileContainer")
+                .classList.add("editExit");
+              await document
+                .getElementById("closeProfileEditScreen")
+                .classList.add("editExit");
+              setTimeout(async () => {
+                await document
+                  .getElementById("editProfileContainer")
+                  .classList.remove("editExit");
+                await document
+                  .getElementById("closeProfileEditScreen")
+                  .classList.remove("editExit");
 
-          }, 150)
-          
-        }}>&#215;</button>
-        <EditProfile closeEdit={ async ()=>{
-          await document.getElementById("editProfileContainer").classList.add("editExit")
-          await document.getElementById("closeProfileEditScreen").classList.add("editExit")
-          setTimeout( async ()=>{
-            await document.getElementById("editProfileContainer").classList.remove("editExit")
-            await document.getElementById("closeProfileEditScreen").classList.remove("editExit")
-
-            setEdit(false)
-
-          }, 100)
-          
-        }}/>
-        
-      </div>: null}
+                setEdit(false);
+              }, 100);
+            }}
+          />
+        </div>
+      ) : null}
       {userProfile ? (
         <div id="userProfilePageContainer">
           <div id="topHalfContainerProfile">
@@ -228,10 +249,13 @@ const User = (props) => {
                   <span>Edit</span>
                   <IconContext.Provider
                     value={{ style: { height: "50px", width: "50px" } }}
-                  ><a onClick={()=>{
-                    setEdit(true)
-                  }} >
-                    <AiOutlineEdit />
+                  >
+                    <a
+                      onClick={() => {
+                        setEdit(true);
+                      }}
+                    >
+                      <AiOutlineEdit />
                     </a>
                   </IconContext.Provider>{" "}
                 </div>
@@ -329,97 +353,136 @@ const User = (props) => {
                 </div>
               )}
             </div>
-            <div id="bottomHalfTopHalfProfil"></div>
+            {friends === true || ownProfile === true? (
+              <div id="bottomHalfTopHalfProfil">
+                <div>Email: {userProfile.email}</div>
+                <div>DM</div>
+              </div>
+            ):(
+              <div id="profileLockContainer">
+                <IconContext.Provider
+                  value={{ style: { height: "60px", width: "60px" } }}
+                >
+                  <BiLock />
+                </IconContext.Provider>
+                <h3>Become Friends to View {userProfile.username}'s Info</h3>
+              </div>
+            )}
           </div>
-          <div id="bottomHalfContainerProfile">
-            <div id="bottomHalfGamesContainerProfile">
-              <h2>{userProfile.username}'s Scheduled Games</h2>
-              {joinedGames
-                .filter((game) => {
-                  let today = new Date();
-                  let comp = new Date(game.date);
-                  console.log(game);
-                  if (comp >= today) {
-                    console.log("dasfjldsafj");
-                    return game;
+          {friends === true  || ownProfile === true ? (
+            <div id="bottomHalfContainerProfile">
+              <div id="bottomHalfGamesContainerProfile">
+                <h2>{userProfile.username} has {joinedGames
+                  .filter((game) => {
+                    let today = new Date();
+                    let comp = new Date(game.date);
+                    console.log(game);
+                    if (comp >= today) {
+                      console.log("dasfjldsafj");
+                      return game;
+                    }
+                  }).length} games scheduled</h2>
+                {joinedGames
+                  .filter((game) => {
+                    let today = new Date();
+                    let comp = new Date(game.date);
+                    console.log(game);
+                    if (comp >= today) {
+                      console.log("dasfjldsafj");
+                      return game;
+                    }
+                  })
+                  .sort((a, b) => {
+                    if (new Date(a.date) >= new Date(b.date)) {
+                      return 1;
+                    } else {
+                      return -1;
+                    }
+                  })
+                  .map((game) => {
+                    return (
+                      <div>
+                        <Link to={`/game/${game.game_id}`}>
+                          <img src={game.icon} />
+                        </Link>
+                        <Link to={`/game/${game.game_id}`}>
+                          <span>{game.title}</span>
+                        </Link>
+                        <div>
+                          <DatePicker
+                            value={game.date}
+                            disabled={true}
+                            clearIcon={false}
+                          />
+                          <TimePicker
+                            value={game.time}
+                            disabled={true}
+                            clearIcon={false}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+              </div>
+              <div id="bottomHalfFriendsContainerProfile">
+                <h2>{userProfile.username}'s Friends</h2>
+                {thisUserFriends.map((el) => {
+                  let areFriends = false;
+                  if (el.user_id === userProfile.user_id) {
+                    return null;
                   }
-                }).sort((a,b)=>{
-                  if (new Date(a.date) >= new Date(b.date)){
-                    return 1;
+                  for (let i = 0; i < user.friends.length; i++) {
+                    if (
+                      (user.friends[i].user_id === el.user_id ||
+                        user.friends[i].friend_id === el.user_id) &&
+                      user.friends[i].accepted === true
+                    ) {
+                      areFriends = true;
+                    }
+                    if(user.user_id === el.user_id){
+                      areFriends = null
+                    }
                   }
-                  else{
-                    return -1
-                  }
-                })
-                .map((game) => {
                   return (
                     <div>
-                      <Link  to={`/game/${game.game_id}`}><img src={game.icon} /></Link>
-                      <Link to={`/game/${game.game_id}`}><span>{game.title}</span></Link>
-                      <div>
-                        <DatePicker
-                          value={game.date}
-                          disabled={true}
-                          clearIcon={false}
-                        />
-                        <TimePicker value={game.time} disabled={true}clearIcon={false} />
-                      </div>
+                      <Link to={`users/${el.user_id}`}>
+                        <img className="profilePicSmall" src={el.picture} />
+                      </Link>
+                      <span>{el.username}</span>
+                      {areFriends === true ? (
+                        <IconContext.Provider
+                          value={{
+                            style: {
+                              height: "25px",
+                              width: "25px",
+                              color: "#228209",
+                            },
+                          }}
+                        >
+                          <FaRegHandshake />
+                        </IconContext.Provider>
+                      ) : null}
+                      {areFriends === false ? (
+                        <IconContext.Provider
+                          value={{
+                            style: {
+                              height: "25px",
+                              width: "25px",
+                              color: "#D52217",
+                            },
+                          }}
+                        >
+                          <FaRegHandshake />
+                        </IconContext.Provider>
+                      ): null}
+                      
                     </div>
                   );
                 })}
+              </div>
             </div>
-            <div id="bottomHalfFriendsContainerProfile">
-              <h2>{userProfile.username}'s Friends</h2>
-              {thisUserFriends.map((el) => {
-                let areFriends = false;
-                if (el.user_id === userProfile.user_id) {
-                  return null;
-                }
-                for (let i = 0; i < user.friends.length; i++) {
-                  if (
-                    (user.friends[i].user_id === el.user_id ||
-                      user.friends[i].friend_id === el.user_id) &&
-                    user.friends[i].accepted === true
-                  ) {
-                    areFriends = true;
-                  }
-                }
-                return (
-                  <div>
-                    <Link to={`users/${el.user_id}`}>
-                      <img className="profilePicSmall" src={el.picture} />
-                    </Link>
-                    <span>{el.username}</span>
-                    {friends ? (
-                      <IconContext.Provider
-                        value={{
-                          style: {
-                            height: "25px",
-                            width: "25px",
-                            color: "#228209",
-                          },
-                        }}
-                      >
-                        <FaRegHandshake />
-                      </IconContext.Provider>
-                    ) : (
-                      <IconContext.Provider
-                        value={{
-                          style: {
-                            height: "25px",
-                            width: "25px",
-                            color: "#D52217",
-                          },
-                        }}
-                      >
-                        <FaRegHandshake />
-                      </IconContext.Provider>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+          ) : null
+          }
         </div>
       ) : (
         // <div>

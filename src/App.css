@@ -122,14 +122,50 @@ body {
 }
 
 /*NAVBAR*/
+@keyframes notiShake {
+  0% {
+            transform: translateX(0%);
+            transform-origin: 20% 20%;
+  }
+  1% {
+            transform: translateX(-9px) rotate(-6deg);
+  }
+  2% {
+    -webkit-transform: translateX(7.5px) rotate(6deg);
+            transform: translateX(7.5px) rotate(6deg);
+  }
+  3% {
+            transform: translateX(-7.5px) rotate(-3.6deg);
+  }
+  4% {
+            transform: translateX(4px) rotate(2.4deg);
+  }
+  5% {
+            transform: translateX(-2.5px) rotate(-1.2deg);
+  }
+  6%{
+    transform: translateX(0%);
+    transform-origin: 20% 20%;
+  }
+  100%{
+    transform: translateX(0%);
+    transform-origin: 20% 20%;
+  }
+}
 
 #websiteLogoName {
   position: absolute;
+
   top: 0%;
   left: 0%;
   width: 40px;
   height: 50px;
   box-sizing: border-box;
+}
+#websiteLogoName.notiAnimation{
+  animation: notiShake 15s infinite;
+  animation-delay: 3s;
+
 }
 #websiteLogoName:hover {
   cursor: pointer;
@@ -675,7 +711,6 @@ body {
 }
 
 .createGameStatusBarButtons {
-  z-index: 5;
   border: none;
   background-color: inherit;
   position: relative;
@@ -900,17 +935,24 @@ body {
   width: 100vw;
   height: fit-content;
   padding-top: 10px;
-  background-color: coral;
+  box-sizing: border-box;
+}
+#profileLockContainer{
+  height: 60vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-top: 18px;
   box-sizing: border-box;
 }
 #topHalfContainerProfile {
-  background-color: cornflowerblue;
   width: 100vw;
   height: fit-content;
   box-sizing: border-box;
 }
 #topHalfTopHalfProfile {
-  background-color: rgb(204, 74, 187);
   width: 100vw;
   height: 160px;
   padding-left: 10px;
@@ -920,15 +962,84 @@ body {
   flex-direction: row;
   justify-content: space-between;
 }
+@media (max-width: 750px){
+  #topHalfContainerProfile {
+    width: 100vw;    
+    height: fit-content;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  #topHalfTopHalfProfile{
+    flex-direction: column;
+    height: fit-content;
+    align-items: center;
+    justify-content: center;
+  }
+  #topHalfTopHalfProfile > div{
+    margin-bottom: 10px;
+    width: 85% !important;
+    border-radius: 6px;
+  }
+  #bottomHalfContainerProfile {
+    width: 100vw;
+    box-sizing: border-box;
+    height: fit-content !important;
+    display: flex;
+    align-items: center;
+    flex-direction: column !important;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  #bottomHalfTopHalfProfil {
+    display: flex;
+    margin-top:5px;
+    margin-bottom: 5px;
+    height: fit-content;
+    flex-direction: column;
+    width: fit-content;
+    
+  }
+  #bottomHalfGamesContainerProfile, #bottomHalfFriendsContainerProfile {
+    box-sizing: border-box;
+    width: 85% !important;
+    background-color: #5fbff9 !important;
+    min-height: fit-content !important;
+    padding: 16px;
+    max-height: 450px !important;
+    overflow: scroll;
+    border-radius: 6px;
+    margin-bottom: 20px;
+  }
+  #bottomHalfGamesContainerProfile > div {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column !important;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    
+  }
+  #bottomHalfGamesContainerProfile > div > div {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column !important;
+    align-items: center;
+    justify-content: center;
+    
+  }
+}
 #topHalfTopHalfProfile > div {
   box-sizing: border-box;
-  width: 33%;
+  width: 32.5%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  border-radius: 6px;
   padding: 4px;
-  background-color: crimson;
+  background-color: #5fbff9;
 }
 #topHalfTopHalfProfile > div > div {
   box-sizing: border-box;
@@ -943,7 +1054,6 @@ body {
   width: 100%;
   flex-direction: row;
   justify-content: space-evenly;
-  background-color: darkgoldenrod;
 }
 .friendActionButtons > button {
   width: 75px;
@@ -970,13 +1080,15 @@ body {
 }
 
 #bottomHalfTopHalfProfil {
-  background-color: rgb(125, 190, 4);
   width: 100vw;
-  height: 100px;
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
   box-sizing: border-box;
 }
 #bottomHalfContainerProfile {
-  background-color: teal;
   width: 100vw;
   box-sizing: border-box;
   height: 60vh;
@@ -986,12 +1098,10 @@ body {
   padding-left: 10px;
   padding-right: 10px;
 }
-#bottomHalfGamesContainerProfile {
-  box-sizing: border-box;
-  width: 66%;
-  height: 100%;
-  background-color: tomato;
+#bottomHalfGamesContainerProfile > h2, #bottomHalfFriendsContainerProfile > h2{
+  text-align: center;
 }
+
 #bottomHalfGamesContainerProfile {
   box-sizing: border-box;
   display: flex;
@@ -1000,7 +1110,10 @@ body {
   align-items: center;
   width: 66%;
   height: 100%;
-  background-color: tomato;
+  padding: 16px;
+  border-radius: 6px;
+  background-color: #5fbff9 !important;
+
 }
 #bottomHalfGamesContainerProfile > div {
   box-sizing: border-box;
@@ -1010,7 +1123,8 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 12px;
-  background-color: turquoise;
+  border-radius: 6px;
+  background-color: #efe9f4;
   margin-bottom: 10px;
 }
 #bottomHalfGamesContainerProfile > div > a > img {
@@ -1024,6 +1138,7 @@ body {
 #bottomHalfGamesContainerProfile > div > a > span {
   color: black;
   font-size: 22px;
+ 
 }
 #bottomHalfFriendsContainerProfile {
   box-sizing: border-box;
@@ -1031,9 +1146,12 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 33%;
+  width: 32.5%;
   height: 100%;
-  background-color: thistle;
+  padding: 16px;
+  border-radius: 6px;
+  background-color: #5fbff9;
+
 }
 #bottomHalfFriendsContainerProfile > div {
   width: 100%;
@@ -1042,8 +1160,10 @@ body {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  margin-bottom: 10px;
   flex-direction: row;
-  background-color: rgb(155, 43, 145);
+  border-radius: 6px;
+  background-color: #efe9f4;
 }
 #bottomHalfFriendsContainerProfile > div > span {
   margin-left: 5px;
@@ -1346,7 +1466,6 @@ body {
     box-sizing: border-box;
     height: fit-content;
     background-color: #efe9f4;
-    box-shadow: 3px 3px 6px;
     padding: 10px;
     margin-bottom: 15px;
     margin-top: 15px;
@@ -1371,7 +1490,6 @@ body {
   border: 1px solid black;
   box-sizing: border-box;
   background-color: #efe9f4;
-  box-shadow: 3px 3px 6px;
   padding: 10px;
   margin-bottom: 15px;
   margin-top: 15px;

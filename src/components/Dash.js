@@ -68,7 +68,10 @@ const Dash = (props) => {
           ...games
             .filter((game) => {
               let today = new Date();
+       
               let comp = new Date(game.date);
+              let time = game.time.split(":")
+              comp.setTime(time[0], time[1])
               if (comp >= today) {
                 return game;
               }
