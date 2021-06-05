@@ -1,16 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../redux/authReducer";
 import { Widget } from "@uploadcare/react-widget";
+import { IconContext } from "react-icons";
+import { AiOutlineEdit } from "react-icons/ai";
 import axios from "axios";
 
-const EditProfile = () => {
+const EditProfile = (props) => {
+  console.log(props);
   const { user } = useSelector((store) => store.auth);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [picture, setPicture] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
+  const [success, setSuccess] = useState(false);
 
   const [editOptions, setEditOptions] = useState({
     password: false,
@@ -18,6 +22,18 @@ const EditProfile = () => {
     email: false,
     picture: false,
   });
+  useEffect(() => {
+    if (!user) {
+      return;
+    } else {
+      setUsername(user.username);
+      setPicture(user.picture);
+      setEmail(user.email);
+    }
+  }, []);
+  const handleSuccess = () => {
+    setSuccess(true);
+  };
   const submitChanges = () => {
     let newUsername = user.username;
     let newEmail = user.email;
@@ -45,7 +61,8 @@ const EditProfile = () => {
       })
       .then((res) => {
         dispatch(setUser(res.data));
-        alert("update success");
+        console.log(res.data);
+        handleSuccess()
       })
       .catch((err) => {
         console.log(err);
@@ -58,130 +75,171 @@ const EditProfile = () => {
 
   return (
     <div id="editProfileContainer">
-      <div id="chooseProfileEditOptions">
-        <h3>Choose edit options</h3>
-        <div>
-          <div>
-            <span>Username</span>
-            <input
-              className="slider"
-              onClick={() => {
-                setEditOptions({
-                  ...editOptions,
-                  username: !editOptions.username,
-                });
-              }}
-              type="checkbox"
-              value="Username"
-              id="usernameEditSlider"
-            />
-            <label className="sliderLabel" htmlFor="usernameEditSlider"></label>
-          </div>
-          <div>
-            <span>Email</span>
-            <input
-              className="slider"
-              onClick={() => {
-                setEditOptions({ ...editOptions, email: !editOptions.email });
-              }}
-              type="checkbox"
-              value="Email"
-              id="emailEditSlider"
-            />
-            <label className="sliderLabel" htmlFor="emailEditSlider"></label>
-          </div>
-          <div>
-            <span>Profile picture</span>
-            <input
-              className="slider"
-              onClick={() => {
-                setEditOptions({
-                  ...editOptions,
-                  picture: !editOptions.picture,
-                });
-              }}
-              type="checkbox"
-              value="picture"
-              id="pictureEditSlider"
-            />
-            <label className="sliderLabel" htmlFor="pictureEditSlider"></label>
-          </div>
-          <div>
-            <span>Password</span>
-            <input
-              className="slider"
-              onClick={() => {
-                setEditOptions({
-                  ...editOptions,
-                  password: !editOptions.password,
-                });
-              }}
-              type="checkbox"
-              value="Password"
-              id="passwordEditSlider"
-            />
-            <label className="sliderLabel" htmlFor="passwordEditSlider"></label>
-          </div>
-        </div>
-        <button onClick={submitChanges}>Submit Changes</button>
-      </div>
-      <div id="editOptions">
+      <h1>Edit Profile</h1>
+      <div>
+        <span>UserName:</span>
+        <span>{username}</span>
         {editOptions.username ? (
           <div>
-            <input
-              value={username}
-              onChange={(e) => {
-                setUsername(e.target.value);
+            <button
+              onClick={() => {
+                setEditOptions({ ...editOptions, username: false });
+                setUsername(user.username);
               }}
-              placeholder="New Username"
-            />
+            >
+              Cancel
+            </button>
           </div>
         ) : (
-          <p></p>
+          <IconContext.Provider
+            value={{ style: { height: "20px", width: "20px" } }}
+          >
+            <AiOutlineEdit
+              onClick={() => {
+                setEditOptions({ ...editOptions, username: true });
+              }}
+            />
+          </IconContext.Provider>
+        )}
+
+        {editOptions.username ? (
+          <input
+            maxLength="22"
+            value={username}
+            onChange={(e) => {
+              setUsername(e.target.value);
+            }}
+          />
+        ) : null}
+      </div>
+
+      <div>
+        <span>Email:</span>
+        <span>{email}</span>
+        {editOptions.email ? (
+          <div>
+            <button
+              onClick={() => {
+                setEditOptions({ ...editOptions, email: false });
+                setEmail(user.email);
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+        ) : (
+          <IconContext.Provider
+            value={{ style: { height: "20px", width: "20px" } }}
+          >
+            <AiOutlineEdit
+              onClick={() => {
+                setEditOptions({ ...editOptions, email: true });
+              }}
+            />
+          </IconContext.Provider>
         )}
 
         {editOptions.email ? (
-          <div>
-            <input
-              className="slider"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
-              placeholder="New Email"
-            />
-          </div>
-        ) : (
-          <p></p>
-        )}
+          <input
+            maxLength="50"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
+          />
+        ) : null}
+      </div>
+      <div>
+        <span>Password</span>
+        <span></span>
         {editOptions.password ? (
           <div>
-            <input
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
+            <button
+              onClick={() => {
+                setEditOptions({ ...editOptions, password: false });
+                setPassword(null);
               }}
-              placeholder="New Password"
-            />
+            >
+              Cancel
+            </button>
           </div>
         ) : (
-          <p></p>
+          <IconContext.Provider
+            value={{ style: { height: "20px", width: "20px" } }}
+          >
+            <AiOutlineEdit
+              onClick={() => {
+                setEditOptions({ ...editOptions, password: true });
+              }}
+            />
+          </IconContext.Provider>
         )}
+
+        {editOptions.password ? (
+          <input
+            maxLength="30"
+            placeholder="new password"
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+          />
+        ) : null}
+      </div>
+      <div>
+        <span>Picture</span>
+        <img className="profilePicExtraLarge" src={picture} />
         {editOptions.picture ? (
           <div>
-            <Widget
-              imagesOnly="true"
-              previewStep
-              onChange={handlePicture}
-              crop="1:1"
-              publicKey={process.env.REACT_APP_UPLOADCARE_KEY}
-              id="pictureUpload"
-            />
+            <button
+              onClick={() => {
+                setEditOptions({ ...editOptions, picture: false });
+                setPicture(user.picture);
+              }}
+            >
+              Cancel
+            </button>
           </div>
         ) : (
-          <p></p>
+          <IconContext.Provider
+            value={{ style: { height: "20px", width: "20px" } }}
+          >
+            <AiOutlineEdit
+              onClick={() => {
+                setEditOptions({ ...editOptions, picture: true });
+              }}
+            />
+          </IconContext.Provider>
         )}
+
+        {editOptions.picture ? (
+          <Widget
+            imagesOnly="true"
+            previewStep
+            onChange={handlePicture}
+            crop="1:1"
+            publicKey={process.env.REACT_APP_UPLOADCARE_KEY}
+            id="pictureUpload"
+          />
+        ) : null}
       </div>
+      {success ? (
+        <span className="successContainer">
+          <span>Changes Saved!</span>
+          <button
+            onClick={() => {
+              props.closeEdit();
+            }}
+            className="successButton"
+          >
+            OK
+          </button>
+        </span>
+      ) : (
+        <button id="editProfileSaveChanges" onClick={submitChanges}>
+          Save Changes
+        </button>
+      )}
     </div>
   );
 };

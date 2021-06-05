@@ -18,7 +18,7 @@ const Dash = (props) => {
   const joinedGames = useSelector((store) => store.joinedGamesReducer);
   useEffect(() => {
     setGames(joinedGames.games);
-  }, [joinedGames]);
+  }, [joinedGames, user]);
 
   // const getGamesAndPlayers = async () => {
   //   let allGamesAndPlayers = [];

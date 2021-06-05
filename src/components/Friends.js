@@ -212,7 +212,7 @@ const Friends = (props) => {
 
                 <div>
                   <span>email: {f.email}</span>
-                  <span>Games?</span>
+                  <span>DM</span>
                 </div>
               </div>
             );

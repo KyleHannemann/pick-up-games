@@ -134,7 +134,7 @@ body {
 #websiteLogoName:hover {
   cursor: pointer;
 }
-#notiDropDown{
+#notiDropDown {
   background-color: #efe9f4;
   border-right: 2px solid black;
   border-bottom: 2px solid black;
@@ -150,35 +150,48 @@ body {
   padding-top: 50px;
   top: 0%;
   animation: myslidein 1s;
-  
 }
-#notiDropDown > button{
+
+#notiDropDown > button {
   position: absolute;
-  top: 0%;
+  color: #ee655e;
+  border: none; 
+  top: -3%;
   right: 0%;
-  width: 50px;
+  font-size: 50px;
 }
-#notiDropDown > div{
+#notiDropDown > div {
   display: flex;
   flex-direction: row;
   align-items: center;
   box-sizing: border-box;
   padding: 8px;
 }
-#notiDropDown > div > span{
+#notiDropDown > div > span {
   margin-left: 6px;
   margin-right: 6px;
 }
+#notiDropDown.notiExit{
+  animation: myslideout 1s;
+}
 @keyframes myslidein {
-  from{
+  from {
     left: -50%;
   }
-  to{
+  to {
     left: 0%;
   }
 }
-#notificationsAlerts{
-  position:absolute;
+@keyframes myslideout {
+  from {
+    left: 0%;
+  }
+  to {
+    left: -50%;
+  }
+}
+#notificationsAlerts {
+  position: absolute;
   width: 20px;
   height: 20px;
   text-align: center;
@@ -189,12 +202,13 @@ body {
   z-index: 10;
 }
 
-
 #navBar {
   z-index: 5;
   padding-left: 40px;
   box-sizing: border-box;
   padding-right: 15px;
+  padding-top: 3px;
+  padding-bottom: 3px;
   position: relative;
   top: 0%;
   width: 100%;
@@ -218,9 +232,8 @@ body {
 }
 
 .navBarLink > div:hover,
-#logout:hover, #navBarUserName:hover
- {
- 
+#logout:hover,
+#navBarUserName:hover {
   cursor: pointer;
   border-bottom: 1px solid #5fbff9;
 }
@@ -228,7 +241,6 @@ body {
 #navHamburger:hover {
   color: #5fbff9;
   cursor: pointer;
-  
 }
 .profilePicMedium {
   border-radius: 50%;
@@ -266,10 +278,42 @@ body {
   color: #efe9f4;
   display: none;
 }
+@keyframes navslidein {
+  from {
+    height: 85px;
+  }
+  to {
+    height: 250px;
+  }
+}
+@keyframes navslideout {
+  from {
+    height: fit-content
+  }
+  to {
+    height: 85px;
+  }
+}
+@keyframes showlinks {
+  0% {
+    opacity: 0;
+  }
+  100%{
+    opacity: 1;
+  }
+}
 @media (max-width: 850px) {
   #navBarPageLinks,
   #navBarAuthLinks {
     display: none;
+  }
+  #navBar{
+    padding: 4px;
+    animation: navslideup .5s;
+  }
+  #navBar.active{
+    padding: 8px;
+    animation: navslidein .5s;
   }
   #navBar {
     flex-direction: column;
@@ -284,6 +328,8 @@ body {
     justify-content: center;
     align-items: center;
     width: 100%;
+    transform: scale(1);
+    animation: showlinks .5s;
   }
   #navHamburger {
     position: absolute;
@@ -317,54 +363,152 @@ body {
   }
 }
 /*EDIT PROFILE PAGE*/
-
-#editProfileContainer {
-  height: fit-content;
-  width: 100vw;
+#closeProfileEditScreen.editExit{
+  animation: editExit 0.15s;
+}
+@keyframes successEnter{
+  0% {
+    letter-spacing: -0.5em;
+            transform: translateZ(-700px);
+    opacity: 0;
+  }
+  40% {
+    opacity: 0.6;
+  }
+  100% {
+            transform: translateZ(0);
+    opacity: 1;
+  }
+}
+.successContainer{
+  animation: successEnter .15s;
+  width: 200px;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
 }
-#chooseProfileEditOptions {
-  height: 300px;
-  width: 300px;
+.successButton{
+  padding: 12px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  border: none;
+  background-color: rgb(182, 182, 189)
+}
+#closeProfileEditScreen {
+  position: absolute;
+  animation: editEnter .15s;
+  z-index: 100;
+  left: 11vw;
+  top: 4vh;
+  font-size: 50px;
+  background-color: inherit;
+  color: #ee655e;
+  border: none;
+}
+@keyframes editEnter {
+  0% {
+    transform: rotateY(20deg) rotateX(35deg) translate(300px, -300px)
+      skew(-35deg, 10deg);
+    opacity: 0;
+  }
+  100% {
+    transform: rotateY(0) rotateX(0deg) translate(0, 0) skew(0deg, 0deg);
+    opacity: 1;
+  }
+}
+@keyframes editExit {
+  0% {
+    transform: rotateY(0) rotateX(0deg) translate(0, 0) skew(0deg, 0deg);
+
+    opacity: 1;
+  }
+  100% {
+    transform: rotateY(20deg) rotateX(35deg) translate(300px, -300px)
+      skew(-35deg, 10deg);
+
+    opacity: 0;
+  }
+}
+#editProfileContainer.editExit {
+  animation: editExit 0.15s;
+}
+#editProfileContainer {
+  position: absolute;
+  top: 5vh;
+  z-index: 60;
+  left: 10vw;
+  min-height: fit-content;
+  animation: editEnter 0.15s;
+  width: 80vw;
+  box-sizing: border-box;
+  border-radius: 6px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  border: 3px solid #171d1c;
+  background-color: #efe9f4;
+  min-width: fit-content;
+  justify-content: center;
+  align-items: center;
 }
-#chooseProfileEditOptions > div {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-}
-#chooseProfileEditOptions > div > div {
-  display: flex;
+#editProfileContainer > div {
+  box-sizing: border-box;
   width: 100%;
-  margin-top: 15px;
-  align-items: flex-end;
-  justify-content: flex-end;
-  flex-direction: row-reverse;
-}
-
-#chooseProfileEditOptions > button {
-  width: 150px;
-  height: 30px;
   background-color: #5fbff9;
-  border: 1px solid black;
-  border-radius: 3px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 18px;
+}
+@media (max-width: 500px) {
+  #editProfileContainer > div {
+    flex-direction: column;
+    height: fit-content;
+  }
+  #editProfileContainer {
+    height: fit-content !important;
+  }
+}
+#editProfileSaveChanges {
+  padding: 12px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  border: none;
+  background-color: rgb(182, 182, 189);
+}
+#editProfileSaveChanges:hover {
+  transform: scale(1.1);
+}
+#editProfileContainer > div > span:first-child {
+  font-weight: 800;
+  font-size: 18px;
+  margin-right: 12px;
+}
+#editProfileContainer > h1 {
+  margin: 0px;
+  padding: 4px;
+  box-sizing: border-box;
 }
 
-#editOptions {
-  height: 30%;
-  width: 30%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
+#editProfileContainer > div > div > button {
+  margin-left: 15px;
+  background-color: #ee655e;
+  border: none;
+  padding: 3px;
+  text-decoration: none;
+}
+.profilePicExtraLarge {
+  height: 160px;
+  width: 160px;
+  border-radius: 50%;
+  margin-right: 12px;
 }
 
 /*Create Game*/
-#createGameSuccessBox{
-  position:absolute;
+#createGameSuccessBox {
+  position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -377,23 +521,21 @@ body {
   left: 20vw;
   top: 25vh;
   border: 2px solid black;
-  background-color:#efe9f4;
-  animation: success .5s;
+  background-color: #efe9f4;
+  animation: success 0.5s;
 }
-@keyframes success{
-  from{
+@keyframes success {
+  from {
     transform: scale(0);
-    
-  } 
-  to{
+  }
+  to {
     transform: scale(1);
-   
   }
 }
-#createGameSuccessBox > h1{
+#createGameSuccessBox > h1 {
   text-align: center;
 }
-#createGameSuccessBox > div > a > button{
+#createGameSuccessBox > div > a > button {
   padding: 10px;
   border: 1px solid black;
   background-color: #5fbff9;
@@ -401,11 +543,10 @@ body {
   border-radius: 6px;
   box-shadow: 1px 1px 1px;
 }
-#createGameSuccessBox > div > a > button:hover{
+#createGameSuccessBox > div > a > button:hover {
   padding: 10px;
   border: 1px solid black;
-  background-color: #a9d8f5 ;
-  
+  background-color: #a9d8f5;
 }
 .createGameFormContainer {
   background-color: #5fbff9;
@@ -419,7 +560,7 @@ body {
   border-radius: 4px;
   margin-top: px;
 }
-#createGameSelectInvitesContainer{
+#createGameSelectInvitesContainer {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -429,7 +570,7 @@ body {
   width: 50%;
   border-radius: 4px;
 }
-#createGameSelectInvitesContainer > div{  
+#createGameSelectInvitesContainer > div {
   display: flex;
   flex-direction: row;
   box-sizing: border-box;
@@ -477,7 +618,6 @@ body {
   flex-direction: column;
   align-items: center;
   width: 100%;
-
 }
 #createGameCreateButton:hover {
   background-color: #efe9f4;
@@ -502,10 +642,9 @@ body {
   color: #efe9f4;
   padding: 3px;
 }
-#createGameFormDescription{
+#createGameFormDescription {
   height: 40px;
   text-align: left;
-  
 }
 #createGameIconSelection {
   z-index: 10;
@@ -535,16 +674,16 @@ body {
   flex-direction: column;
 }
 
-.createGameStatusBarButtons{
+.createGameStatusBarButtons {
   z-index: 5;
   border: none;
   background-color: inherit;
- position: relative;
-top: 100%;
- display: flex;
- justify-content: center;
+  position: relative;
+  top: 100%;
+  display: flex;
+  justify-content: center;
 }
-.createGameStatusBarButtons > button{
+.createGameStatusBarButtons > button {
   border: none;
   background-color: inherit;
   font-size: 22px;
@@ -559,21 +698,20 @@ top: 100%;
     display: inline-block;
     transform: skewX(150deg);
   }
-  .createGameFormContainer, .createGameReviewContainer  {
+  .createGameFormContainer,
+  .createGameReviewContainer {
     background-color: #5fbff9;
     padding: 24px 36px;
     box-shadow: 0.25px 0.25px 10px 0.25px;
     display: flex;
     width: 75vw;
-    
   }
-  
 }
 .createGameStatusBarItems {
   border: 4px double black;
   display: inline-block;
   transform: skewX(150deg);
-  transition: .25s;
+  transition: 0.25s;
 }
 .createGameStatusBarItems:hover {
   cursor: pointer;
@@ -583,9 +721,8 @@ top: 100%;
   display: inline-block;
   padding: 5px;
   transform: skewX(-150deg);
-
 }
-#createGameMapHint{
+#createGameMapHint {
   margin: 0px;
   padding: 0px;
   font-size: 16px;
@@ -603,7 +740,8 @@ top: 100%;
   width: 80vw;
 }
 /*Create game, button/slider*/
-.slider[type="checkbox"] , .sliderFriends[type="checkbox"]{
+.slider[type="checkbox"],
+.sliderFriends[type="checkbox"] {
   height: 0;
   width: 0;
   visibility: hidden;
@@ -622,8 +760,7 @@ top: 100%;
   border-radius: 100px;
   position: relative;
 }
-.sliderLabelFriends{
-
+.sliderLabelFriends {
   cursor: pointer;
   text-indent: -9999px;
   width: 60px;
@@ -693,7 +830,7 @@ top: 100%;
   margin-top: 5px;
   margin-bottom: 0%;
 }
-@media (max-width: 450px){
+@media (max-width: 450px) {
   #calendarTitle {
     font-size: 18px;
   }
@@ -766,14 +903,13 @@ top: 100%;
   background-color: coral;
   box-sizing: border-box;
 }
-#topHalfContainerProfile{
+#topHalfContainerProfile {
   background-color: cornflowerblue;
   width: 100vw;
   height: fit-content;
   box-sizing: border-box;
-  
 }
-#topHalfTopHalfProfile{
+#topHalfTopHalfProfile {
   background-color: rgb(204, 74, 187);
   width: 100vw;
   height: 160px;
@@ -784,7 +920,7 @@ top: 100%;
   flex-direction: row;
   justify-content: space-between;
 }
-#topHalfTopHalfProfile > div{
+#topHalfTopHalfProfile > div {
   box-sizing: border-box;
   width: 33%;
   display: flex;
@@ -793,59 +929,53 @@ top: 100%;
   align-items: center;
   padding: 4px;
   background-color: crimson;
-
 }
-#topHalfTopHalfProfile > div >div{
+#topHalfTopHalfProfile > div > div {
   box-sizing: border-box;
-  
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  
-
 }
-.friendActionButtons{
+.friendActionButtons {
   display: flex;
   width: 100%;
   flex-direction: row;
   justify-content: space-evenly;
   background-color: darkgoldenrod;
 }
-.friendActionButtons > button{
+.friendActionButtons > button {
   width: 75px;
   padding: 8px;
   box-sizing: border-box;
   border-radius: 3px;
   box-shadow: 1px 1px 1px 1px;
   border: none;
-  height: 35px; 
+  height: 35px;
 }
-#declineFriendRequest{
-   background-color: #D52217;
+#declineFriendRequest {
+  background-color: #d52217;
 }
-.posFriendRequest{
-   background-color: #228209;
+.posFriendRequest {
+  background-color: #228209;
 }
-#topHalfTopHalfProfile > div > img{
+#topHalfTopHalfProfile > div > img {
   height: 150px;
   width: 150px;
   border-radius: 50%;
-
 }
-#topHalfTopHalfProfile > div > h1{ 
+#topHalfTopHalfProfile > div > h1 {
   margin: 0px;
-
 }
 
-#bottomHalfTopHalfProfil{
+#bottomHalfTopHalfProfil {
   background-color: rgb(125, 190, 4);
   width: 100vw;
   height: 100px;
   box-sizing: border-box;
-
 }
-#bottomHalfContainerProfile{
+#bottomHalfContainerProfile {
   background-color: teal;
   width: 100vw;
   box-sizing: border-box;
@@ -855,16 +985,14 @@ top: 100%;
   flex-direction: row;
   padding-left: 10px;
   padding-right: 10px;
-
 }
-#bottomHalfGamesContainerProfile{
+#bottomHalfGamesContainerProfile {
   box-sizing: border-box;
   width: 66%;
   height: 100%;
   background-color: tomato;
-
 }
-#bottomHalfGamesContainerProfile{
+#bottomHalfGamesContainerProfile {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -873,9 +1001,8 @@ top: 100%;
   width: 66%;
   height: 100%;
   background-color: tomato;
-
 }
-#bottomHalfGamesContainerProfile > div{
+#bottomHalfGamesContainerProfile > div {
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
@@ -885,24 +1012,20 @@ top: 100%;
   padding: 12px;
   background-color: turquoise;
   margin-bottom: 10px;
-
 }
-#bottomHalfGamesContainerProfile > div > a > img{
+#bottomHalfGamesContainerProfile > div > a > img {
   box-sizing: border-box;
   width: 40px;
   height: 40px;
-
 }
-#bottomHalfGamesContainerProfile > div > a{
+#bottomHalfGamesContainerProfile > div > a {
   text-decoration: none;
-
 }
-#bottomHalfGamesContainerProfile > div > a > span{
+#bottomHalfGamesContainerProfile > div > a > span {
   color: black;
   font-size: 22px;
-
 }
-#bottomHalfFriendsContainerProfile{
+#bottomHalfFriendsContainerProfile {
   box-sizing: border-box;
   overflow: scroll;
   display: flex;
@@ -911,9 +1034,8 @@ top: 100%;
   width: 33%;
   height: 100%;
   background-color: thistle;
-
 }
-#bottomHalfFriendsContainerProfile > div{
+#bottomHalfFriendsContainerProfile > div {
   width: 100%;
   padding: 8px;
   box-sizing: border-box;
@@ -922,12 +1044,10 @@ top: 100%;
   justify-content: flex-start;
   flex-direction: row;
   background-color: rgb(155, 43, 145);
-
 }
-#bottomHalfFriendsContainerProfile > div > span{
+#bottomHalfFriendsContainerProfile > div > span {
   margin-left: 5px;
   margin-right: 5px;
-
 }
 
 /*Game Page*/
@@ -973,7 +1093,8 @@ top: 100%;
     margin-top: 40px;
     padding: 6px;
   }
-  #gamePageGameDets > div > button, #gamePageGameDets > div > a{
+  #gamePageGameDets > div > button,
+  #gamePageGameDets > div > a {
     text-decoration: none;
     background-color: #5fbff9;
     width: 100px !important;
@@ -1043,7 +1164,7 @@ top: 100%;
   justify-content: space-between;
   align-items: flex-start;
 }
-#gamePageGameDets > div >img {
+#gamePageGameDets > div > img {
   height: 50px;
   width: 50px;
 }
@@ -1183,7 +1304,7 @@ top: 100%;
   font-size: 1rem;
   width: 100%;
 }
-.mapInfoWindow{
+.mapInfoWindow {
   display: flex;
   min-height: fit-content;
   width: 200px;
@@ -1191,9 +1312,8 @@ top: 100%;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  
 }
-.mapInfoWindow > div{
+.mapInfoWindow > div {
   width: 100%;
   display: flex;
   box-sizing: border-box;
@@ -1202,26 +1322,25 @@ top: 100%;
   align-items: center;
   margin-bottom: 14px;
 }
-.mapInfoWindow > a > button{
-  
+.mapInfoWindow > a > button {
   background-color: #5fbff9;
   width: 100px;
   padding: 8px;
   border: none;
   border-radius: 4px;
-  border: 1px solid black
+  border: 1px solid black;
 }
 /*Friends Page*/
 
-#friendsPageContainer{
+#friendsPageContainer {
   width: 100vw;
   display: flex;
   height: fit-content;
   flex-direction: column;
   align-items: center;
 }
-@media (max-width: 650px){
-  .friendsPageFriendBox{
+@media (max-width: 650px) {
+  .friendsPageFriendBox {
     width: 300px !important;
     border: 1px solid black;
     box-sizing: border-box;
@@ -1237,7 +1356,7 @@ top: 100%;
     flex-direction: column !important;
   }
 }
-.friendsPageFriendsContainer{
+.friendsPageFriendsContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1247,7 +1366,7 @@ top: 100%;
   box-sizing: border-box;
   width: 100%;
 }
-.friendsPageFriendBox{
+.friendsPageFriendBox {
   width: 600px;
   border: 1px solid black;
   box-sizing: border-box;
@@ -1261,30 +1380,27 @@ top: 100%;
   grid-template-columns: 1fr 2fr 2fr;
   grid-template-rows: 1fr;
 }
-.friendsPageFriendBox > div > h2{
+.friendsPageFriendBox > div > h2 {
   text-align: center;
   text-decoration: none;
   color: black;
-
 }
-.friendsPageFriendBox > a{
-
+.friendsPageFriendBox > a {
   text-decoration: none;
 }
-.friendsPageFriendBox > div{
+.friendsPageFriendBox > div {
   display: flex;
   flex-direction: column;
   height: 100%;
   align-items: center;
 }
-.friendsPageFriendBox > div > div > div{
+.friendsPageFriendBox > div > div > div {
   display: flex;
   flex-direction: row;
-  
-  
+
   justify-content: space-evenly;
 }
-.friendsPageFriendBox > div > div{
+.friendsPageFriendBox > div > div {
   display: flex;
   flex-direction: row;
   margin-top: 4px;
@@ -1293,21 +1409,20 @@ top: 100%;
   overflow: scroll;
   justify-content: space-evenly;
 }
-.friendsPageFriendBox > div > div > div > img{
+.friendsPageFriendBox > div > div > div > img {
   height: 25px;
   width: 25px;
   border-radius: 50%;
 }
-#friendsPageSearchContainer{
+#friendsPageSearchContainer {
   margin-top: 5px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
 }
-#friendsPageSearchContainer > span{
+#friendsPageSearchContainer > span {
   margin-left: 5px;
-  
+
   font-size: 18px;
 }
-

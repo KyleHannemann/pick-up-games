@@ -8,6 +8,7 @@ import { FaRegHandshake } from "react-icons/fa";
 import { IconContext } from "react-icons";
 import DatePicker from "react-date-picker";
 import TimePicker from "react-time-picker";
+import EditProfile from './EditProfile';
 const User = (props) => {
   const { socket } = useSelector((store) => store.socketReducer);
   const { user } = useSelector((store) => store.auth);
@@ -25,6 +26,10 @@ const User = (props) => {
   const [ownProfile, setOwnProfile] = useState(false);
   const [friendSql, setFriendSql] = useState(null);
   const [thisUserFriends, setThisUserFriends] = useState([]);
+
+  //edit own profile
+  const [edit, setEdit] = useState(false);
+
 
   useEffect(() => {
     if (!user) {
@@ -79,6 +84,9 @@ const User = (props) => {
   }, [props.match.params.userId, user]);
 
   useEffect(() => {
+    if (!user){
+      return
+    }
     axios
       .get(`/users/${userId}`)
       .then((res) => {
@@ -165,6 +173,33 @@ const User = (props) => {
 
   return (
     <div>
+      {edit ? <div id="userPageEditProfileFauxContainer">
+        <button id="closeProfileEditScreen"onClick={ async ()=>{
+          await document.getElementById("editProfileContainer").classList.add("editExit")
+          await document.getElementById("closeProfileEditScreen").classList.add("editExit")
+          setTimeout( async ()=>{
+            await document.getElementById("editProfileContainer").classList.remove("editExit")
+            await document.getElementById("closeProfileEditScreen").classList.remove("editExit")
+
+            setEdit(false)
+
+          }, 150)
+          
+        }}>&#215;</button>
+        <EditProfile closeEdit={ async ()=>{
+          await document.getElementById("editProfileContainer").classList.add("editExit")
+          await document.getElementById("closeProfileEditScreen").classList.add("editExit")
+          setTimeout( async ()=>{
+            await document.getElementById("editProfileContainer").classList.remove("editExit")
+            await document.getElementById("closeProfileEditScreen").classList.remove("editExit")
+
+            setEdit(false)
+
+          }, 100)
+          
+        }}/>
+        
+      </div>: null}
       {userProfile ? (
         <div id="userProfilePageContainer">
           <div id="topHalfContainerProfile">
@@ -193,8 +228,11 @@ const User = (props) => {
                   <span>Edit</span>
                   <IconContext.Provider
                     value={{ style: { height: "50px", width: "50px" } }}
-                  >
+                  ><a onClick={()=>{
+                    setEdit(true)
+                  }} >
                     <AiOutlineEdit />
+                    </a>
                   </IconContext.Provider>{" "}
                 </div>
               ) : (

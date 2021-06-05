@@ -74,8 +74,8 @@ function App(props) {
         if (res.status === 200) {
           props.setUser(res.data);
           console.log("user", res.data)
-          
-          //history.push('/dash')
+          console.log(history)
+          history.push('/dash')
           return;
         } else {
           console.log("no user");

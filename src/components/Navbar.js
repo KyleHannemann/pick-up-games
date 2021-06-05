@@ -157,7 +157,7 @@ const Navbar = () => {
           </div>
           <div id="navBarAuthLinks">
             <Link className="navBarLink" onClick={linkClick} to="/edit/profile">
-              <div>Edit Profile</div>
+              <div>settings</div>
             </Link>
             <div id="logout" onClick={logout}>
               Logout
@@ -171,11 +171,16 @@ const Navbar = () => {
       {notiDropDown ? (
         <div id="notiDropDown">
           <button
-            onClick={() => {
-              setNotiDropDown(false);
+            onClick={async() => {
+              await document.getElementById("notiDropDown").classList.add("notiExit")
+              setTimeout( async ()=>{
+                await document.getElementById("notiDropDown").classList.remove("notiExit")
+                setNotiDropDown(false);
+
+              }, 1000)
             }}
           >
-            X
+            &#215;
           </button>
           {notifications ? (
             notifications.map((n) => {
