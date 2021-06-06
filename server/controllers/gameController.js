@@ -12,7 +12,6 @@ module.exports = {
       description,
       maxPlayers,
     } = req.body;
-    console.log(req.session.user.user_id);
     db.game
       .create_game([
         title,
@@ -29,7 +28,6 @@ module.exports = {
         maxPlayers,
       ])
       .then((data) => {
-        console.log(data);
         db.game
           .join_game([data[0].game_id, req.session.user.user_id])
           .then(() => {
@@ -60,7 +58,6 @@ module.exports = {
   getPlayers: (req, res) => {
     const db = req.app.get("db");
     const { gameId } = req.params;
-    console.log(gameId);
     db.game
       .get_players(gameId)
       .then((data) => {

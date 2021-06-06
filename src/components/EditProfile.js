@@ -65,6 +65,9 @@ const EditProfile = (props) => {
         handleSuccess()
       })
       .catch((err) => {
+        if (err.status === 409){
+          alert("email already in use")
+        }
         console.log(err);
         alert("update failed");
       });

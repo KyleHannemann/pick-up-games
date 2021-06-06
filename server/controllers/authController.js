@@ -101,7 +101,17 @@ module.exports = {
   edit: async (req, res) => {
     const db = req.app.get("db");
     const { username, password, email, picture } = req.body;
-    const [user] = await db.auth.get_user(email);
+    const [user] = await db.auth.get_user(req.session.user.email);
+    const [checkEmail] =  await db.auth.get_user(req.session.user.email);
+    if (checkEmail){
+      console.log(checkEmail.email)
+      console.log(user.email)
+      if (checkEmail.email !== user.email){
+
+      return res.status(409).send("email in use")
+      }
+    }
+    
     let updatedPassword;
     if (password === null) {
       updatedPassword = user.password;

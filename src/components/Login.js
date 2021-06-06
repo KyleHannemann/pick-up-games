@@ -80,6 +80,7 @@ const Login = (props) => {
   };
   return (
     <div id="authContainer">
+      
       {register ? (
         //register
         <form id="register">

@@ -375,12 +375,13 @@ const User = (props) => {
                 <h2>{userProfile.username} has {joinedGames
                   .filter((game) => {
                     let today = new Date();
-                    let comp = new Date(game.date);
-                    console.log(game);
-                    if (comp >= today) {
-                      console.log("dasfjldsafj");
-                      return game;
-                    }
+       
+              let comp = new Date(game.date);
+              let time = game.time.split(":")
+              comp.setHours(time[0], time[1])
+              if (comp >= today) {
+                return game;
+              }
                   }).length} games scheduled</h2>
                 {joinedGames
                   .filter((game) => {

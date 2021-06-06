@@ -1215,16 +1215,15 @@ body {
   }
   #gamePageGameDets > div > button,
   #gamePageGameDets > div > a {
+    margin-bottom: 8px;
     text-decoration: none;
     background-color: #5fbff9;
     width: 100px !important;
     padding: 3px;
-    box-shadow: 1px 1px 1px;
     box-sizing: border-box;
     text-align: center;
     color: black;
     border-radius: 3px;
-    border: 1px solid black;
     font-size: 12px !important;
   }
 }
@@ -1277,9 +1276,8 @@ body {
 
 #gamePageGameDets {
   width: 100%;
-  height: 25%;
+  height: 30%;
   display: flex;
-
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
@@ -1311,13 +1309,13 @@ body {
   background-color: #5fbff9;
   width: 150px;
   padding: 6px;
-  box-shadow: 1px 1px 1px;
+  border: none;
   box-sizing: border-box;
   text-align: center;
   color: black;
   border-radius: 3px;
-  border: 1px solid black;
   font-size: 14px;
+  margin-top: 10px;
 }
 
 #gamePagePlayerContainer > h3 {
@@ -1344,11 +1342,10 @@ body {
 }
 #gameCommentSendButton {
   margin-right: 2px;
-  box-shadow: 1px 1px 1px;
   background-color: #5fbff9;
-  border: 1px solid black;
   border-radius: 2px;
   width: 75px;
+  border: none;
   padding: 3px;
   color: black;
 }
@@ -1356,12 +1353,11 @@ body {
   background-color: #f15252;
   margin-left: 5px;
   padding-top: 3px;
-  padding-bottom: 3px;
+  padding-bottom: 2px;
   padding-left: 5px;
   padding-right: 5px;
-  box-shadow: 1px 1px 1px;
-  border: 1px solid black;
   border-radius: 2px;
+  border: none;
   color: black;
 }
 #gameCommentButtonsContainer {
@@ -1427,15 +1423,19 @@ body {
 .mapInfoWindow {
   display: flex;
   min-height: fit-content;
+  z-index: 100;
   width: 200px;
+  padding: 6px;
   box-sizing: border-box;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding-bottom: 18px;
 }
 .mapInfoWindow > div {
   width: 100%;
   display: flex;
+  z-index: 100;
   box-sizing: border-box;
   flex-direction: row;
   justify-content: space-evenly;
@@ -1448,7 +1448,7 @@ body {
   padding: 8px;
   border: none;
   border-radius: 4px;
-  border: 1px solid black;
+  
 }
 /*Friends Page*/
 

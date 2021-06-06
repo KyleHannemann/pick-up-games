@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Map from "./Map";
 import axios from "axios";
+import {addGamesRed} from "../redux/joinedGamesReducer";
 import DatePicker from "react-date-picker";
 import TimePicker from "react-time-picker";
 import {Link} from 'react-router-dom';
@@ -15,7 +16,7 @@ const CreateGame = (props) => {
   const { location } = useSelector((store) => store.createGameReducer);
   const {user} = useSelector((store)=>store.auth);
   const {socket} = useSelector((store)=>store.socketReducer);
-  
+  const dispatch = useDispatch()
   if(!user){
     props.history.push('/')
   }
@@ -78,7 +79,7 @@ const CreateGame = (props) => {
       title: title,
       icon: icon,
       public: publicGame,
-      date: date,
+      date: "" + date,
       time: time,
       description: description,
       maxPlayers: maxPlayers,
@@ -96,6 +97,7 @@ const CreateGame = (props) => {
       .post("/game/create", createdGame)
       .then((res) => {
         console.log(res);
+        dispatch(addGamesRed(res.data));
         setSuccess(true)
         setCreatedGameId(res.data.game_id)
         let finalInvites;

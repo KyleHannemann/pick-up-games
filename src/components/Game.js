@@ -175,12 +175,7 @@ const Game = (props) => {
           <div id="gamePageGameContainer">
             <div id="gamePageGameDets">
               <div>
-                <DatePicker
-                  clearIcon={false}
-                  calendarIcon={false}
-                  disabled={true}
-                  value={game.date}
-                />
+                <div>{game.date.slice(0, game.date.indexOf("00:"))}</div>
                 <TimePicker
                   clearIcon={false}
                   clockIcon={false}
