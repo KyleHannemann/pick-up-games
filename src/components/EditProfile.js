@@ -76,7 +76,6 @@ const EditProfile = (props) => {
       <h1>Edit Profile</h1>
       <div>
         <span>UserName:</span>
-        <span>{username}</span>
         {editOptions.username ? (
           <div>
             <button
@@ -109,11 +108,11 @@ const EditProfile = (props) => {
             }}
           />
         ) : null}
+        <span>{username}</span>
       </div>
 
       <div>
         <span>Email:</span>
-        <span>{email}</span>
         {editOptions.email ? (
           <div>
             <button
@@ -146,6 +145,7 @@ const EditProfile = (props) => {
             }}
           />
         ) : null}
+        <span>{email}</span>
       </div>
       <div>
         <span>Password</span>

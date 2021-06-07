@@ -209,6 +209,12 @@ const Game = (props) => {
               game.creator === user.user_id ? (
                 <div>
                   <p>{game.address}</p>
+                  {joined ? (
+                    <button onClick={leaveGame}>leave game</button>
+                  ) : null}
+                  {!joined && game.max_players > game.players.length ? (
+                    <button onClick={joinGame}>join game</button>
+                  ) : joined ? null : <div style={{color: "red", fontSize: "24px"}}>This Game Is Full</div>}
                   <a
                     onClick={() => {
                       window.open(
@@ -219,12 +225,7 @@ const Game = (props) => {
                     get directions
                   </a>
 
-                  {joined ? (
-                    <button onClick={leaveGame}>leave game</button>
-                  ) : null}
-                  {!joined && game.max_players > game.players.length ? (
-                    <button onClick={joinGame}>join game</button>
-                  ) : null}
+                 
                 </div>
               ) : null}
             </div>
@@ -435,7 +436,7 @@ const Game = (props) => {
                               }}
                             >
                               <span style={{ marginRight: "8px" }}>
-                                *befriend{" "}
+                                *Only friends of 
                               </span>
                               <Link
                                 style={{
@@ -457,7 +458,7 @@ const Game = (props) => {
                               </Link>{" "}
                               <span style={{ marginLeft: "8px" }}>
                                 {" "}
-                                to join
+                                can join this game
                               </span>
                             </div>
                           );

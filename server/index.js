@@ -82,9 +82,11 @@ io.on('connection', (socket)=>{
       console.log(body);
       const {invites, game_id, username, user_id, picture} = body;
       for (let i = 0; i < invites.length; i++){
+        if (parseInt(invites[i]) !== parseInt(user_id)){
          const noti = await db.users.add_notification([parseInt(invites[i]),
         "invited you to a game", game_id, user_id, username, picture] )
         io.emit("notification", noti)
+        }
       }
     
     });

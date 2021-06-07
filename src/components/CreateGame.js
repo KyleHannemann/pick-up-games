@@ -392,7 +392,7 @@ const CreateGame = (props) => {
             </div>
             </div>
             <div>
-            <div>Public <span style={{fontSize: "8px"}}>*anyone can join</span></div>
+            <div>Public <span style={{fontSize: "10px"}}>*anyone can join</span></div>
 
               <input
                 className="slider"

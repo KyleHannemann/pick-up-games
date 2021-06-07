@@ -51,13 +51,13 @@ const Navbar = () => {
     }
   };
   const linkClick = (e) => {
-    document.getElementById("navBarUserName").style.color = "white"
+    document.getElementById("navBarUserName").style.color = "white";
 
-    let links = Array.from(document.querySelectorAll('.navBarLink > div'))
-    for (let i = 0; i < links.length; i++){
-      links[i].style.color = "white"
+    let links = Array.from(document.querySelectorAll(".navBarLink > div"));
+    for (let i = 0; i < links.length; i++) {
+      links[i].style.color = "white";
     }
-    e.target.style.color = "#5fbff9"
+    e.target.style.color = "#5fbff9";
     if (navDrop === false) {
       return;
     }
@@ -65,8 +65,9 @@ const Navbar = () => {
   };
 
   const handleNotificationRemoval = (e) => {
-    console.log(e.target.value);
-    setNotiDropDown(false);
+    if (e.target.dataset.id === "view"){
+      setNotiDropDown(false);
+    }
     dispatch(removeNotification(parseInt(e.target.value)));
     axios
       .delete(`/users/notifications/delete/${e.target.value}`)
@@ -99,7 +100,6 @@ const Navbar = () => {
                 className="notiAnimation"
                 onClick={() => {
                   setNotiDropDown(true);
-
                 }}
               >
                 <IconContext.Provider
@@ -129,13 +129,19 @@ const Navbar = () => {
 
           <div
             onClick={() => {
-              let links = Array.from(document.querySelectorAll('.navBarLink > div'))
-    for (let i = 0; i < links.length; i++){
-      links[i].style.color = "white"
-    }
-    document.getElementById("navBarUserName").style.color = "#5fbff9"
-              navDropDown();
+              let links = Array.from(
+                document.querySelectorAll(".navBarLink > div")
+              );
+              for (let i = 0; i < links.length; i++) {
+                links[i].style.color = "white";
+              }
+              document.getElementById("navBarUserName").style.color = "#5fbff9";
+
               history.push(`/users/${user.user_id}`);
+              if (navDrop === false) {
+                return;
+              }
+              navDropDown();
             }}
             id="navBarUserInfo"
           >
@@ -159,9 +165,10 @@ const Navbar = () => {
             </Link>
           </div>
           <div id="navBarAuthLinks">
-            <Link className="navBarLink" onClick={linkClick} to="/edit/profile">
+            {/* <Link className="navBarLink" onClick={linkClick} to="/edit/profile">
               <div>settings</div>
-            </Link>
+            </Link> */}
+            <div></div>
             <div id="logout" onClick={logout}>
               Logout
             </div>
@@ -174,16 +181,19 @@ const Navbar = () => {
       {notiDropDown ? (
         <div id="notiDropDown">
           <button
-            onClick={async() => {
-              await document.getElementById("notiDropDown").classList.add("notiExit")
-              setTimeout( async ()=>{
-                await document.getElementById("notiDropDown").classList.remove("notiExit")
+            onClick={async () => {
+              await document
+                .getElementById("notiDropDown")
+                .classList.add("notiExit");
+              setTimeout(async () => {
+                await document
+                  .getElementById("notiDropDown")
+                  .classList.remove("notiExit");
                 setNotiDropDown(false);
-
-              }, 1000)
+              }, 1000);
             }}
           >
-            &#215;
+            &#x2715;
           </button>
           {notifications ? (
             notifications.map((n) => {
@@ -197,23 +207,41 @@ const Navbar = () => {
                     {n.user_interaction_username + " " + n.description}
                   </span>
                   {n.description === "invited you to a game" ? (
-                    <Link to={`/game/${n.game_id}`}>
+                    <div className="notiDropDownButtons">
+                      <Link to={`/game/${n.game_id}`}>
+                        <button  data-id="view"
+                          value={n.notification_id}
+                          onClick={handleNotificationRemoval}
+                        >
+                          view
+                        </button>
+                      </Link>
                       <button
-                        value={n.notification_id}
+                        data-id="delete"
                         onClick={handleNotificationRemoval}
+                        value={n.notification_id}
                       >
-                        view
+                        &#x2715;
                       </button>
-                    </Link>
+                    </div>
                   ) : (
-                    <Link to={`/users/${n.user_interaction_id}`}>
+                    <div className="notiDropDownButtons">
+                      <Link to={`/users/${n.user_interaction_id}`}>
+                        <button data-id="view"
+                          value={n.notification_id}
+                          onClick={handleNotificationRemoval}
+                        >
+                          view
+                        </button>
+                      </Link>
                       <button
-                        value={n.notification_id}
+                        data-id="delete"
                         onClick={handleNotificationRemoval}
+                        value={n.notification_id}
                       >
-                        view
+                        &#x2715;
                       </button>
-                    </Link>
+                    </div>
                   )}
                 </div>
               );

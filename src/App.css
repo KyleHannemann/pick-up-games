@@ -10,6 +10,35 @@ body {
 }
 /*AUTH PAGE*/
 
+@keyframes loginani{
+  0%{
+    transform: rotate(0deg);
+    opacity: .2;
+  }
+  100%{
+    transform: rotate(359deg);
+    opacity: 1;
+  }
+ 
+}
+@keyframes loginsuccess{
+  0%{
+    transform: scale(.5);
+  }
+  100%{
+    transform: scale(1);
+  }
+}
+
+#loginSuccess{
+  text-align: center;
+  animation: loginsuccess .5s;
+}
+#loginPic.active{
+  animation: loginani 2s infinite linear;
+  border: none !important;
+  background-color: inherit !important;
+}
 .uploadcare--jcrop-holder > div > div {
   border-radius: 50%;
 }
@@ -65,7 +94,7 @@ body {
   height: 40px;
 
   box-sizing: border-box;
-  border-radius: 3px;
+  border-radius: 8px;
   text-align: center;
   padding: 8px;
   color: #efe9f4;
@@ -174,7 +203,7 @@ body {
   background-color: #efe9f4;
   border-right: 2px solid black;
   border-bottom: 2px solid black;
-  width: 33vw;
+  width: 250px;
   min-width: fit-content;
   height: 100vh;
   z-index: 25;
@@ -183,8 +212,9 @@ body {
   display: flex;
   flex-direction: column;
   padding: 6px;
-  padding-top: 50px;
-  top: 0%;
+  padding-top: 18px;
+  border-radius: 6px;
+  top: 0px;
   animation: myslidein 1s;
 }
 
@@ -192,22 +222,50 @@ body {
   position: absolute;
   color: #ee655e;
   border: none;
+  border-radius: 6px;
   background-color: inherit; 
-  top: -3%;
+  border-radius: 6px;
+  box-sizing: border-box;
+  top: 0px;
   right: 0%;
-  font-size: 35px;
+  padding-top: 0px;
+  margin-top: 0px;
+  font-size: 20px;
 }
 #notiDropDown > div {
   display: flex;
   flex-direction: row;
+  border-bottom: 1px solid black;
   align-items: center;
   box-sizing: border-box;
   padding: 8px;
 }
+.notiDropDownButtons {
+  width: 75px;
+  display: flex;
+  justify-content: space-between;
+}
+.notiDropDownButtons > a > button {
+  border: none;
+  background-color: #5fbff9;
+  padding: 6px;
+  border-radius: 4px;
+}
+.notiDropDownButtons > button {
+  border: none;
+  color: white;
+  background-color: #ee655e;
+  border-radius: 4px;
+  font-size: 14px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
 #notiDropDown > div > span {
   margin-left: 6px;
+  font-size: 12px;
   margin-right: 6px;
 }
+
 #notiDropDown.notiExit{
   animation: myslideout 1s;
 }
@@ -283,6 +341,7 @@ body {
   border-radius: 50%;
   height: 60px;
   width: 60px;
+  background-color: #efe9f4;
 }
 .profilePicSmall {
   border-radius: 50%;
@@ -523,6 +582,11 @@ body {
   font-size: 18px;
   margin-right: 12px;
 }
+#editProfileContainer > div > input {
+  
+  margin-right: 12px;
+}
+
 #editProfileContainer > h1 {
   margin: 0px;
   padding: 4px;
@@ -588,7 +652,6 @@ body {
 .createGameFormContainer {
   background-color: #5fbff9;
   padding: 24px 36px;
-  box-shadow: 0.25px 0.25px 10px 0.25px;
   display: flex;
   width: 45vw;
   flex-direction: column;
@@ -1494,7 +1557,7 @@ body {
   padding: 0.5rem;
   font-size: 1rem;
   background-color: white;
-  width: 150px;
+  width: 200px;
 }
 .mapInfoWindow {
   display: flex;
@@ -1531,7 +1594,8 @@ body {
 #friendsPageContainer {
   width: 100vw;
   display: flex;
-  height: fit-content;
+  height: 90vh;
+  overflow: scroll;
   flex-direction: column;
   align-items: center;
 }
@@ -1591,17 +1655,26 @@ body {
 .friendsPageFriendBox > div > div > div {
   display: flex;
   flex-direction: row;
-
-  justify-content: space-evenly;
+  box-sizing: content-box;
+  width: 100%;
+  margin-bottom: 6px;
+  background-color:#5fbff9;
+  margin-top: 6px;
+  justify-content: flex-start;
+}
+.friendsPageFriendBox > div > div > div:nth-child(even){
+  background-color: lightgray;
 }
 .friendsPageFriendBox > div > div {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  align-items: flex-start;
   margin-top: 4px;
-  height: 100%;
-  width: 100%;
+  border: 1px solid black;
+  border-radius: 6px;
+  height: 100px;
+  width: 175px;
   overflow: scroll;
-  justify-content: space-evenly;
 }
 .friendsPageFriendBox > div > div > div > img {
   height: 25px;

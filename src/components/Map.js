@@ -147,9 +147,9 @@ const Map = (props) => {
         {props.createGame ? null : (
           <div id="mapSetFilter">
             <span>
-              <span>
+              <span>Between Dates: {" "}
                 {filterBy.startDate === null
-                  ? "Any Day"
+                  ? "Any"
                   : filterBy.startDate
                       .toString()
                       .slice(
@@ -158,7 +158,7 @@ const Map = (props) => {
                       )}{" "}
                 -{" "}
                 {filterBy.endDate === null
-                  ? "Any Day"
+                  ? "Any"
                   : filterBy.endDate
                       .toString()
                       .slice(0, filterBy.endDate.toString().indexOf("00:"))}
@@ -171,8 +171,9 @@ const Map = (props) => {
                 Filter <span style={{fontSize: "10px"}}>&#9660;</span> 
               </button>{" "}
               <span>
+                Between Times: {"  "}
                 {filterBy.startTime === null
-                  ? "Any Time"
+                  ? "Any"
                   : filterBy.startTime
                       .toString()
                       .split(":")
@@ -198,7 +199,7 @@ const Map = (props) => {
                       .join("")}{" "}
                 -{" "}
                 {filterBy.endTime === null
-                  ? "Any Time"
+                  ? "Any"
                   : filterBy.endTime
                       .toString()
                       .split(":")
@@ -380,7 +381,7 @@ const Map = (props) => {
                   disabled={true}
                 />
               </div>
-              <div>{selected.players.length < selected.max_players? selected.players.length + " Players": "Game Full"}</div>
+              <div>{selected.players.length < selected.max_players? selected.players.length + " Players": <span style={{color: "red", borderBottom: "1px solid red"}}>This Game Is Full</span>}</div>
 
               <Link to={`/game/${selected.game_id}`}>
                 <button>game page</button>
