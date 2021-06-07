@@ -1242,6 +1242,7 @@ body {
 }
 #gamePagePlayerContainer {
   float: right;
+  min-height: fit-content;
   height: 100vh;
   margin-left: 1%;
   box-sizing: border-box;

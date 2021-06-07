@@ -11,8 +11,6 @@ import EditProfile from "./EditProfile";
 const User = (props) => {
   const { socket } = useSelector((store) => store.socketReducer);
   const { user } = useSelector((store) => store.auth);
-  console.log(user);
-  const dispatch = useDispatch();
   //display user details,
   //if user = user display edit options
 
@@ -28,10 +26,13 @@ const User = (props) => {
 
   //edit own profile
   const [edit, setEdit] = useState(false);
-
+  useEffect(()=>{
+    console.log("is is changing" ,props.match.params.userId)
+  }, [props.match.params.userId])
   useEffect(() => {
     console.log("user check", user);
     if (!user) {
+      console.log("how?")
       return;
     }
     axios
@@ -43,13 +44,13 @@ const User = (props) => {
       .catch((err) => {
         console.log(err);
       });
-    console.log(props.match.params.userId);
     if (parseInt(user.user_id) === parseInt(props.match.params.userId)) {
       setOwnProfile(true);
       return;
     } else {
       setOwnProfile(false);
     }
+    setFriends(false);
     for (let i = 0; i < user.friends.length; i++) {
       if (
         parseInt(user.friends[i].friend_id) ===
@@ -444,7 +445,7 @@ const User = (props) => {
                   }
                   return (
                     <div>
-                      <Link to={`users/${el.user_id}`}>
+                      <Link to={`/users/${el.user_id}`}>
                         <img className="profilePicSmall" src={el.picture} />
                       </Link>
                       <span>{el.username}</span>

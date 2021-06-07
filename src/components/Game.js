@@ -219,27 +219,16 @@ const Game = (props) => {
                     get directions
                   </a>
 
-                  {joined && game.max_players < game.players ? (
+                  {joined ? (
                     <button onClick={leaveGame}>leave game</button>
                   ) : null}
-                  {!joined && game.max_players < game.players ? (
+                  {!joined && game.max_players > game.players.length ? (
                     <button onClick={joinGame}>join game</button>
                   ) : null}
                 </div>
               ) : null}
             </div>
-            {(game.public ||
-              user.friends.filter((f) => {
-                if (
-                  game.creator === f.friendInfo.user_id &&
-                  f.accepted === true
-                ) {
-                  return f;
-                }
-                return null;
-              }).length > 0 ||
-              game.creator === user.user_id) &&
-            joined ? (
+            {joined ? (
               <div id="gamePageChatContainer">
                 <input
                   value={newComment}
@@ -386,7 +375,18 @@ const Game = (props) => {
                   );
                 })}
               </div>
-            ) : (
+            ) : null}
+            {(!joined && !game.public &&
+              user.friends.filter((f) => {
+                if (
+                  game.creator === f.friendInfo.user_id &&
+                  f.accepted === true
+                ) {
+                  return f;
+                }
+                return null;
+              }).length === 0 &&
+              game.creator !== user.user_id) ? 
               <div>
                 {user.friends.filter((f) => {
                   if (
@@ -445,7 +445,7 @@ const Game = (props) => {
                                   justifyContent: "center",
                                   alignItems: "center",
                                 }}
-                                to={`users/${p.user_id}`}
+                                to={`/users/${p.user_id}`}
                               >
                                 <span style={{ marginRight: "8px" }}>
                                   {p.username}
@@ -467,8 +467,8 @@ const Game = (props) => {
                     </div>
                   </div>
                 )}
-              </div>
-            )}
+              </div> : null}
+            
           </div>
           <div id="gamePagePlayerContainer">
             {game.max_players === 1000 ? (
