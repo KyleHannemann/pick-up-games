@@ -101,14 +101,13 @@ module.exports = {
   edit: async (req, res) => {
     const db = req.app.get("db");
     const { username, password, email, picture } = req.body;
+    console.log(req.body)
     const [user] = await db.auth.get_user(req.session.user.email);
-    const [checkEmail] =  await db.auth.get_user(req.session.user.email);
+    const [checkEmail] =  await db.auth.get_user(email);
     if (checkEmail){
-      console.log(checkEmail.email)
-      console.log(user.email)
       if (checkEmail.email !== user.email){
-
-      return res.status(409).send("email in use")
+        console.log('email in use')
+        return res.status(409).send("email in use")
       }
     }
     
@@ -129,6 +128,22 @@ module.exports = {
 
     delete updatedUser.password;
     req.session.user = updatedUser
+    const friends = await db.users.get_friends(req.session.user.user_id);
+    
+    
+    for (let i = 0; i < friends.length; i++){
+      let query = friends[i].user_id
+        if (friends[i].user_id === req.session.user.user_id){
+          query = friends[i].friend_id
+        }
+        const mutualFriends = await db.users.get_friends_info(query);
+        
+        const [friendInfo] = await db.users.get_user(query);
+        delete friendInfo.password;
+        friends[i].friendInfo = friendInfo;
+        friends[i].mutualFriends = mutualFriends;
+    }
+    req.session.user.friends = friends;
     res.status(200).send(req.session.user);
   },
 };

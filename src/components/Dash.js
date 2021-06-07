@@ -89,8 +89,6 @@ const Dash = (props) => {
               }
               
               let eventDate = `${year}-${month}-${day} ${game.time}`
-              console.log(date)
-              console.log(eventDate)
 
               return {
                 title: game.title,

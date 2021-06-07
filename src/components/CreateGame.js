@@ -299,7 +299,7 @@ const CreateGame = (props) => {
               />
             </div>
             <div>
-              <div>Limit Players</div>
+              <div>Player Limit</div>
               <select
                 onChange={(e) => {
                   setMaxPlayers(e.target.value);
@@ -392,30 +392,21 @@ const CreateGame = (props) => {
             </div>
             </div>
             <div>
-              <div>Gender</div>
-              <select
-                onChange={(e) => {
-                  setGender(e.target.value);
-                }}
-              >
-                <option value="coed">Coed</option>
-                <option value="m">Male</option>
-                <option value="f">Female</option>
-              </select>
-            </div>
-            <div>
-              <div>Make Public</div>
+            <div>Public <span style={{fontSize: "8px"}}>*anyone can join</span></div>
+
               <input
                 className="slider"
-                onChange={() => {
+                onClick={() => {
                   setPublicGame(!publicGame);
                 }}
+                checked={publicGame}
                 type="checkbox"
                 id="switch"
               />
               <label className="sliderLabel" htmlFor="switch"></label>
+
             </div>
-          </div>
+           </div>
         ) : null}
 
         {status === 5 ? (
@@ -467,12 +458,7 @@ const CreateGame = (props) => {
             <div>
               Max Players: {maxPlayers === 1000 ? "Unlimited" : maxPlayers}
             </div>
-            <div>
-              {gender === "f" ? "Female" : null}
-              {gender === "m" ? "Male" : null}
-              {gender === "Coed" ? gender : null}
-            </div>
-            <div>{publicGame ? "Private Game" : "Public Game"}</div>
+            <div>{publicGame ? "Public Game *anyone can join" : "Private Game *only your friends can join"}</div>
             <div>
               {location ? (
                 location.addy

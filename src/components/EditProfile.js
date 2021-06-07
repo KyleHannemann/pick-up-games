@@ -58,18 +58,13 @@ const EditProfile = (props) => {
         password: newPassword,
         email: newEmail,
         picture: newPicture,
-      })
-      .then((res) => {
+      }).then((res) => {
         dispatch(setUser(res.data));
         console.log(res.data);
         handleSuccess()
-      })
-      .catch((err) => {
-        if (err.status === 409){
-          alert("email already in use")
-        }
+      }).catch((err) => {
         console.log(err);
-        alert("update failed");
+        alert("email already in use by another user");
       });
   };
   const handlePicture = async (e) => {

@@ -2,12 +2,10 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { setUserFriends } from "../redux/authReducer";
 import { BiLock } from "react-icons/bi";
 import { AiOutlineEdit } from "react-icons/ai";
 import { FaRegHandshake } from "react-icons/fa";
 import { IconContext } from "react-icons";
-import DatePicker from "react-date-picker";
 import TimePicker from "react-time-picker";
 import EditProfile from "./EditProfile";
 const User = (props) => {
@@ -231,10 +229,13 @@ const User = (props) => {
                   {
                     joinedGames.filter((game) => {
                       let today = new Date();
-                      let comp = new Date(game.date);
-                      if (comp <= today) {
-                        return game;
-                      }
+         
+                let comp = new Date(game.date);
+                let time = game.time.split(":")
+                comp.setHours(time[0], time[1])
+                if (comp <= today) {
+                  return game;
+                }
                     }).length
                   }
                 </div>
@@ -386,12 +387,13 @@ const User = (props) => {
                 {joinedGames
                   .filter((game) => {
                     let today = new Date();
-                    let comp = new Date(game.date);
-                    console.log(game);
-                    if (comp >= today) {
-                      console.log("dasfjldsafj");
-                      return game;
-                    }
+       
+              let comp = new Date(game.date);
+              let time = game.time.split(":")
+              comp.setHours(time[0], time[1])
+              if (comp >= today) {
+                return game;
+              }
                   })
                   .sort((a, b) => {
                     if (new Date(a.date) >= new Date(b.date)) {
@@ -410,11 +412,7 @@ const User = (props) => {
                           <span>{game.title}</span>
                         </Link>
                         <div>
-                          <DatePicker
-                            value={game.date}
-                            disabled={true}
-                            clearIcon={false}
-                          />
+                          <div>{game.date.slice(0, game.date.indexOf("00:"))}</div>
                           <TimePicker
                             value={game.time}
                             disabled={true}

@@ -67,16 +67,21 @@ module.exports = {
         console.log(err);
       });
   },
-  getAllGames: (req, res) => {
+  getAllGames: async (req, res) => {
     const db = req.app.get("db");
-    db.game
-      .get_all_games()
-      .then((data) => {
-        res.status(200).send(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    let data = await db.game
+      .get_all_games();
+    for (let i = 0; i < data.length; i++){
+      let players = await db.game.get_players(data[i].game_id);
+      data[i].players = players;
+    }
+    res.status(200).send(data)
+      // .then((data) => {
+      //   res.status(200).send(data);
+      // })
+      // .catch((err) => {
+      //   console.log(err);
+      // });
   },
   getGame: (req, res) => {
     const db = req.app.get("db");

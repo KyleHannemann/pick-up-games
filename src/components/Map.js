@@ -3,9 +3,9 @@ import { useDispatch } from "react-redux";
 import { setGameLocation } from "../redux/createGameReducer";
 import { mapStyles } from "./mapStyles/mapStyles";
 import axios from "axios";
-import DatePicker from "react-date-picker";
 import TimePicker from "react-time-picker";
-import {Link} from 'react-router-dom';
+import DatePicker from "react-date-picker";
+import { Link } from "react-router-dom";
 
 import {
   GoogleMap,
@@ -24,7 +24,6 @@ import {
   ComboboxList,
   ComboboxOption,
 } from "@reach/combobox";
-
 
 import "@reach/combobox/styles.css";
 
@@ -46,9 +45,17 @@ const Map = (props) => {
     lat: 40.4193,
     lng: -111.8746,
   });
-  const [gameMarkers, setGameMarkers] = useState([])
+  const [filter, setFilter] = useState(false);
+  const [filterBy, setFilterBy] = useState({
+    startDate: null,
+    endDate: null,
+    startTime: null,
+    endTime: null,
+  });
+
+  const [gameMarkers, setGameMarkers] = useState([]);
   const [zoom, setZoom] = useState(10);
-  const [selected, setSelected] = useState(null)
+  const [selected, setSelected] = useState(null);
   const acceptLoc = (position) => {
     const { latitude, longitude } = position.coords;
     setCenter({
@@ -76,7 +83,7 @@ const Map = (props) => {
       .get("/game/all/games")
       .then((res) => {
         console.log(res);
-        setGameMarkers(res.data)
+        setGameMarkers(res.data);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -100,17 +107,18 @@ const Map = (props) => {
     if (props.createGame !== true) {
       return;
     } else {
-      addMarker(e.latLng.lat(),  e.latLng.lng() )
+      addMarker(e.latLng.lat(), e.latLng.lng());
     }
   };
-  const addMarker = async(latitude, longitude) => {
+  const addMarker = async (latitude, longitude) => {
     try {
-      const addy = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${process.env.REACT_APP_GOOGLE_MAP_KEY}`)
+      const addy = await axios.get(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${process.env.REACT_APP_GOOGLE_MAP_KEY}`
+      );
       setMarker({
         lat: latitude,
         lng: longitude,
       });
-      
 
       dispatch(
         setGameLocation({
@@ -119,13 +127,10 @@ const Map = (props) => {
           lng: longitude,
         })
       );
-      
+    } catch (error) {
+      console.log(error);
     }
-    catch (error){
-        console.log(error)
-    }
-  }
-
+  };
   return (
     <div
       style={{ height: props.height || "100vh", width: props.width || "100vw" }}
@@ -138,48 +143,260 @@ const Map = (props) => {
         onClick={mapClick}
         onLoad={onMapLoad}
       >
-        <Search panTo={panTo} />
-        <Marker position={{ lat: marker.lat, lng: marker.lng }} />
-        {gameMarkers.filter((game) => {
-               let today = new Date();
-       
-               let comp = new Date(game.date);
-               let time = game.time.split(":")
-               comp.setHours(time[0], time[1])
-               if (comp >= today) {
-                 return game;
-               }
-            }).map(game=>{
-          return (<Marker 
-            onClick={()=>{setSelected(game)}}
-            icon={{
-              url: game.icon,
-              origin: new window.google.maps.Point(0, 0),
-              anchor: new window.google.maps.Point(0, 0),
-              scaledSize: new window.google.maps.Size(30, 30),
-            }}key={`${game.lat}${game.game_id}`} 
-            position={{lat: game.latitude, lng: game.longitude}}/>)
-        })}
-        {selected? <InfoWindow onCloseClick={()=>{
-            setSelected(null)
-          }}
-         position={{lat: selected.latitude, lng: selected.longitude}}>
-        <div className="mapInfoWindow">
-          <h2>{selected.title}</h2>
-          <div>{selected.date.slice(0, selected.date.indexOf("00:"))}</div>
-          <div>
-          <TimePicker value={selected.time}  disableClock={true} clearIcon={false} disabled={true}/>
+        {" "}
+        {props.createGame ? null : (
+          <div id="mapSetFilter">
+            <span>
+              <span>
+                {filterBy.startDate === null
+                  ? "Any Day"
+                  : filterBy.startDate
+                      .toString()
+                      .slice(
+                        0,
+                        filterBy.startDate.toString().indexOf("00:")
+                      )}{" "}
+                -{" "}
+                {filterBy.endDate === null
+                  ? "Any Day"
+                  : filterBy.endDate
+                      .toString()
+                      .slice(0, filterBy.endDate.toString().indexOf("00:"))}
+              </span>
+              <button
+                onClick={() => {
+                  setFilter(true);
+                }}
+              >
+                Filter <span style={{fontSize: "10px"}}>&#9660;</span> 
+              </button>{" "}
+              <span>
+                {filterBy.startTime === null
+                  ? "Any Time"
+                  : filterBy.startTime
+                      .toString()
+                      .split(":")
+                      .reduce((acc, el, i) => {
+                        if (i === 0) {
+                          if (12 % el >= 12) {
+                            console.log("o");
+                            acc.push(el % 12);
+                            acc.push("Pm");
+                          } else if (parseInt(el) === 12) {
+                            acc.push(el);
+                            acc.push("Pm");
+                          } else {
+                            acc.push(el);
+                            acc.push("Am");
+                          }
+                        } else {
+                          return [acc[0], ":", el, " ", acc[1]];
+                        }
+
+                        return acc;
+                      }, [])
+                      .join("")}{" "}
+                -{" "}
+                {filterBy.endTime === null
+                  ? "Any Time"
+                  : filterBy.endTime
+                      .toString()
+                      .split(":")
+                      .reduce((acc, el, i) => {
+                        if (i === 0) {
+                          if (12 % el >= 12) {
+                            console.log("o");
+                            acc.push(el % 12);
+                            acc.push("Pm");
+                          } else if (parseInt(el) === 12) {
+                            acc.push(el);
+                            acc.push("Pm");
+                          } else {
+                            acc.push(el);
+                            acc.push("Am");
+                          }
+                        } else {
+                          return [acc[0], ":", el, " ", acc[1]];
+                        }
+
+                        return acc;
+                      }, [])
+                      .join("")}
+              </span>
+            </span>
           </div>
-          <Link to={`/game/${selected.game_id}`}><button>game page</button></Link>
-        </div>
-        </InfoWindow>: null}
+        )}
+        {filter ? (
+          <div id="mapFilter">
+            <div>
+              <span></span>
+              <button
+                onClick={() => {
+                  setFilter(false);
+                }}
+              >
+                &#x2715;
+              </button>
+            </div>
+
+            <div>
+              <span>Start</span>
+              <DatePicker
+                value={filterBy.startDate}
+                onChange={(e) => {
+                  setFilterBy({ ...filterBy, startDate: e });
+                }}
+              />
+            </div>
+            <div>
+              <span>End</span>
+              <DatePicker
+                value={filterBy.endDate}
+                onChange={(e) => {
+                  setFilterBy({ ...filterBy, endDate: e });
+                }}
+              />
+            </div>
+            <div>
+              <span>Start</span>
+              <TimePicker
+                disableClock={true}
+                clockIcon={false}
+                value={filterBy.startTime}
+                onChange={(e) => {
+                  console.log(e);
+                  setFilterBy({ ...filterBy, startTime: e });
+                }}
+              />
+            </div>
+            <div>
+              <span>End</span>
+              <TimePicker
+                disableClock={true}
+                clockIcon={false}
+                value={filterBy.endTime}
+                onChange={(e) => {
+                  setFilterBy({ ...filterBy, endTime: e });
+                }}
+              />
+            </div>
+          </div>
+        ) : null}
+        <Search panTo={panTo} createGame={props.createGame} />
+        <Marker position={{ lat: marker.lat, lng: marker.lng }} />
+        {gameMarkers
+          .filter((game) => {
+            if (game.public !== true){
+              return
+            }
+            let startDate = filterBy.startDate;
+            if (startDate !== null) {
+              if (new Date(game.date) < new Date(startDate)) {
+                return;
+              }
+            }
+            let endDate = filterBy.endDate;
+            if (endDate !== null) {
+              if (new Date(game.date) > new Date(endDate)) {
+                return;
+              }
+            }
+            let startHours = filterBy.startTime;
+            if (startHours !== null) {
+              if (
+                parseInt(startHours.toString().split(":")[0]) >
+                parseInt(game.time.toString().split(":")[0])
+              ) {
+                return;
+              }
+            }
+            let startMin = filterBy.startTime;
+            if (startMin !== null) {
+              if (
+                parseInt(startMin.toString().split(":")[1]) >
+                parseInt(game.time.toString().split(":")[1])
+              ) {
+                return;
+              }
+            }
+            let endHours = filterBy.endTime;
+            if (endHours !== null) {
+              if (
+                parseInt(endHours.toString().split(":")[0]) <
+                parseInt(game.time.toString().split(":")[0])
+              ) {
+                return;
+              }
+            }
+            let endMin = filterBy.endTime;
+            if (endMin !== null) {
+              if (
+                parseInt(endMin.toString().split(":")[1]) <
+                parseInt(game.time.toString().split(":")[1])
+              ) {
+                return;
+              }
+            }
+            return game;
+          })
+          .map((game) => {
+            return (
+              <Marker
+                onClick={() => {
+                  setSelected(game);
+                }}
+                icon={{
+                  url: game.icon,
+                  origin: new window.google.maps.Point(0, 0),
+                  anchor: new window.google.maps.Point(0, 0),
+                  scaledSize: new window.google.maps.Size(30, 30),
+                }}
+                key={`${game.lat}${game.game_id}`}
+                position={{ lat: game.latitude, lng: game.longitude }}
+              />
+            );
+          })}
+        {selected ? (
+          <InfoWindow
+            onCloseClick={() => {
+              setSelected(null);
+            }}
+            position={{ lat: selected.latitude, lng: selected.longitude }}
+          >
+            <div className="mapInfoWindow">
+              <h2
+                onClick={() => {
+                  console.log(selected);
+                }}
+              >
+                {selected.title}
+              </h2>
+              <div>{selected.date.slice(0, selected.date.indexOf("00:"))}</div>
+              <div>
+                <TimePicker
+                  value={selected.time}
+                  disableClock={true}
+                  clearIcon={false}
+                  disabled={true}
+                />
+              </div>
+              <div>{selected.players.length < selected.max_players? selected.players.length + " Players": "Game Full"}</div>
+
+              <Link to={`/game/${selected.game_id}`}>
+                <button>game page</button>
+              </Link>
+            </div>
+          </InfoWindow>
+        ) : null}
       </GoogleMap>
     </div>
   );
 };
 export default Map;
 
-function Search({ panTo }) {
+function Search(props) {
+  console.log(props);
+
   const {
     ready,
     value,
@@ -193,7 +410,6 @@ function Search({ panTo }) {
     },
   });
 
-
   const handleInput = (e) => {
     setValue(e.target.value);
   };
@@ -205,7 +421,7 @@ function Search({ panTo }) {
     try {
       const results = await getGeocode({ address });
       const { lat, lng } = await getLatLng(results[0]);
-      panTo({ lat, lng });
+      props.panTo({ lat, lng });
     } catch (error) {
       console.log(error);
     }

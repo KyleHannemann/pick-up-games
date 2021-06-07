@@ -134,6 +134,7 @@ const Navbar = () => {
       links[i].style.color = "white"
     }
     document.getElementById("navBarUserName").style.color = "#5fbff9"
+              navDropDown();
               history.push(`/users/${user.user_id}`);
             }}
             id="navBarUserInfo"
@@ -154,7 +155,7 @@ const Navbar = () => {
             </Link>
 
             <Link onClick={linkClick} className="navBarLink" to="/map">
-              <div>Discover Games</div>
+              <div>Public Games</div>
             </Link>
           </div>
           <div id="navBarAuthLinks">

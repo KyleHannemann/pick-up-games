@@ -191,10 +191,11 @@ body {
 #notiDropDown > button {
   position: absolute;
   color: #ee655e;
-  border: none; 
+  border: none;
+  background-color: inherit; 
   top: -3%;
   right: 0%;
-  font-size: 50px;
+  font-size: 35px;
 }
 #notiDropDown > div {
   display: flex;
@@ -632,6 +633,8 @@ body {
 }
 .createGameReviewContainer > div {
   padding: 4px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid black;
 }
 .createGameReviewContainer > h1 {
   margin: 2px;
@@ -1403,22 +1406,94 @@ body {
 }
 
 /*Map*/
-
-.mapSearchBar {
-  position: relative;
-  top: 10px;
+#mapFilter{
+  background-color: #5fbff9;
+  border: 1px solid black;
+  width: 100px;
+  border-radius: 6px;
+  height: fit-content;
+  z-index: 15;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  position: absolute;
+  top: 25px;
   left: 50%;
-  height: 50px;
+  padding: 12px;
+  height: fit-content;
   box-sizing: border-box;
   transform: translateX(-52.5%);
-  width: 275px;
+  width: 300px;
+ 
+  
+  
+}
+#mapFilter > div{
+ background-color: #efe9f4;
+ width: 100%;
+ box-sizing: border-box;
+ display: flex;
+ flex-direction: row;
+ align-items: center;
+ justify-content: space-between;
+ padding:8px;
+  
+}
+#mapFilter > div:last-child{
+
+ border-bottom-left-radius: 4px;
+ border-bottom-right-radius: 4px;
+  
+}
+#mapFilter > div:first-child{
+
+ border-top-right-radius: 4px;
+ border-top-left-radius: 4px;
+  
+}
+#mapFilter > div > button{
+ background-color:inherit;
+ border: none;
+  
+}
+#mapSetFilter{
+  z-index: 200;
+  width: 100vw;
+  background-color:#efe9f4;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  top: 0px;
+}
+#mapSetFilter > span > button{
+  margin-left: 30px;
+  margin-right: 30px;
+  background-color: inherit;
+  font-size: 16px;
+  border: none;
+}
+.mapSearchBar {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  top: 25px;
+  left: 50%;
+
+  height: fit-content;
+  box-sizing: border-box;
+  transform: translateX(-52.5%);
+  width: 350px;
   z-index: 10;
 }
 
 .mapSearchBar input {
   padding: 0.5rem;
   font-size: 1rem;
-  width: 100%;
+  background-color: white;
+  width: 150px;
 }
 .mapInfoWindow {
   display: flex;

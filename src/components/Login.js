@@ -15,7 +15,7 @@ const Login = (props) => {
   const [register, setRegister] = useState(false);
   const [username, setUsername] = useState("");
   const [birthDate, setBirthDate] = useState("");
-  const [gender, setGender] = useState("");
+  const [gender, setGender] = useState(null);
   const [picture, setPicture] = useState("/static/media/user.80f5bb20.svg");
 
   const ageOptions = [];
@@ -144,17 +144,6 @@ const Login = (props) => {
                   </option>
                 );
               })}
-            </select>
-
-            <select
-              onChange={(e) => {
-                setGender(e.target.value);
-              }}
-            >
-              <option value="">Gender</option>
-              <option value="F">Female</option>
-              <option value="M">Male</option>
-              <option value="O">Other</option>
             </select>
           </div>
           <div id="uploadImageWidget">

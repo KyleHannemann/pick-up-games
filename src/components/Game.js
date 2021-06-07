@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import DatePicker from "react-date-picker";
 import TimePicker from "react-time-picker";
 import { useSelector, useDispatch } from "react-redux";
 import { addGamesRed, removeGameRed } from "../redux/joinedGamesReducer";
 import { Link } from "react-router-dom";
-import {FaRegHandshake} from 'react-icons/fa'
-import {IconContext} from 'react-icons'
+import { FaRegHandshake } from "react-icons/fa";
+import { IconContext } from "react-icons";
+import { BiLock } from "react-icons/bi";
 
 const Game = (props) => {
   const [game, setGame] = useState(null);
-  const {socket} = useSelector((store)=>store.socketReducer)
+  const { socket } = useSelector((store) => store.socketReducer);
   const { user } = useSelector((store) => store.auth);
-
+  console.log(user);
   const [joined, setJoined] = useState(false);
 
   const dispatch = useDispatch();
@@ -21,7 +21,7 @@ const Game = (props) => {
   const [newComment, setNewComment] = useState("");
   const [reply, setReply] = useState("");
   const [replyArray, setReplyArray] = useState([]);
-  
+
   //get messages
   useEffect(() => {
     if (!user) {
@@ -38,7 +38,6 @@ const Game = (props) => {
       });
   }, [user, props.match.params.gameId]);
 
-  
   //sumbit comment
   const submitComment = (e) => {
     let replyCheck = false;
@@ -91,7 +90,7 @@ const Game = (props) => {
     //   .catch((err) => {
     //     console.log(err);
     //   });
-    setNewComment("")
+    setNewComment("");
   };
 
   useEffect(() => {
@@ -168,13 +167,21 @@ const Game = (props) => {
 
   return (
     <div>
-      {console.log(comments)}
       {game ? (
         <div id="gamePageContainer">
           {" "}
           <div id="gamePageGameContainer">
             <div id="gamePageGameDets">
               <div>
+                <div>
+                  Created by{" "}
+                  {game.players.map((p) => {
+                    if (p.user_id === game.creator) {
+                      return p.username;
+                    }
+                    return null;
+                  })}
+                </div>
                 <div>{game.date.slice(0, game.date.indexOf("00:"))}</div>
                 <TimePicker
                   clearIcon={false}
@@ -189,86 +196,116 @@ const Game = (props) => {
                 <p>{game.description}</p>
               </div>
 
-              <div>
-                <p>{game.address}</p>
-                <a onClick={()=>{
-                  window.open(`https://www.google.com/maps/dir/?api=1&destination=${game.latitude},${game.longitude}`)
-                }}
-                >
-                  get directions
-                </a>
+              {game.public ||
+              user.friends.filter((f) => {
+                if (
+                  game.creator === f.friendInfo.user_id &&
+                  f.accepted === true
+                ) {
+                  return f;
+                }
+                return null;
+              }).length > 0 ||
+              game.creator === user.user_id ? (
+                <div>
+                  <p>{game.address}</p>
+                  <a
+                    onClick={() => {
+                      window.open(
+                        `https://www.google.com/maps/dir/?api=1&destination=${game.latitude},${game.longitude}`
+                      );
+                    }}
+                  >
+                    get directions
+                  </a>
 
-                {joined ? (
-                  <button onClick={leaveGame}>leave game</button>
-                ) : (
-                  <button onClick={joinGame}>join game</button>
-                )}
-              </div>
+                  {joined && game.max_players < game.players ? (
+                    <button onClick={leaveGame}>leave game</button>
+                  ) : null}
+                  {!joined && game.max_players < game.players ? (
+                    <button onClick={joinGame}>join game</button>
+                  ) : null}
+                </div>
+              ) : null}
             </div>
-            <div id="gamePageChatContainer">
-              <input
-                value={newComment}
-                onChange={(e) => {
-                  setNewComment(e.target.value);
-                }}
-                placeholder="comment.."
-              />
-              <span id="gameCommentButtonsContainer">
-                <button id="gameCommentSendButton" onClick={submitComment}>
-                  send
-                </button>
-                <button
-                  id="gameCommentClearButton"
-                  onClick={() => {
-                    setNewComment("");
+            {(game.public ||
+              user.friends.filter((f) => {
+                if (
+                  game.creator === f.friendInfo.user_id &&
+                  f.accepted === true
+                ) {
+                  return f;
+                }
+                return null;
+              }).length > 0 ||
+              game.creator === user.user_id) &&
+            joined ? (
+              <div id="gamePageChatContainer">
+                <input
+                  value={newComment}
+                  onChange={(e) => {
+                    setNewComment(e.target.value);
                   }}
-                >
-                  &#10005;
-                </button>
-              </span>
-              {comments.map((comment) => {
-                if (comment.reply === true) {
-                  return null;
-                }
-                let asDate = new Date(comment.time_stamp);
-                let amPm = "am";
-                let hours = asDate.getHours();
-                let minutes = asDate.getMinutes();
-                if (minutes < 10) {
-                  minutes = "0" + minutes;
-                }
-                if (hours >= 12) {
-                  amPm = "pm";
-                }
-                hours = hours % 12 || 12;
-                let readableTime = `${hours}:${minutes} ${amPm}`;
-                return (
-                  <div key={comment.comment_id}>
-                    <p>{comment.content}</p>
-                    <div>
-                      {game.players.map((player) => {
-                        if (
-                          parseInt(comment.user_id) === parseInt(player.user_id)
-                        ) {
-                          return (
-                            <Link to={`/users/${comment.user_id}`}>
-                              <img src={player.picture} />{" "}
-                            </Link>
-                          );
-                        }
-                        return null;
-                      })}
-                      <h3>{comment.comment_username}</h3>
-                      <span>
+                  placeholder="comment.."
+                />
+                <span id="gameCommentButtonsContainer">
+                  <button id="gameCommentSendButton" onClick={submitComment}>
+                    send
+                  </button>
+                  <button
+                    id="gameCommentClearButton"
+                    onClick={() => {
+                      setNewComment("");
+                    }}
+                  >
+                    &#10005;
+                  </button>
+                </span>
+
+                {comments.map((comment) => {
+                  if (comment.reply === true) {
+                    return null;
+                  }
+                  let asDate = new Date(comment.time_stamp);
+                  let amPm = "am";
+                  let hours = asDate.getHours();
+                  let minutes = asDate.getMinutes();
+                  if (minutes < 10) {
+                    minutes = "0" + minutes;
+                  }
+                  if (hours >= 12) {
+                    amPm = "pm";
+                  }
+                  hours = hours % 12 || 12;
+                  let readableTime = `${hours}:${minutes} ${amPm}`;
+                  return (
+                    <div key={comment.comment_id}>
+                      <p>{comment.content}</p>
+                      <div>
+                        {game.players.map((player) => {
+                          if (
+                            parseInt(comment.user_id) ===
+                            parseInt(player.user_id)
+                          ) {
+                            return (
+                              <Link to={`/users/${comment.user_id}`}>
+                                <img src={player.picture} />{" "}
+                              </Link>
+                            );
+                          }
+                          return null;
+                        })}
+                        <h3>{comment.comment_username}</h3>
                         <span>
-                          {comment.time_stamp.slice(
-                            0,
-                            comment.time_stamp.indexOf("T")
-                          )}
+                          <span>
+                            {comment.time_stamp.slice(
+                              0,
+                              comment.time_stamp.indexOf("T")
+                            )}
+                          </span>
+                          <span>{readableTime}</span>
                         </span>
-                        <span>{readableTime}</span>
-                      </span>
-                      {/* {//For Adding comments will probably want a seperate component
+                        {/* {//For Adding comments will probably want a seperate component
                         comments.map((comment2) => {
                         if (
                           comment2.reply === true &&
@@ -320,9 +357,9 @@ const Game = (props) => {
                         } else {
                           return null;
                         } */}
-                      {/* }
+                        {/* }
                       )} */}
-                      {/* <button
+                        {/* <button
                         onClick={() => {
                           setReplyArray([...replyArray, comment.comment_id]);
                         }}
@@ -344,27 +381,119 @@ const Game = (props) => {
                           </button>
                         </div>
                       ) : null} */}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div>
+                {user.friends.filter((f) => {
+                  if (
+                    game.creator === f.friendInfo.user_id &&
+                    f.accepted === true
+                  ) {
+                    return f;
+                  }
+                  return null;
+                }).length > 0 ? null : (
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <h1
+                      style={{
+                        textAlign: "center",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        borderTop: "2px solid black",
+                        width: "100%",
+                      }}
+                    >
+                      <IconContext.Provider
+                        value={{ style: { height: "60px", width: "60px" } }}
+                      >
+                        <BiLock />
+                      </IconContext.Provider>
+                      Private game
+                    </h1>
+
+                    <div>
+                      {game.players.map((p) => {
+                        if (p.user_id === game.creator) {
+                          return (
+                            <div
+                              style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                              }}
+                            >
+                              <span style={{ marginRight: "8px" }}>
+                                *befriend{" "}
+                              </span>
+                              <Link
+                                style={{
+                                  textDecoration: "none",
+                                  color: "black",
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                }}
+                                to={`users/${p.user_id}`}
+                              >
+                                <span style={{ marginRight: "8px" }}>
+                                  {p.username}
+                                </span>
+                                <img
+                                  src={p.picture}
+                                  className="profilePicSmall"
+                                />
+                              </Link>{" "}
+                              <span style={{ marginLeft: "8px" }}>
+                                {" "}
+                                to join
+                              </span>
+                            </div>
+                          );
+                        }
+                        return null;
+                      })}
                     </div>
                   </div>
-                );
-              })
-              }
-            </div>
+                )}
+              </div>
+            )}
           </div>
           <div id="gamePagePlayerContainer">
-            <h3>{game.players.length} Players</h3>
+            {game.max_players === 1000 ? (
+              <h3>Ulimited Players Needed</h3>
+            ) : null}
+            {game.max_players !== 1000 &&
+            game.players.length <= game.max_players ? (
+              <h3>{game.max_players - game.players.length} Players Needed</h3>
+            ) : null}
+            <h4 style={{ textAlign: "center" }}>
+              {game.players.length} Joined Players
+            </h4>
             {game.players.map((player) => {
               let friends = false;
-              for(let i = 0; i < user.friends.length; i ++){
-                if ((user.friends[i].friend_id === player.user_id ||
-                  user.friends[i].user_id === player.user_id) &&
-                  user.friends[i].accepted === true){
-                    
-                    friends = true;
-                  }
+              for (let i = 0; i < user.friends.length; i++) {
+                if (
+                  (user.friends[i].friend_id === player.user_id ||
+                    user.friends[i].user_id === player.user_id) &&
+                  user.friends[i].accepted === true
+                ) {
+                  friends = true;
+                }
               }
-              if (player.user_id === user.user_id){
-                friends = null
+              if (player.user_id === user.user_id) {
+                friends = null;
               }
               return (
                 <Link
@@ -375,24 +504,39 @@ const Game = (props) => {
                   <div className="indDashGamePlayer">
                     <div>{player.username}</div>
                     <img src={player.picture} />
-                    {friends === true ?<span>
-                      {/* <span  style={{color: "#2D8C23 "}}>Friends</span> */}
-                      
-                      <IconContext.Provider
-                value={{ style: { height: "35px", width: "35px" , color: "#228209"} }}
-              >
-                <FaRegHandshake />
-              </IconContext.Provider> </span>: null}
-                    {friends === false ?<span> 
-                      {/* <span style={{color: "red"}}>Not Friends Yet</span> */}
-                       
-                      <IconContext.Provider
-                value={{ style: { height: "35px", width: "35px" , color: "#D52217"} }}
-              >
-                <FaRegHandshake />
-              </IconContext.Provider>
-                    </span>: null}
+                    {friends === true ? (
+                      <span>
+                        {/* <span  style={{color: "#2D8C23 "}}>Friends</span> */}
+                        <IconContext.Provider
+                          value={{
+                            style: {
+                              height: "35px",
+                              width: "35px",
+                              color: "#228209",
+                            },
+                          }}
+                        >
+                          <FaRegHandshake />
+                        </IconContext.Provider>{" "}
+                      </span>
+                    ) : null}
+                    {friends === false ? (
+                      <span>
+                        {/* <span style={{color: "red"}}>Not Friends Yet</span> */}
 
+                        <IconContext.Provider
+                          value={{
+                            style: {
+                              height: "35px",
+                              width: "35px",
+                              color: "#D52217",
+                            },
+                          }}
+                        >
+                          <FaRegHandshake />
+                        </IconContext.Provider>
+                      </span>
+                    ) : null}
                   </div>
                 </Link>
               );
