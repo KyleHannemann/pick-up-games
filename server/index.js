@@ -77,10 +77,12 @@ io.on("connection", (socket) => {
 
   socket.on('dm', async (body)=>{
     const db = app.get("db");
-    const {user_id, dm_to, content} = body;
-    const [dm] = await db.users.add_dm([user_id, dm_to, content])
+    const {user_id, dm_to, content, timestamp, seen} = body;
+    const [dm] = await db.users.add_dm([user_id, dm_to, content, timestamp, seen])
     io.emit('newDm', dm)
   })
+
+
   // socket.on('notification', async (body) => {
   //   const db = app.get('db')
   //   await db.users.add_notification([body.user_id,
@@ -183,6 +185,7 @@ app.get(
   "/users/get/users/friends/:user_id",
   usersController.getOtherUsersFriendsInfo
 );
+app.put("/users/dms/seen", usersController.seenDms)
 //game
 app.post("/game/create", gameController.createGame);
 app.get("/game/joined/:userId", gameController.getJoinedGames);

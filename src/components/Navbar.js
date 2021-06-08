@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { setUser } from "../redux/authReducer";
@@ -11,15 +11,40 @@ import { IconContext } from "react-icons";
 import { removeNotification } from "../redux/notificationsReducer";
 import { BiMessageDetail } from "react-icons/bi";
 import Dms from "./Dms";
+import { dmSeen } from "../redux/dmsReducer";
 
 const Navbar = () => {
   const { user } = useSelector((store) => store.auth);
   const { notifications } = useSelector((store) => store.notificationReducer);
-  const { dmDrop } = useSelector((store) => store.dmsReducer);
-  console.log(notifications);
+  const { dmDrop, dms, dmToState } = useSelector((store) => store.dmsReducer);
   const [notiDropDown, setNotiDropDown] = useState(false);
+  const [dmAlert, setDmAlert] = useState([]);
   const history = useHistory();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    console.log(dmToState);
+    if (!dms) {
+      return;
+    }
+    let alert = [];
+    const checkDmsForSeen = () => {
+      for (let i = 0; i < dms.length; i++) {
+        if (dmToState === parseInt(dms[i].user_id)) {
+          axios
+            .put("/users/dms/seen", { user_id: dmToState, dm_to: user.user_id })
+            .then(() => {})
+            .catch((err) => {
+              console.log(err);
+            });
+        } else if (dms[i].dm_to === user.user_id && dms[i].seen === false) {
+          alert.push(dms[i]);
+        }
+      }
+      setDmAlert(alert);
+    };
+    checkDmsForSeen();
+  }, [dms]);
   const logout = () => {
     axios.get("/auth/logout").then((res) => {
       if (res.status === 200) {
@@ -170,12 +195,26 @@ const Navbar = () => {
             </Link>
           </div>
           <div id="navBarAuthLinks">
-            <Link className="navBarLink" onClick={linkClick}>
-              <div>DM's</div>
-              <IconContext.Provider value={{ height: "30px", width: "30px" }}>
-                <BiMessageDetail />
-              </IconContext.Provider>
-            </Link>
+            <div>
+              <Link className="navBarLink" onClick={linkClick}>
+                <div>DM's</div>
+                {dmAlert.length > 0 ? (
+                  <IconContext.Provider
+                    value={{ height: "30px", width: "30px", color: "red" }}
+                  >
+                    <BiMessageDetail />
+                  </IconContext.Provider>
+                ) : (
+                  <IconContext.Provider
+                    value={{ height: "30px", width: "30px", color: "white" }}
+                  >
+                    <BiMessageDetail />
+                  </IconContext.Provider>
+                )}
+
+                {dmAlert.length > 0 ? <span>{dmAlert.length}</span> : null}
+              </Link>
+            </div>
             <div id="logout" onClick={logout}>
               Logout
             </div>

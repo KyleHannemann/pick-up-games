@@ -58,5 +58,7 @@ CREATE TABLE dms(
 dm_id SERIAL PRIMARY KEY,
 user_id INT REFERENCES users(user_id),
 dm_to INT REFERENCES users(user_id),
-content VARCHAR(2000)
+content VARCHAR(2000),
+timestamp VARCHAR(2000),
+seen BOOLEAN
 );

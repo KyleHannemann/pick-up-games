@@ -9,14 +9,15 @@ import { useHistory } from "react-router-dom";
 import io from "socket.io-client";
 import {setGamesRed} from './redux/joinedGamesReducer';
 import {placeSocket} from './redux/socketReducer';
-import {setDms, addDm} from "./redux/dmsReducer";
+import {setDms, addDm, dmSeen} from "./redux/dmsReducer";
 import {setNotifications, addNotification} from './redux/notificationsReducer'
 //Get User INFO, FRIENDS, GAMES JOINED, SAVE TO STATE 
 function App(props) {
   const dispatch = useDispatch()
   const { user } = useSelector((store) => store.auth);
   const [socket, setSocket] = useState(null);
-  
+  const {dmToState} = useSelector((store)=> store.dmsReducer)
+  console.log(dmToState)
   useEffect(() => {
     if (!user){
       return;
@@ -31,11 +32,11 @@ function App(props) {
     };
     getGamesAndPlayers();
   }, [user]);
+
   useEffect(() => {
     if (!user){
       return
     }
-    //setSocket(io.connect("", {username: 'kyle'}))
     const sock = io.connect()
     setSocket(sock)
     dispatch(placeSocket(sock));
@@ -46,6 +47,7 @@ function App(props) {
       }
     };
   }, [user]);
+  
   useEffect(() => {
    
     if (socket) {
@@ -57,7 +59,6 @@ function App(props) {
           }).catch(err=>{
             console.log(err)
           })
-         // dispatch(updateFriends(body))
         };
       });
       socket.on("friend accept", (body) => {
@@ -68,7 +69,6 @@ function App(props) {
           }).catch(err=>{
             console.log(err)
           })
-          //dispatch(updateFriends(body))
         };
       });
       socket.on('notification', (body) => {
@@ -81,10 +81,13 @@ function App(props) {
 
       socket.on("newDm", (body) => {
         console.log(body)
+        console.log(dmToState)
         if (parseInt(body.user_id) === parseInt(user.user_id) || parseInt(body.dm_to) === parseInt(user.user_id)){
           dispatch(addDm(body))
+         
         }
       })
+
     }
   }, [socket]);
 

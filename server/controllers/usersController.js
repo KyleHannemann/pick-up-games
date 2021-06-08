@@ -101,6 +101,15 @@ module.exports = {
       console.log(err)
     })
   },
+  seenDms: (req, res) => {
+    const db = req.app.get("db");
+    const {user_id, dm_to} = req.body;
+    db.users.seen_dm([user_id, dm_to]).then(()=>{
+      res.sendStatus(200)
+    }).catch(err=>{
+      res.status(411).send(err)
+    })
+  },
 
   getAllUsers: (req, res) => {
     const db = req.app.get("db");
