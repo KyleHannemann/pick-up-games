@@ -1,9 +1,13 @@
 const initialState = {
-    dms: null
+    dms: null,
+    dmDrop: false,
+    dmToState: null
 }
 
 const SET_DMS = "SET_DMS";
 const ADD_DM = "ADD_DMS";
+const DROP_DM = "DROP_DM";
+const DM_TO = "DM_TO"
 
 export function setDms(dms){
     return{
@@ -17,6 +21,18 @@ export function addDm(dm){
         payload: dm
     }
 }
+export function dropDownDm(status){
+    return{
+        type: DROP_DM,
+        payload: status
+    }
+}
+export function dmToRed(user_id){
+    return{
+        type: DM_TO,
+        payload: user_id
+    }
+}
 
 export default function (state=initialState, action){
     switch(action.type){
@@ -26,6 +42,10 @@ export default function (state=initialState, action){
             let newDms = [...state.dms]
             newDms.push(action.payload)
             return {...state, dms: newDms}
+        case DROP_DM:
+            return {...state, dmDrop: action.payload}
+        case DM_TO:
+            return {...state, dmToState: action.payload}
         default: 
         return {...state}
     }

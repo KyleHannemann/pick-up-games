@@ -6,19 +6,20 @@ import {useSelector} from 'react-redux'
 const Dms = (props) => {
 const {socket} = useSelector((store)=>store.socketReducer)
 const {user} = useSelector((store)=>store.auth)
-const {dms} = useSelector((store)=>store.dmsReducer)
-console.log(dms)
+const {dms, dmToState, dmDrop} = useSelector((store)=>store.dmsReducer)
+console.log(dms, dmToState, dmDrop)
 const [dmTo, setDmTo] = useState(null)
 const [message, setMessage] = useState("")
 
 useEffect(()=>{
-    if (props.dmTo === "navDm"){
+    if (dmToState === null){
         //do something
+        //show list of friends to dm or not
     }
     else{
-        setDmTo(props.dmTo)
+        setDmTo(dmToState)
     }
-}, [props.dmTo])
+}, [dmToState])
 
 const handleDm = (e) =>{
     e.preventDefault();
@@ -27,42 +28,52 @@ const handleDm = (e) =>{
 
 }
     return(
-        <div>
-            {dms ? dms.filter(d=>{
-                if(d.user_id === props.dmTo || d.dm_to === props.dmTo){
+        <div id="dmsContainer">
+            <div id="dmsChatBox">
+                {dmTo ? user.friends.map(f=>{
+                    if (f.friendInfo.user_id === dmTo){
+                        return (
+                            <div className="dmToUsername">{f.friendInfo.username}</div>
+                        )
+                    }
+                }) :null}
+                <div id="dmsChatBoxChat">
+            {dms && dmTo !== null ? dms.filter(d=>{
+                if(d.user_id === dmTo || d.dm_to === dmTo){
                     return d
                 }
                 //check if applies to this user
             }).map(d=>{
-                
-                let who;
+                let classCss;
                 if (d.user_id === user.user_id){
-                    who = "You"
+                    classCss = "rightChatBubble";
                 }
                 else{
-                   who =  user.friends.filter(f=>{
-                       console.log(f.friendInfo.user_id)
-                       console.log(d.user_id)
-                        if(f.friendInfo.user_id === d.user_id){
-                            return f
-                        }
-                    })
-                    console.log(who)
-                    who = who[0].friendInfo.username
-                }
+                
+                    classCss = "leftChatBubble"
+                } 
                 return (
-                    <div>
-                        <div>{d.content}</div>
-                        <span>{who}</span>
+                    <div className={classCss}>
+                    <div >
+                        {d.content}
+                        
                     </div>
+                    </div>
+
                 )
+                
             }) : null}
-            <form>
+            </div>
+            {dmTo ? <form>
                 <input value={message} onChange={(e)=>{
                     setMessage(e.target.value)
                 }} /> 
                 <input type="submit" onClick={handleDm} /> 
-            </form>
+            </form> : null}
+            </div>
+            <div id="dmsFriendsContainer">
+            
+            </div>
         </div>
     )
 

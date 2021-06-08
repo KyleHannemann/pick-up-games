@@ -9,11 +9,13 @@ import { IoIosNotificationsOutline } from "react-icons/io";
 import { useState } from "react";
 import { IconContext } from "react-icons";
 import { removeNotification } from "../redux/notificationsReducer";
-import {BiMessageDetail} from 'react-icons/bi'
+import { BiMessageDetail } from "react-icons/bi";
+import Dms from "./Dms";
 
 const Navbar = () => {
   const { user } = useSelector((store) => store.auth);
   const { notifications } = useSelector((store) => store.notificationReducer);
+  const { dmDrop } = useSelector((store) => store.dmsReducer);
   console.log(notifications);
   const [notiDropDown, setNotiDropDown] = useState(false);
   const history = useHistory();
@@ -66,7 +68,7 @@ const Navbar = () => {
   };
 
   const handleNotificationRemoval = (e) => {
-    if (e.target.dataset.id === "view"){
+    if (e.target.dataset.id === "view") {
       setNotiDropDown(false);
     }
     dispatch(removeNotification(parseInt(e.target.value)));
@@ -81,6 +83,8 @@ const Navbar = () => {
     <div>
       {user ? (
         <div id="navBar">
+          {dmDrop ? <Dms /> : null}
+
           {notifications ? (
             notifications.length < 1 ? (
               <div
@@ -166,13 +170,12 @@ const Navbar = () => {
             </Link>
           </div>
           <div id="navBarAuthLinks">
-             <Link className="navBarLink" onClick={linkClick}>
-               <div>DM's</div>
-              <IconContext.Provider value={{height: "30px", width: "30px"}}>
-                <BiMessageDetail/>
+            <Link className="navBarLink" onClick={linkClick}>
+              <div>DM's</div>
+              <IconContext.Provider value={{ height: "30px", width: "30px" }}>
+                <BiMessageDetail />
               </IconContext.Provider>
-            </Link> 
-            
+            </Link>
             <div id="logout" onClick={logout}>
               Logout
             </div>
@@ -213,7 +216,8 @@ const Navbar = () => {
                   {n.description === "invited you to a game" ? (
                     <div className="notiDropDownButtons">
                       <Link to={`/game/${n.game_id}`}>
-                        <button  data-id="view"
+                        <button
+                          data-id="view"
                           value={n.notification_id}
                           onClick={handleNotificationRemoval}
                         >
@@ -231,7 +235,8 @@ const Navbar = () => {
                   ) : (
                     <div className="notiDropDownButtons">
                       <Link to={`/users/${n.user_interaction_id}`}>
-                        <button data-id="view"
+                        <button
+                          data-id="view"
                           value={n.notification_id}
                           onClick={handleNotificationRemoval}
                         >

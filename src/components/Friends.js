@@ -6,13 +6,14 @@
 import {FaRegHandshake} from 'react-icons/fa'
 import {IconContext} from 'react-icons';
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import Dms from './Dms';
-
+import {dropDownDm, dmToRed} from '../redux/dmsReducer';
+import {BiMessageDetail} from 'react-icons/bi';
 const Friends = (props) => {
   const { user } = useSelector((store) => store.auth);
+  const dispatch = useDispatch()
   console.log(user);
   const [discoverPeople, setDiscoverPeople] = useState(false);
   const [allUsers, setAllUsers] = useState([]);
@@ -213,7 +214,13 @@ const Friends = (props) => {
 
                 <div>
                   <span>email: {f.email}</span>
-                  <Dms dmTo={f.user_id}/> 
+                  <IconContext.Provider value={{height: "30px", width: "30px"}} >
+                    <BiMessageDetail onClick={()=>{
+                      dispatch(dmToRed(f.user_id))
+                      dispatch(dropDownDm(true))
+                    }}/>
+                  </IconContext.Provider>
+                 
                 </div>
               </div>
             );
