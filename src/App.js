@@ -8,8 +8,8 @@ import { setUser } from "./redux/authReducer";
 import { useHistory } from "react-router-dom";
 import io from "socket.io-client";
 import {setGamesRed} from './redux/joinedGamesReducer';
-import {updateFriends} from './redux/authReducer';
-import {placeSocket} from './redux/socketReducer'
+import {placeSocket} from './redux/socketReducer';
+import {setDms, addDm} from "./redux/dmsReducer";
 import {setNotifications, addNotification} from './redux/notificationsReducer'
 //Get User INFO, FRIENDS, GAMES JOINED, SAVE TO STATE 
 function App(props) {
@@ -26,6 +26,8 @@ function App(props) {
       dispatch(setGamesRed([...allGames.data]));
       let notifications = await axios.get(`users/notifications/${user.user_id}`);
       dispatch(setNotifications(notifications.data))
+      let dms = await axios.get(`/users/getdms/${user.user_id}`);
+      dispatch(setDms(dms.data))
     };
     getGamesAndPlayers();
   }, [user]);
@@ -72,7 +74,15 @@ function App(props) {
       socket.on('notification', (body) => {
         console.log(body)
         if (parseInt(body[0].user_id) === parseInt(user.user_id)){
+          console.log("how?", body[0].user_id, user.user_id)
           dispatch(addNotification(body[0]))
+        }
+      })
+
+      socket.on("newDm", (body) => {
+        console.log(body)
+        if (parseInt(body.user_id) === parseInt(user.user_id) || parseInt(body.dm_to) === parseInt(user.user_id)){
+          dispatch(addDm(body))
         }
       })
     }

@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Dms from './Dms';
 
 const Friends = (props) => {
   const { user } = useSelector((store) => store.auth);
@@ -212,7 +213,7 @@ const Friends = (props) => {
 
                 <div>
                   <span>email: {f.email}</span>
-                  <span>DM</span>
+                  <Dms dmTo={f.user_id}/> 
                 </div>
               </div>
             );

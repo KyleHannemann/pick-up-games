@@ -1,3 +1,6 @@
+
+
+
 module.exports = {
   getUser: (req, res) => {
     const db = req.app.get("db");
@@ -89,6 +92,16 @@ module.exports = {
       res.status(409).send(err)
     })
   },
+  getDms: (req, res) => {
+    const db = req.app.get("db")
+    const {userId} = req.params
+    db.users.get_dms(userId).then(data=>{
+      res.status(200).send(data)
+    }).catch(err=>{
+      console.log(err)
+    })
+  },
+
   getAllUsers: (req, res) => {
     const db = req.app.get("db");
     db.users.get_all_users().then(data=>{

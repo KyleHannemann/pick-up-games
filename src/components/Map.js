@@ -52,7 +52,7 @@ const Map = (props) => {
     startTime: null,
     endTime: null,
   });
-
+  const [loadingGames, setLoadingGames] = useState(true)
   const [gameMarkers, setGameMarkers] = useState([]);
   const [zoom, setZoom] = useState(10);
   const [selected, setSelected] = useState(null);
@@ -83,7 +83,8 @@ const Map = (props) => {
       .get("/game/all/games")
       .then((res) => {
         console.log(res);
-        setGameMarkers(res.data);
+        setGameMarkers(res.data)
+        setLoadingGames(false);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -284,6 +285,10 @@ const Map = (props) => {
           </div>
         ) : null}
         <Search panTo={panTo} createGame={props.createGame} />
+        {loadingGames? <div className="loadingBarContainer" id="mapLoadingBarContainer" >
+
+        <div className="loadingBar" id="mapLoadingBar"></div>
+        <span>..loading games</span></div> : null}
         <Marker position={{ lat: marker.lat, lng: marker.lng }} />
         {gameMarkers
           .filter((game) => {

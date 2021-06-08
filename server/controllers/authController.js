@@ -1,5 +1,27 @@
 const bcrypt = require("bcrypt");
 
+const nodemailer = require("nodemailer");
+
+//node mailer
+let transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth:{
+    type: "OAuth2",
+    user: process.env.MYEMAIL,
+    password: process.env.MYEMAILPASSWORD,
+    clientId: process.env.OAUTH_CLIENTID,
+    clientSecret: process.env.OAUTH_CLIENT_SECRET,
+    refreshToken: process.env.OAUTH_REFRESH_TOKEN,
+  }
+})
+// transporter.verify((err, success) => {
+//   err
+//     ? console.log(err)
+//     : console.log(success);
+//  });
+
+
+
 module.exports = {
   register: async (req, res) => {
     const db = req.app.get("db");
@@ -23,9 +45,27 @@ module.exports = {
       req.session.user = user
       req.session.user.friends = [];
       req.session.user.friends.mutualFriends = [];
-      return res.status(200).send(req.session.user);
+
+      res.status(200).send(req.session.user);
+      let mailOptions = {
+        from: "hannemannkyle@gmail.com",
+        to: email,
+        subject: "Welcome to Pick-Up Sports!",
+        text: "Hi, Welcome to Pick-Up Sports where we connect people through sport.",
+       };
+      
+       transporter.sendMail(mailOptions, function (err, data) {
+        if (err) {
+          console.log("Error " + err);
+        } else {
+          console.log("Email sent");
+        }
+       });
+
+      return
     }
   }
+  
   catch(err){
     res.status(419).send(err)
   }

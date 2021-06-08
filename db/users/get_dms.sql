@@ -1,0 +1,1 @@
+SELECT * FROM dms WHERE user_id = $1 OR dm_to = $1;

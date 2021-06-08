@@ -53,3 +53,10 @@ game_id INT REFERENCES games(game_id),
 user_interaction_id INT REFERENCES users(user_id),
 user_interaction_username VARCHAR(500),
 user_interaction_picture VARCHAR(2000));
+
+CREATE TABLE dms(
+dm_id SERIAL PRIMARY KEY,
+user_id INT REFERENCES users(user_id),
+dm_to INT REFERENCES users(user_id),
+content VARCHAR(2000)
+);

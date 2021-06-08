@@ -1,6 +1,33 @@
 * {
   font-family: "DM Sans", sans-serif;
 }
+/*Loading bar FROM w3schools.com */
+.loadingBar{
+  border: 16px solid #5fbff9;
+  border-radius: 50%;
+  border-top: 16px solid #9bd1f5;
+  width: 5vw;
+  height: 5vw;
+  -webkit-animation: spin 1s linear infinite; /* Safari */
+  animation: spin 1s linear infinite;
+}
+#mapLoadingBarContainer{
+  position: absolute;
+  top: 20%;
+  left: 45vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 a:hover,
 button:hover {
   cursor: pointer;
@@ -1492,6 +1519,15 @@ body {
  
   
   
+}
+#loadingGames{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100px;
+  height: 100px;
+  background-color: lawngreen;
+  z-index: 100;
 }
 #mapFilter > div{
  background-color: #efe9f4;

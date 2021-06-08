@@ -9,6 +9,7 @@ import { IoIosNotificationsOutline } from "react-icons/io";
 import { useState } from "react";
 import { IconContext } from "react-icons";
 import { removeNotification } from "../redux/notificationsReducer";
+import {BiMessageDetail} from 'react-icons/bi'
 
 const Navbar = () => {
   const { user } = useSelector((store) => store.auth);
@@ -89,7 +90,7 @@ const Navbar = () => {
                 id="websiteLogoName"
               >
                 <IconContext.Provider
-                  value={{ style: { height: "35px", width: "35px" } }}
+                  value={{ style: { height: "30px", width: "30px" } }}
                 >
                   <IoIosNotificationsOutline />
                 </IconContext.Provider>
@@ -104,7 +105,7 @@ const Navbar = () => {
               >
                 <IconContext.Provider
                   value={{
-                    style: { color: "red", height: "35px", width: "35px" },
+                    style: { color: "red", height: "30px", width: "30px" },
                   }}
                 >
                   <IoIosNotificationsOutline />
@@ -120,7 +121,7 @@ const Navbar = () => {
               }}
             >
               <IconContext.Provider
-                value={{ style: { height: "35px", width: "35px" } }}
+                value={{ style: { height: "30px", width: "30px" } }}
               >
                 <IoIosNotificationsOutline />
               </IconContext.Provider>
@@ -165,10 +166,13 @@ const Navbar = () => {
             </Link>
           </div>
           <div id="navBarAuthLinks">
-            {/* <Link className="navBarLink" onClick={linkClick} to="/edit/profile">
-              <div>settings</div>
-            </Link> */}
-            <div></div>
+             <Link className="navBarLink" onClick={linkClick}>
+               <div>DM's</div>
+              <IconContext.Provider value={{height: "30px", width: "30px"}}>
+                <BiMessageDetail/>
+              </IconContext.Provider>
+            </Link> 
+            
             <div id="logout" onClick={logout}>
               Logout
             </div>
