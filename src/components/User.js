@@ -8,9 +8,13 @@ import { FaRegHandshake } from "react-icons/fa";
 import { IconContext } from "react-icons";
 import TimePicker from "react-time-picker";
 import EditProfile from "./EditProfile";
+import {BiMessageDetail} from 'react-icons/bi'
+import {dmToRed, dropDownDm} from '../redux/dmsReducer'
+
 const User = (props) => {
   const { socket } = useSelector((store) => store.socketReducer);
   const { user } = useSelector((store) => store.auth);
+  const dispatch = useDispatch()
   //display user details,
   //if user = user display edit options
 
@@ -26,13 +30,13 @@ const User = (props) => {
 
   //edit own profile
   const [edit, setEdit] = useState(false);
-  useEffect(()=>{
-    console.log("is is changing" ,props.match.params.userId)
-  }, [props.match.params.userId])
+  useEffect(() => {
+    console.log("is is changing", props.match.params.userId);
+  }, [props.match.params.userId]);
   useEffect(() => {
     console.log("user check", user);
     if (!user) {
-      console.log("how?")
+      console.log("how?");
       return;
     }
     axios
@@ -230,13 +234,13 @@ const User = (props) => {
                   {
                     joinedGames.filter((game) => {
                       let today = new Date();
-         
-                let comp = new Date(game.date);
-                let time = game.time.split(":")
-                comp.setHours(time[0], time[1])
-                if (comp <= today) {
-                  return game;
-                }
+
+                      let comp = new Date(game.date);
+                      let time = game.time.split(":");
+                      comp.setHours(time[0], time[1]);
+                      if (comp <= today) {
+                        return game;
+                      }
                     }).length
                   }
                 </div>
@@ -355,12 +359,16 @@ const User = (props) => {
                 </div>
               )}
             </div>
-            {friends === true || ownProfile === true? (
+
+            {friends === true || ownProfile === true ? (
               <div id="bottomHalfTopHalfProfil">
-                <div>Email: {userProfile.email}</div>
-                <div>DM</div>
+                {friends === true && !ownProfile ? <BiMessageDetail size={40}onClick={()=>{
+                      dispatch(dmToRed(userProfile.user_id))
+                      dispatch(dropDownDm(true))
+                    }}/> : null}
+                
               </div>
-            ):(
+            ) : (
               <div id="profileLockContainer">
                 <IconContext.Provider
                   value={{ style: { height: "60px", width: "60px" } }}
@@ -371,30 +379,35 @@ const User = (props) => {
               </div>
             )}
           </div>
-          {friends === true  || ownProfile === true ? (
+          {friends === true || ownProfile === true ? (
             <div id="bottomHalfContainerProfile">
               <div id="bottomHalfGamesContainerProfile">
-                <h2>{userProfile.username} has {joinedGames
-                  .filter((game) => {
-                    let today = new Date();
-       
-              let comp = new Date(game.date);
-              let time = game.time.split(":")
-              comp.setHours(time[0], time[1])
-              if (comp >= today) {
-                return game;
-              }
-                  }).length} games scheduled</h2>
+                <h2>
+                  {userProfile.username} has{" "}
+                  {
+                    joinedGames.filter((game) => {
+                      let today = new Date();
+
+                      let comp = new Date(game.date);
+                      let time = game.time.split(":");
+                      comp.setHours(time[0], time[1]);
+                      if (comp >= today) {
+                        return game;
+                      }
+                    }).length
+                  }{" "}
+                  games scheduled
+                </h2>
                 {joinedGames
                   .filter((game) => {
                     let today = new Date();
-       
-              let comp = new Date(game.date);
-              let time = game.time.split(":")
-              comp.setHours(time[0], time[1])
-              if (comp >= today) {
-                return game;
-              }
+
+                    let comp = new Date(game.date);
+                    let time = game.time.split(":");
+                    comp.setHours(time[0], time[1]);
+                    if (comp >= today) {
+                      return game;
+                    }
                   })
                   .sort((a, b) => {
                     if (new Date(a.date) >= new Date(b.date)) {
@@ -413,7 +426,9 @@ const User = (props) => {
                           <span>{game.title}</span>
                         </Link>
                         <div>
-                          <div>{game.date.slice(0, game.date.indexOf("00:"))}</div>
+                          <div>
+                            {game.date.slice(0, game.date.indexOf("00:"))}
+                          </div>
                           <TimePicker
                             value={game.time}
                             disabled={true}
@@ -439,8 +454,8 @@ const User = (props) => {
                     ) {
                       areFriends = true;
                     }
-                    if(user.user_id === el.user_id){
-                      areFriends = null
+                    if (user.user_id === el.user_id) {
+                      areFriends = null;
                     }
                   }
                   return (
@@ -474,15 +489,13 @@ const User = (props) => {
                         >
                           <FaRegHandshake />
                         </IconContext.Provider>
-                      ): null}
-                      
+                      ) : null}
                     </div>
                   );
                 })}
               </div>
             </div>
-          ) : null
-          }
+          ) : null}
         </div>
       ) : (
         // <div>

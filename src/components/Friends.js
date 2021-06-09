@@ -165,6 +165,7 @@ const Friends = (props) => {
                   </div>
                   <div>
                     <span>{mutualFriends.length} mutual friends</span>
+                    {mutualFriends.length === 0 ? null :
                     <div>
                       {mutualFriends.map((e) => {
                         return (
@@ -174,7 +175,7 @@ const Friends = (props) => {
                           </div>
                         );
                       })}
-                    </div>
+                    </div> }
                   </div>
                 </div>
               );
@@ -212,14 +213,12 @@ const Friends = (props) => {
                   </IconContext.Provider>
                 </div>
 
-                <div>
-                  <span>email: {f.email}</span>
-                  <IconContext.Provider value={{height: "30px", width: "30px"}} >
-                    <BiMessageDetail onClick={()=>{
+                <div style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
+                    <BiMessageDetail size={40}onClick={()=>{
                       dispatch(dmToRed(f.user_id))
                       dispatch(dropDownDm(true))
                     }}/>
-                  </IconContext.Provider>
+                 
                  
                 </div>
               </div>

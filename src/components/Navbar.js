@@ -11,7 +11,7 @@ import { IconContext } from "react-icons";
 import { removeNotification } from "../redux/notificationsReducer";
 import { BiMessageDetail } from "react-icons/bi";
 import Dms from "./Dms";
-import { dmSeen } from "../redux/dmsReducer";
+import { dropDownDm, dmToRed } from "../redux/dmsReducer";
 
 const Navbar = () => {
   const { user } = useSelector((store) => store.auth);
@@ -79,6 +79,7 @@ const Navbar = () => {
     }
   };
   const linkClick = (e) => {
+    console.log(e.target)
     document.getElementById("navBarUserName").style.color = "white";
 
     let links = Array.from(document.querySelectorAll(".navBarLink > div"));
@@ -196,21 +197,30 @@ const Navbar = () => {
           </div>
           <div id="navBarAuthLinks">
             <div>
-              <Link className="navBarLink" onClick={linkClick}>
-                <div>DM's</div>
+              <Link className="navBarLink">
+                <div>
                 {dmAlert.length > 0 ? (
                   <IconContext.Provider
                     value={{ height: "30px", width: "30px", color: "red" }}
                   >
-                    <BiMessageDetail />
+                    <BiMessageDetail id="navbarDmLink" size={22} onClick={()=>{
+                      dispatch(dropDownDm(true))
+                      dispatch(dmToRed(null))
+                    }} />
                   </IconContext.Provider>
                 ) : (
                   <IconContext.Provider
                     value={{ height: "30px", width: "30px", color: "white" }}
                   >
-                    <BiMessageDetail />
+                    <BiMessageDetail size={22} onClick={()=>{
+                      dispatch(dropDownDm(true))
+                      dispatch(dmToRed(null))
+                      navDropDown()
+                    }}/>
                   </IconContext.Provider>
+                  
                 )}
+                </div>
 
                 {dmAlert.length > 0 ? <span>{dmAlert.length}</span> : null}
               </Link>

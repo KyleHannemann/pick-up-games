@@ -15,17 +15,44 @@ const Login = (props) => {
   //register
   const [register, setRegister] = useState(false);
   const [username, setUsername] = useState("");
-  const [birthDate, setBirthDate] = useState("");
+  const [birthDate, setBirthDate] = useState(null);
   const [gender, setGender] = useState(null);
   const [picture, setPicture] = useState("/static/media/user.80f5bb20.svg");
 
-  const ageOptions = [];
-  for (let i = 0; i < 100; i++) {
-    ageOptions.push(i);
-  }
   
   const [success, setSuccess] = useState(null)
 
+  const handleDemo = (e) => {
+    
+    e.preventDefault();
+    
+    document.getElementById("loginPic").src = loading;
+    document.getElementById("loginPic").classList.add("active")
+    
+    axios
+      .post("/auth/login", {
+        email: "demo_account@email.com",
+        password: "demo",
+      })
+      .then((res) => {
+        setSuccess(res.data.username)
+       document.getElementById("loginPic").src = res.data.picture;
+       document.getElementById("loginPic").classList.remove("active")
+        setPicture(res.data.picture)
+        setTimeout(()=>{
+          props.setUser(res.data)
+          props.history.push('/dash')
+        }, 1000 )
+
+      })
+      .catch((err) => {
+        document.getElementById("loginPic").classList.remove("active")
+        document.getElementById("loginPic").src = user;
+
+        console.log(err);
+        setSuccess("invalid")
+      });
+  }
   const handleLogin = (e) => {
    
       e.preventDefault();
@@ -150,24 +177,7 @@ const Login = (props) => {
               }}
             />
           </div>
-          <div>
-            <select
-              onChange={(e) => {
-                let currentYear = new Date().getFullYear();
-                setBirthDate(parseInt(currentYear) - e.target.value);
-              }}
-              id="ageSelect"
-            >
-              <option value="">Age</option>
-              {ageOptions.map((el) => {
-                return (
-                  <option key={el} value={el}>
-                    {el}
-                  </option>
-                );
-              })}
-            </select>
-          </div>
+          
           <div id="uploadImageWidget">
             <Widget
             
@@ -184,9 +194,9 @@ const Login = (props) => {
             />
           </div>
           <div>
-            <div className="submitButton" onClick={handleRegister}>
-              Submit
-            </div>
+            <input type="submit" value="Register" id="regSubmitButton" onClick={handleRegister}/>
+              
+           
           </div>
         </form>
       ) : (
@@ -220,10 +230,13 @@ const Login = (props) => {
             />
           </div>
           <div>
-            <div className="submitButton" onClick={handleLogin}>
-              Submit
-            </div>
+            <div>
+            <input type="submit" value="Login" className="submitButton" onClick={handleLogin}/>
+               
+              </div>
           </div>
+          <div><button onClick={handleDemo} className="submitButton">Demo Version</button></div>
+          
           <div id="newUserRegister">
             <span>Not a Member?</span>
 
@@ -234,6 +247,7 @@ const Login = (props) => {
             >
               Sign Up Here
             </span>
+            
           </div>
         </form>
       )}

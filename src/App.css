@@ -62,6 +62,7 @@ body {
 .uploadcare--jcrop-holder > div > div {
   border-radius: 50%;
 }
+
 .profilePicLarge {
   width: 100px;
   height: 100px;
@@ -103,22 +104,29 @@ body {
 }
 #register > div > input,
 #login > div > input {
-  width: 50%;
-  height: 25px;
+  width: 222px;
+  height: 30px;
   border: 1px solid lightgray;
   border-radius: 3px;
+  box-sizing: border-box;
 }
 
-.submitButton {
-  width: 50%;
-  height: 40px;
-
+.submitButton, #regSubmitButton {
+  width: 222px;
+  height: 40px !important;
+  border: none !important;
+  font-size: 18px;
+  font-weight: 400;
   box-sizing: border-box;
-  border-radius: 8px;
+  border-radius: 8px !important;
   text-align: center;
   padding: 8px;
   color: #efe9f4;
   background-color: #171d1c;
+}
+.submitButton:hover, #regSubmitButton:hover {
+ cursor: pointer;
+ background-color: #454b4a;
 }
 #register > div > div:hover,
 #login > div > div:hover {
@@ -1097,15 +1105,7 @@ body {
     padding-left: 10px;
     padding-right: 10px;
   }
-  #bottomHalfTopHalfProfil {
-    display: flex;
-    margin-top:5px;
-    margin-bottom: 5px;
-    height: fit-content;
-    flex-direction: column;
-    width: fit-content;
-    
-  }
+  
   #bottomHalfGamesContainerProfile, #bottomHalfFriendsContainerProfile {
     box-sizing: border-box;
     width: 85% !important;
@@ -1187,12 +1187,15 @@ body {
 #bottomHalfTopHalfProfil {
   width: 100vw;
   padding: 16px;
+
   display: flex;
   justify-content: center;
+  align-items: center;
   align-items: center;
   height: 50px;
   box-sizing: border-box;
 }
+
 #bottomHalfContainerProfile {
   width: 100vw;
   box-sizing: border-box;
@@ -1515,7 +1518,7 @@ body {
   width: 100px;
   border-radius: 6px;
   height: fit-content;
-  z-index: 15;
+  z-index: 100;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -1569,7 +1572,7 @@ body {
   
 }
 #mapSetFilter{
-  z-index: 200;
+  z-index: 50 !important ;
   width: 100vw;
   background-color:#efe9f4;
   position: absolute;
@@ -1682,7 +1685,7 @@ body {
   margin-top: 15px;
   border-radius: 5px;
   display: grid;
-  grid-template-columns: 1fr 2fr 2fr;
+  grid-template-columns: 1fr 2fr 1fr;
   grid-template-rows: 1fr;
 }
 .friendsPageFriendBox > div > h2 {
@@ -1743,12 +1746,12 @@ body {
 
 /*Dms*/
 .profilePicExtraSmall{
-  height: 18px;
-  width: 18px;
+  height: 20px;
+  width: 20px;
   border-radius: 50%;
 }
 .dmsFriend > span{
-  font-size: 8.5px;
+  font-size: 12px;
   margin-left: 2px;
   color: black;
 }
@@ -1759,16 +1762,39 @@ body {
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  margin-top: 5px;
+  margin-top: 10px;
+  padding-left: 2px;
+} 
+@media (max-width: 400px){
+  #dmsContainer{
+    right: 0px !important;
+    width: 340px !important;
+  }
+}
+#chatBoxFriendsTitle{
+  color: black;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15px;
+  text-align: center;
+  box-sizing: border-box;
+}
+#chatBoxFriendsTitle > span{
+  color: black;
+  font-size: 18px;
+  border-bottom: 1px solid black;
 }
 #dmsContainer{
+  z-index: 10000;
   position: absolute;
   top: 60px;
   right: 10px;
-  height: 300px;
-  border-radius: 8px;
-  width: 330px;
-  border: 3px solid black;
+  height: 400px;
+  border-radius: 8px !important;
+  width: 400px;
+  border: 10px groove rgba(0,0,0,0.62);
   box-sizing: border-box;
   transform: translateY(0px);
   background-color: #efe9f4;
@@ -1785,8 +1811,32 @@ body {
   flex-direction: column;
   justify-content: space-between;
 }
+#dmsChatBox > form{
+  box-sizing: border-box;
+  border-top: 6px groove rgba(0,0,0,0.19);
+  border-bottom-left-radius: 6px;
+  height: 13%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+#dmsChatBox > form > input{
+  box-sizing: border-box;
+  height: 25px;
+
+  border-radius: 2px;
+  border: 1px solid black;
+}
+#dmSendInput{
+  border: none;
+  padding: 4px;
+  border-radius: 3px;
+  background-color: #efe9f4;
+}
 #dmsFriendsContainer{
-  border-left: 2px solid black;
+  border-left: 6px groove rgba(0,0,0,0.19);
+
   width: 30%;
   box-sizing: border-box;
   height: 100%;
@@ -1804,33 +1854,64 @@ body {
 .dmToUsername{
   display: flex;
   justify-content: center;
+  padding-top: 5px;
+  align-items: center;
   color: black;
 }
-
+#testing{
+  
+}
+#testing:hover{
+  background-color: #5fbff9;
+  
+}
 
 #dmsChatBoxChat{
+  border-top-left-radius: 8px;
+  padding: 2px;
+  box-sizing: border-box;
  height: 80%;
  overflow: scroll;
- 
+ background-color: #efe9f4;
 }
 .rightChatBubble{
   width: 100%;
   box-sizing: border-box;
   margin-top: 5px;
   display: flex;
-  padding-right: 15px;
+  padding-right: 10px;
   justify-content: flex-end;
 }
+ .leftChatBubble > div{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
 .rightChatBubble > div{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.rightChatBubble > div > span, .leftChatBubble > div > span{
+  font-size: 8px;
+  color: black;
+}
+.chatProfilePicSmall{
+  border-radius: 50%;
+  height: 55px;
+  width: 55px;
+}
+.rightChatBubble > div > div{
   position: relative;
 	background: #5fbff9;
-  text-align: center;
+  text-align: left;
 	border-radius: 6px;
   width: fit-content;
-  padding: 2px;
+  box-sizing: border-box;
+  padding-left: 8px;
   max-width: 100px;
 }
-.rightChatBubble > div::after{
+.rightChatBubble > div > div::after{
   content: '';
 	position: absolute;
 	right: 0;
@@ -1852,16 +1933,17 @@ body {
   display: flex;
   justify-content: flex-start;
 }
-.leftChatBubble > div{
+.leftChatBubble > div > div{
   position: relative;
-	background: #a9adad;
+	background: #999a9b;
 	border-radius: 6px;
   width: fit-content;
+  box-sizing: border-box;
   text-align: center;
   padding: 2px;
   max-width: 100px;
 }
-.leftChatBubble > div::after{
+.leftChatBubble > div > div::after{
   content: '';
 	position: absolute;
 	left: 0;
@@ -1869,7 +1951,7 @@ body {
 	width: 0;
 	height: 0;
 	border: 10px solid transparent;
-	border-right-color: #a9adad;
+	border-right-color: #999a9b;
 	border-left: 0;
 	border-bottom: 0;
 	margin-top: -6.5px;

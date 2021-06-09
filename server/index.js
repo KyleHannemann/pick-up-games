@@ -51,8 +51,25 @@ io.on("connection", (socket) => {
     console.log(body);
     io.emit("friend added", body);
   });
-  socket.on("friend accept", (body) => {
+  socket.on("friend accept", async (body) => {
+    const db = app.get("db");
     console.log(body);
+    const {
+      user_id,
+      friend_id,
+      
+    } = body;
+    const [friendInfo] = await db.users.get_user(friend_id);
+    const noti = await db.users.add_notification([
+      user_id,
+      "accepted your friend request",
+      null,
+      friendInfo.user_id,
+      friendInfo.username,
+      friendInfo.picture,
+    ]);
+    io.emit("notification", noti);
+
     io.emit("friend accept", body);
   });
   socket.on("game comment", (body) => {

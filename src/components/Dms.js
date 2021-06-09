@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { dmToRed, dropDownDm, dmSeen } from "../redux/dmsReducer";
 import axios from "axios";
-
+import { FiArrowUpCircle } from "react-icons/fi";
+import userPic from "../miscImgs/user.svg";
 //i need dms in entire app
 
 const Dms = (props) => {
@@ -19,10 +20,10 @@ const Dms = (props) => {
       //do something
       //show list of friends to dm or not
     }
-    if (dmToState !== null){
-        setTimeout(() => {
-            scrollDown();
-          }, 300);
+    if (dmToState !== null) {
+      setTimeout(() => {
+        scrollDown();
+      }, 300);
     }
     if (dmTo !== null) {
       axios
@@ -43,23 +44,21 @@ const Dms = (props) => {
       .catch((err) => {
         console.log(err);
       });
-
-    
   }, [dmToState]);
-
-
 
   useEffect(() => {
     setTimeout(() => {
       scrollDown();
     }, 300);
-  }, []);
-
+  }, [dms]);
 
   const handleDm = (e) => {
     e.preventDefault();
     if (message === "") {
       return alert("enter a message to send");
+    }
+    if (dmTo === null) {
+      return alert("select a friend to message");
     }
     socket.emit("dm", {
       user_id: user.user_id,
@@ -71,10 +70,12 @@ const Dms = (props) => {
     setMessage("");
   };
 
-
   const scrollDown = () => {
     console.log("yooo");
     let chatBox = document.getElementById("dmsChatBoxChat");
+    if (!chatBox) {
+      return;
+    }
     chatBox.scrollTop = chatBox.scrollHeight;
   };
   return (
@@ -84,7 +85,12 @@ const Dms = (props) => {
           ? user.friends.map((f) => {
               if (f.friendInfo.user_id === dmTo) {
                 return (
-                  <div className="dmToUsername">{f.friendInfo.username}</div>
+                  <div className="dmToUsername">
+                    <img
+                      className="chatProfilePicSmall"
+                      src={f.friendInfo.picture}
+                    />
+                  </div>
                 );
               }
             })
@@ -98,7 +104,27 @@ const Dms = (props) => {
                   }
                   //check if applies to this user
                 })
+                .sort((a, b) => {
+                  if (new Date(a.timestamp) >= new Date(b.timestamp)) {
+                    return 1;
+                  } else return -1;
+                })
                 .map((d) => {
+                  let asDate = new Date(d.timestamp);
+                  let amPm = "am";
+                  let hours = asDate.getHours();
+                  let minutes = asDate.getMinutes();
+                  if (minutes < 10) {
+                    minutes = "0" + minutes;
+                  }
+                  if (hours >= 12) {
+                    amPm = "pm";
+                  }
+                  hours = hours % 12 || 12;
+                  let date = asDate
+                    .toString()
+                    .slice(0, asDate.toString().indexOf(":") - 2);
+                  let readableTime = `${date} ${hours}:${minutes} ${amPm}`;
                   let classCss;
                   if (d.user_id === user.user_id) {
                     classCss = "rightChatBubble";
@@ -107,23 +133,43 @@ const Dms = (props) => {
                   }
                   return (
                     <div className={classCss}>
-                      <div>{d.content}</div>
+                      <div>
+                        <div>{d.content}</div>
+                        <span>{readableTime}</span>
+                      </div>
                     </div>
                   );
                 })
             : null}
+          {user.friends.filter((f) => {
+            if (f.accepted === true) {
+              return f;
+            }
+          }).length === 0 ? (
+            <div style={{ color: "red" }}>Make some friends to DM!</div>
+          ) : null}
         </div>
-        {dmTo ? (
-          <form>
-            <input
-              value={message}
-              onChange={(e) => {
-                setMessage(e.target.value);
-              }}
-            />
-            <input type="submit" value="send" onClick={handleDm} />
-          </form>
-        ) : null}
+
+        <form>
+          <input
+            value={message}
+            onChange={(e) => {
+              setMessage(e.target.value);
+            }}
+          />
+
+          <FiArrowUpCircle
+            onMouseOver={(e)=>{
+              e.target.style.backgroundColor = "white"
+            }}
+            onMouseOut={(e)=>{
+              e.target.style.backgroundColor = "black"
+            }}
+            size={28}
+            style={{ color: "white", backgroundColor:"black", borderRadius:"50%" }}
+            onClick={handleDm}
+          />
+        </form>
       </div>
       <div id="dmsFriendsContainer">
         <button
@@ -144,6 +190,9 @@ const Dms = (props) => {
         >
           &#x2715;
         </button>
+        <div id="chatBoxFriendsTitle">
+          <span>Dm Friends</span>
+        </div>
         {user.friends
           .filter((f) => {
             if (f.accepted === true) {
@@ -163,7 +212,7 @@ const Dms = (props) => {
             }
             let highlight = "inherit";
             if (f.friendInfo.user_id === dmTo) {
-              highlight = "rgb(133, 212, 133)";
+              highlight = "#999a9b";
             }
             return (
               <div
@@ -179,7 +228,9 @@ const Dms = (props) => {
                   src={f.friendInfo.picture}
                 />
                 <span>{f.friendInfo.username}</span>
-                {alerts > 0 ? <span>{alerts}</span> : null}
+                {alerts > 0 ? (
+                  <span style={{ color: "red" }}>{alerts}</span>
+                ) : null}
               </div>
             );
           })}

@@ -43,7 +43,7 @@ content VARCHAR(2000),
 game_id INT REFERENCES games(game_id),
 time_stamp VARCHAR(2000),
 reply BOOLEAN,
-reply_to INT REFERENCES comment_id);
+reply_to INT REFERENCES game_comments(comment_id));
 
 CREATE TABLE notifications(
 notification_id SERIAL PRIMARY KEY,
@@ -62,3 +62,11 @@ content VARCHAR(2000),
 timestamp VARCHAR(2000),
 seen BOOLEAN
 );
+
+/*RESET ALL BUT USERS*/
+DROP TABLE player_game_junction;
+DROP TABLE friends_junction;
+DROP TABLE game_comments;
+DROP TABLE notifications;
+DROP TABLE dms;
+DROP TABLE games;

@@ -74,7 +74,6 @@ function App(props) {
       socket.on('notification', (body) => {
         console.log(body)
         if (parseInt(body[0].user_id) === parseInt(user.user_id)){
-          console.log("how?", body[0].user_id, user.user_id)
           dispatch(addNotification(body[0]))
         }
       })

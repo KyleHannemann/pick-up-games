@@ -47,6 +47,7 @@ export default function (state = initialState, action) {
       return { ...state, dms: action.payload };
     case ADD_DM:
       let newDms = [...state.dms];
+      newDms = newDms.filter(d=>d.dm_id !== action.payload.dm_id)
       newDms.push(action.payload);
       return { ...state, dms: newDms };
     case DROP_DM:
