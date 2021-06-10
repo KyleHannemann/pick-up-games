@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const massive = require("massive");
 const session = require("express-session");
+const path = require("path")
 const nodemailer = require("nodemailer");
 const authController = require("./controllers/authController");
 const gameController = require("./controllers/gameController");
@@ -208,3 +209,9 @@ app.post("/auth/login", authController.login);
 app.get("/auth/user", authController.checkSession);
 app.get("/auth/logout", authController.logout);
 app.put("/auth/edit/profile", authController.edit);
+
+app.use(express.static(__dirname + '/../build'))
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../build/index.html'))
+})
