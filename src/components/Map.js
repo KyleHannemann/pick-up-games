@@ -134,7 +134,7 @@ const Map = (props) => {
   };
   return (
     <div
-      style={{ height: props.height || "100vh", width: props.width || "100vw" }}
+      style={{ height: props.height || "90vh", width: props.width || "100vw" }}
     >
       <GoogleMap
         mapContainerStyle={mapContainerStyle}

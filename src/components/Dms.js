@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { dmToRed, dropDownDm, dmSeen } from "../redux/dmsReducer";
 import axios from "axios";
 import { FiArrowUpCircle } from "react-icons/fi";
-import userPic from "../miscImgs/user.svg";
 //i need dms in entire app
 
 const Dms = (props) => {
@@ -11,7 +10,6 @@ const Dms = (props) => {
   const { user } = useSelector((store) => store.auth);
   const { dms, dmToState, dmDrop } = useSelector((store) => store.dmsReducer);
   const dispatch = useDispatch();
-  console.log(dms, dmToState, dmDrop);
   const [dmTo, setDmTo] = useState(null);
   const [message, setMessage] = useState("");
 
@@ -71,7 +69,6 @@ const Dms = (props) => {
   };
 
   const scrollDown = () => {
-    console.log("yooo");
     let chatBox = document.getElementById("dmsChatBoxChat");
     if (!chatBox) {
       return;
@@ -157,18 +154,23 @@ const Dms = (props) => {
               setMessage(e.target.value);
             }}
           />
-
+          
+          <input type="submit" onClick={handleDm} style={{display: "none"}}/>
+          <div id="dmSendInput">
           <FiArrowUpCircle
+          type="submit"
             onMouseOver={(e)=>{
-              e.target.style.backgroundColor = "white"
+              document.getElementById("dmSendInput").classList.add("active")
             }}
             onMouseOut={(e)=>{
-              e.target.style.backgroundColor = "black"
+              document.getElementById("dmSendInput").classList.remove("active")
+
             }}
             size={28}
-            style={{ color: "white", backgroundColor:"black", borderRadius:"50%" }}
+            style={{ color: "#5fbff9", backgroundColor:"#efe9f4", borderRadius:"50%" }}
             onClick={handleDm}
           />
+          </div>
         </form>
       </div>
       <div id="dmsFriendsContainer">
@@ -191,7 +193,7 @@ const Dms = (props) => {
           &#x2715;
         </button>
         <div id="chatBoxFriendsTitle">
-          <span>Dm Friends</span>
+          <span style={{fontWeight: "500"}}>Friends</span>
         </div>
         {user.friends
           .filter((f) => {
@@ -227,10 +229,12 @@ const Dms = (props) => {
                   className="profilePicExtraSmall"
                   src={f.friendInfo.picture}
                 />
+                <div>
                 <span>{f.friendInfo.username}</span>
                 {alerts > 0 ? (
-                  <span style={{ color: "red" }}>{alerts}</span>
+                  <span className="dmFriendMessageAlerts" >{alerts}</span>
                 ) : null}
+                </div>
               </div>
             );
           })}

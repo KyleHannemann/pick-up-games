@@ -19,11 +19,11 @@ const Login = (props) => {
   const [gender, setGender] = useState(null);
   const [picture, setPicture] = useState("/static/media/user.80f5bb20.svg");
 
-  
+  const [demo, setDemo] = useState(false)
   const [success, setSuccess] = useState(null)
 
   const handleDemo = (e) => {
-    
+    setDemo(true)
     e.preventDefault();
     
     document.getElementById("loginPic").src = loading;
@@ -202,8 +202,9 @@ const Login = (props) => {
       ) : (
         //login
         <form id="login">
-          {success !== null && success !== "invalid" ?<h2 id="loginSuccess"style={{textAlign: "center"}}>Welcome Back {success}!</h2>
+          {success !== null && success !== "invalid" && demo === false ?<h2 id="loginSuccess"style={{textAlign: "center"}}>Welcome Back {success}!</h2>
           : success === "invalid"? <h2 style={{color: "red", textAlign:"center"}}>Invalid Email and/or Password</h2> : null }
+          {demo === true? <h2 id="loginSuccess"style={{textAlign: "center"}}>Welcome To The Demo Version!</h2> : null}
           <div>
             <img style={{backgroundColor: "#efe9f4"}} id="loginPic" className="profilePicLarge" src={user} alt="profile pic" />
           </div>

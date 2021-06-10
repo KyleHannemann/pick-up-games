@@ -14,7 +14,6 @@ import {BiMessageDetail} from 'react-icons/bi';
 const Friends = (props) => {
   const { user } = useSelector((store) => store.auth);
   const dispatch = useDispatch()
-  console.log(user);
   const [discoverPeople, setDiscoverPeople] = useState(false);
   const [allUsers, setAllUsers] = useState([]);
   const [searchPeople, setSearchPeople] = useState([]);
@@ -25,18 +24,7 @@ const Friends = (props) => {
     axios
       .get("/users/friends/all")
       .then((res) => {
-        // let data = res.data;
-        // // let friendsArr = [{key: 'invite all friends', id: 'all'}]
-        // // for (let i = 0; i < data.length; i++){
-        // //   if(parseInt(data[i].user_id) !== parseInt(user.user_id)){
-        // //      friendsArr.push({
-        // //        key: data[i].username,
-        // //        id: data[i].user_id
-        // //      })
-        // //   }
-        // // }
-        // console.log(friendsArr)
-        console.log(res.data);
+       
         let data = res.data.filter((el) => {
           if (el.user_id === user.user_id) {
             return;
@@ -59,12 +47,10 @@ const Friends = (props) => {
           .then((res) => {
             setAllUsers(res.data);
             setSearchPeople(res.data);
-            console.log(res.data);
           })
           .catch((err) => {
             console.log(err);
           });
-        console.log(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -150,7 +136,9 @@ const Friends = (props) => {
                     <img className="profilePicLarge" src={u.picture} />
                   </Link>
                   <div>
-                    <h2>{u.username}</h2>
+                    <h2 onClick={()=>{
+                      props.history.push(`users/${u.user_id}`)
+                    }}>{u.username}</h2>
                     <IconContext.Provider
                     value={{
                       style: {
@@ -160,7 +148,9 @@ const Friends = (props) => {
                       },
                     }}
                   >
-                    <FaRegHandshake />
+                    <FaRegHandshake onClick={()=>{
+                      props.history.push(`users/${u.user_id}`)
+                    }} />
                   </IconContext.Provider>
                   </div>
                   <div>

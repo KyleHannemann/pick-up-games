@@ -12,6 +12,11 @@ import { removeNotification } from "../redux/notificationsReducer";
 import { BiMessageDetail } from "react-icons/bi";
 import Dms from "./Dms";
 import { dropDownDm, dmToRed } from "../redux/dmsReducer";
+import {AiOutlineCalendar} from "react-icons/ai";
+import {RiTeamLine} from 'react-icons/ri';
+import {BsFilePlus} from 'react-icons/bs';
+import {BiMap} from 'react-icons/bi';
+import {BsChatDots} from 'react-icons/bs'
 
 const Navbar = () => {
   const { user } = useSelector((store) => store.auth);
@@ -84,9 +89,14 @@ const Navbar = () => {
 
     let links = Array.from(document.querySelectorAll(".navBarLink > div"));
     for (let i = 0; i < links.length; i++) {
+      if (e.target === links[i]){
+        e.target.style.color = "#5fbff9";
+      }
+      else{
       links[i].style.color = "white";
+      }
     }
-    e.target.style.color = "#5fbff9";
+  
     if (navDrop === false) {
       return;
     }
@@ -102,6 +112,10 @@ const Navbar = () => {
       .delete(`/users/notifications/delete/${e.target.value}`)
       .then((res) => {
         console.log(res);
+        if (notifications.length < 2){
+          setNotiDropDown(false);
+
+        }
       })
       .catch((err) => console.log(err));
   };
@@ -135,10 +149,10 @@ const Navbar = () => {
               >
                 <IconContext.Provider
                   value={{
-                    style: { color: "red", height: "30px", width: "30px" },
+                    style: { color: "red" },
                   }}
                 >
-                  <IoIosNotificationsOutline />
+                  <IoIosNotificationsOutline size={28} />
                 </IconContext.Provider>
                 <span id="notificationsAlerts">{notifications.length}</span>
               </div>
@@ -151,9 +165,9 @@ const Navbar = () => {
               }}
             >
               <IconContext.Provider
-                value={{ style: { height: "30px", width: "30px" } }}
+                value={{}}
               >
-                <IoIosNotificationsOutline />
+                <IoIosNotificationsOutline size={28}/>
               </IconContext.Provider>
             </div>
           )}
@@ -181,42 +195,46 @@ const Navbar = () => {
           </div>
           <div id="navBarPageLinks">
             <Link className="navBarLink" onClick={linkClick} to="/dash">
-              <div>My Games</div>
+              
+              <div>My Games <AiOutlineCalendar size={22}/></div>
             </Link>
 
             <Link onClick={linkClick} className="navBarLink" to="/friends">
-              <div>Friends</div>
+              <div>Friends <RiTeamLine size={22}/></div>
             </Link>
             <Link onClick={linkClick} className="navBarLink" to="/create/game">
-              <div>Create Game</div>
+              <div>Start A Game<BsFilePlus size={22}/></div>
             </Link>
 
             <Link onClick={linkClick} className="navBarLink" to="/map">
-              <div>Public Games</div>
+              <div>Public Games<BiMap size={22}/></div>
             </Link>
           </div>
           <div id="navBarAuthLinks">
             <div>
-              <Link className="navBarLink">
+              <Link className="navBarLink"
+              
+              onClick={()=>{
+                dispatch(dropDownDm(true))
+                dispatch(dmToRed(null))
+                navDropDown()}}>
                 <div>
                 {dmAlert.length > 0 ? (
                   <IconContext.Provider
                     value={{ height: "30px", width: "30px", color: "red" }}
                   >
-                    <BiMessageDetail id="navbarDmLink" size={22} onClick={()=>{
+                    <BsChatDots id="navbarDmLink" size={22} onClick={()=>{
                       dispatch(dropDownDm(true))
                       dispatch(dmToRed(null))
+                     
                     }} />
                   </IconContext.Provider>
                 ) : (
                   <IconContext.Provider
                     value={{ height: "30px", width: "30px", color: "white" }}
                   >
-                    <BiMessageDetail size={22} onClick={()=>{
-                      dispatch(dropDownDm(true))
-                      dispatch(dmToRed(null))
-                      navDropDown()
-                    }}/>
+                    <BsChatDots size={22} 
+                    />
                   </IconContext.Provider>
                   
                 )}

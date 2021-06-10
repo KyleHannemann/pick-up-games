@@ -68,27 +68,27 @@ const Dash = (props) => {
           ...games
             .filter((game) => {
               let today = new Date();
-       
+
               let comp = new Date(game.date);
-              let time = game.time.split(":")
-              comp.setHours(time[0], time[1])
+              let time = game.time.split(":");
+              comp.setHours(time[0], time[1]);
               if (comp >= today) {
                 return game;
               }
             })
             .map((game) => {
-              let date = new Date(game.date)
+              let date = new Date(game.date);
               let year = date.getFullYear();
               let month = date.getMonth() + 1;
               let day = date.getDate();
-              if (day < 10){
-                day = `0${day}`
+              if (day < 10) {
+                day = `0${day}`;
               }
-              if(month < 10){
-                  month = `0${month}`
+              if (month < 10) {
+                month = `0${month}`;
               }
-              
-              let eventDate = `${year}-${month}-${day} ${game.time}`
+
+              let eventDate = `${year}-${month}-${day} ${game.time}`;
 
               return {
                 title: game.title,

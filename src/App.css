@@ -2,7 +2,7 @@
   font-family: "DM Sans", sans-serif;
 }
 /*Loading bar FROM w3schools.com */
-.loadingBar{
+.loadingBar {
   border: 16px solid #5fbff9;
   border-radius: 50%;
   border-top: 16px solid #9bd1f5;
@@ -11,7 +11,7 @@
   -webkit-animation: spin 1s linear infinite; /* Safari */
   animation: spin 1s linear infinite;
 }
-#mapLoadingBarContainer{
+#mapLoadingBarContainer {
   position: absolute;
   top: 20%;
   left: 45vw;
@@ -20,13 +20,21 @@
   align-items: center;
 }
 @-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 a:hover,
 button:hover {
@@ -37,24 +45,21 @@ body {
 }
 /*AUTH PAGE*/
 
-@keyframes loginani{
-  0%{
+@keyframes loginani {
+  0% {
     transform: rotate(0deg);
-    opacity: .2;
+    opacity: 0.2;
   }
-  100%{
+  100% {
     transform: rotate(359deg);
     opacity: 1;
   }
- 
 }
 
-
-#loginSuccess{
+#loginSuccess {
   text-align: center;
-  
 }
-#loginPic.active{
+#loginPic.active {
   animation: loginani 2s infinite linear;
   border: none !important;
   background-color: inherit !important;
@@ -64,8 +69,8 @@ body {
 }
 
 .profilePicLarge {
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
   border: 1px solid black;
 }
@@ -111,7 +116,8 @@ body {
   box-sizing: border-box;
 }
 
-.submitButton, #regSubmitButton {
+.submitButton,
+#regSubmitButton {
   width: 222px;
   height: 40px !important;
   border: none !important;
@@ -124,9 +130,10 @@ body {
   color: #efe9f4;
   background-color: #171d1c;
 }
-.submitButton:hover, #regSubmitButton:hover {
- cursor: pointer;
- background-color: #454b4a;
+.submitButton:hover,
+#regSubmitButton:hover {
+  cursor: pointer;
+  background-color: #454b4a;
 }
 #register > div > div:hover,
 #login > div > div:hover {
@@ -181,30 +188,30 @@ body {
 /*NAVBAR*/
 @keyframes notiShake {
   0% {
-            transform: translateX(0%);
-            transform-origin: 20% 20%;
-  }
-  1% {
-            transform: translateX(-9px) rotate(-6deg);
-  }
-  2% {
-    -webkit-transform: translateX(7.5px) rotate(6deg);
-            transform: translateX(7.5px) rotate(6deg);
-  }
-  3% {
-            transform: translateX(-7.5px) rotate(-3.6deg);
-  }
-  4% {
-            transform: translateX(4px) rotate(2.4deg);
-  }
-  5% {
-            transform: translateX(-2.5px) rotate(-1.2deg);
-  }
-  6%{
     transform: translateX(0%);
     transform-origin: 20% 20%;
   }
-  100%{
+  1% {
+    transform: translateX(-9px) rotate(-6deg);
+  }
+  2% {
+    -webkit-transform: translateX(7.5px) rotate(6deg);
+    transform: translateX(7.5px) rotate(6deg);
+  }
+  3% {
+    transform: translateX(-7.5px) rotate(-3.6deg);
+  }
+  4% {
+    transform: translateX(4px) rotate(2.4deg);
+  }
+  5% {
+    transform: translateX(-2.5px) rotate(-1.2deg);
+  }
+  6% {
+    transform: translateX(0%);
+    transform-origin: 20% 20%;
+  }
+  100% {
     transform: translateX(0%);
     transform-origin: 20% 20%;
   }
@@ -213,16 +220,15 @@ body {
 #websiteLogoName {
   position: absolute;
 
-  top: 0%;
-  left: 0%;
+  top: 4px;
+  left: 8px;
   width: 40px;
   height: 50px;
   box-sizing: border-box;
 }
-#websiteLogoName.notiAnimation{
+#websiteLogoName.notiAnimation {
   animation: notiShake 15s infinite;
   animation-delay: 3s;
-
 }
 #websiteLogoName:hover {
   cursor: pointer;
@@ -251,7 +257,7 @@ body {
   color: black;
   border: none;
   border-radius: 6px;
-  background-color: inherit; 
+  background-color: inherit;
   border-radius: 6px;
   box-sizing: border-box;
   top: 0px;
@@ -294,7 +300,7 @@ body {
   margin-right: 6px;
 }
 
-#notiDropDown.notiExit{
+#notiDropDown.notiExit {
   animation: myslideout 1s;
 }
 @keyframes myslidein {
@@ -315,12 +321,14 @@ body {
 }
 #notificationsAlerts {
   position: absolute;
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   text-align: center;
-  top: 0%;
-  right: 0%;
-  background-color: red;
+  font-size: 12px;
+  font-weight: bolder;
+  top: 0px;
+  right: 11px;
+  background-color: rgb(230, 86, 86);
   border-radius: 50%;
   z-index: 10;
 }
@@ -348,6 +356,7 @@ body {
 .navBarLink > div {
   color: #efe9f4;
   text-decoration: none;
+  font-size: 16px;
 }
 .navBarLink {
   color: #efe9f4;
@@ -386,7 +395,7 @@ body {
   cursor: pointer;
 }
 #navBarPageLinks {
-  width: 50%;
+  width: 65%;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
@@ -395,27 +404,31 @@ body {
 #navBarAuthLinks {
   flex-direction: row;
   display: flex;
+  align-items: center;
   justify-content: space-around;
-  width: 23%;
+  width: 15%;
 }
-#navBarAuthLinks >div > a {
+#navBarAuthLinks >div {
+  font-size: 16px;
+}
+#navBarAuthLinks > div > a {
   flex-direction: row;
   display: flex;
   align-items: center;
-  
 }
-#navBarAuthLinks >div > a >span{
+#navBarAuthLinks > div > a > span {
+  text-align: center;
+  font-size: 12px;
+  height: 18px;
+  width: 18px;
+  font-weight: bolder;
   background-color: red;
   border-radius: 50%;
-  height: 18px;
-  width: 15px;
-  text-align: center;
-  font-weight: 800;
-  font-size: 14px;
+  z-index: 10;
   box-sizing: border-box;
   position: relative;
-  top: -5px;
-  right: 3px;
+  top: -8px;
+  right: 9px;
 }
 #navHamburger {
   color: #efe9f4;
@@ -426,12 +439,12 @@ body {
     height: 85px;
   }
   to {
-    height: 250px;
+    height: 280px;
   }
 }
 @keyframes navslideout {
   from {
-    height: fit-content
+    height: fit-content;
   }
   to {
     height: 85px;
@@ -441,7 +454,7 @@ body {
   0% {
     opacity: 0;
   }
-  100%{
+  100% {
     opacity: 1;
   }
 }
@@ -450,19 +463,20 @@ body {
   #navBarAuthLinks {
     display: none;
   }
-  #navBar{
-    padding: 4px;
-    animation: navslideup .5s;
-  }
-  #navBar.active{
+
+  #navBar.active {
     padding: 8px;
-    animation: navslidein .5s;
+    height: 280px;
+    animation: navslidein 0.4s;
   }
   #navBar {
     flex-direction: column;
     justify-content: center;
     align-items: center;
     height: fit-content;
+    max-width: 100vw !important;
+    padding: 4px;
+    animation: navslideup 0.5s;
   }
   #navBarPageLinks.active,
   #navBarAuthLinks.active {
@@ -472,7 +486,7 @@ body {
     align-items: center;
     width: 100%;
     transform: scale(1);
-    animation: showlinks .5s;
+    animation: showlinks 0.5s;
   }
   #navHamburger {
     position: absolute;
@@ -506,40 +520,40 @@ body {
   }
 }
 /*EDIT PROFILE PAGE*/
-#closeProfileEditScreen.editExit{
+#closeProfileEditScreen.editExit {
   animation: editExit 0.15s;
 }
-@keyframes successEnter{
+@keyframes successEnter {
   0% {
     letter-spacing: -0.5em;
-            transform: translateZ(-700px);
+    transform: translateZ(-700px);
     opacity: 0;
   }
   40% {
     opacity: 0.6;
   }
   100% {
-            transform: translateZ(0);
+    transform: translateZ(0);
     opacity: 1;
   }
 }
-.successContainer{
-  animation: successEnter .15s;
+.successContainer {
+  animation: successEnter 0.15s;
   width: 200px;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
 }
-.successButton{
+.successButton {
   padding: 12px;
   box-sizing: border-box;
   border-radius: 4px;
   border: none;
-  background-color: rgb(182, 182, 189)
+  background-color: rgb(182, 182, 189);
 }
 #closeProfileEditScreen {
   position: absolute;
-  animation: editEnter .15s;
+  animation: editEnter 0.15s;
   z-index: 100;
   left: 11vw;
   top: 4vh;
@@ -630,7 +644,6 @@ body {
   margin-right: 12px;
 }
 #editProfileContainer > div > input {
-  
   margin-right: 12px;
 }
 
@@ -980,7 +993,17 @@ body {
 }
 @media (max-width: 450px) {
   #calendarTitle {
-    font-size: 18px;
+    font-size: 16px;
+    top: 90px;
+    left: 36%;
+  }
+}
+@media (max-width: 350px) {
+  #calendarTitle {
+    font-size: 16px;
+    width: 25vw;
+    left: 43vw !important;
+    text-align: center;
   }
 }
 #dashContainer {
@@ -1027,14 +1050,13 @@ body {
   margin: 3px;
 }
 .indDashGamePlayer > img {
-  width: 50px;
-  height: 50px;
+  width: 85px;
+  height: 85px;
   border-radius: 50%;
-  border: 1px solid black;
 }
-.indDashGamePlayer > span {
-  font-size: 12px;
-  color: white;
+.indDashGamePlayer > div {
+  font-size: 16px;
+  color:  black;
 }
 .dashGamePlayersContainer {
   border-left: 1px solid black;
@@ -1050,7 +1072,7 @@ body {
   padding-top: 10px;
   box-sizing: border-box;
 }
-#profileLockContainer{
+#profileLockContainer {
   height: 60vh;
   width: 100vw;
   display: flex;
@@ -1075,22 +1097,22 @@ body {
   flex-direction: row;
   justify-content: space-between;
 }
-@media (max-width: 750px){
+@media (max-width: 750px) {
   #topHalfContainerProfile {
-    width: 100vw;    
+    width: 100vw;
     height: fit-content;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
-  #topHalfTopHalfProfile{
+  #topHalfTopHalfProfile {
     flex-direction: column;
     height: fit-content;
     align-items: center;
     justify-content: center;
   }
-  #topHalfTopHalfProfile > div{
+  #topHalfTopHalfProfile > div {
     margin-bottom: 10px;
     width: 85% !important;
     border-radius: 6px;
@@ -1105,8 +1127,9 @@ body {
     padding-left: 10px;
     padding-right: 10px;
   }
-  
-  #bottomHalfGamesContainerProfile, #bottomHalfFriendsContainerProfile {
+
+  #bottomHalfGamesContainerProfile,
+  #bottomHalfFriendsContainerProfile {
     box-sizing: border-box;
     width: 85% !important;
     background-color: #5fbff9 !important;
@@ -1124,7 +1147,6 @@ body {
     width: 100%;
     align-items: center;
     justify-content: center;
-    
   }
   #bottomHalfGamesContainerProfile > div > div {
     box-sizing: border-box;
@@ -1132,7 +1154,6 @@ body {
     flex-direction: column !important;
     align-items: center;
     justify-content: center;
-    
   }
 }
 #topHalfTopHalfProfile > div {
@@ -1206,7 +1227,8 @@ body {
   padding-left: 10px;
   padding-right: 10px;
 }
-#bottomHalfGamesContainerProfile > h2, #bottomHalfFriendsContainerProfile > h2{
+#bottomHalfGamesContainerProfile > h2,
+#bottomHalfFriendsContainerProfile > h2 {
   text-align: center;
 }
 
@@ -1221,7 +1243,6 @@ body {
   padding: 16px;
   border-radius: 6px;
   background-color: #5fbff9 !important;
-
 }
 #bottomHalfGamesContainerProfile > div {
   box-sizing: border-box;
@@ -1246,7 +1267,6 @@ body {
 #bottomHalfGamesContainerProfile > div > a > span {
   color: black;
   font-size: 22px;
- 
 }
 #bottomHalfFriendsContainerProfile {
   box-sizing: border-box;
@@ -1259,7 +1279,6 @@ body {
   padding: 16px;
   border-radius: 6px;
   background-color: #5fbff9;
-
 }
 #bottomHalfFriendsContainerProfile > div {
   width: 100%;
@@ -1317,7 +1336,8 @@ body {
     border: 3px solid black;
     width: 100vw !important;
     box-sizing: border-box;
-    min-height: fit-content;
+    height: 90vh;
+    overflow: scroll;
     margin-top: 40px;
     padding: 6px;
   }
@@ -1347,21 +1367,26 @@ body {
 }
 #gamePagePlayerContainer {
   float: right;
-  min-height: fit-content;
-  height: 100vh;
+  height: fit-content;
   margin-left: 1%;
   box-sizing: border-box;
   width: 24%;
-  border-left: 3px double black;
 }
 .indDashGamePlayer {
   display: flex;
-  background-color: #5fbff9;
-  border-radius: 4px;
+  background: #efe9f4;
+  background: linear-gradient(0deg, #efe9f4 69%, #5fbff9 69%, #5fbff9 100%);
+  border-radius: 8px;
+  width: 90%;
+  
+  border: 1px solid rgb(179, 178, 178);
+  padding-top: 5px;
+  padding-bottom: 5px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 3px;
+  margin-left: 5%;
+  margin-top: 12px;
   text-decoration: none;
 }
 .indDashGamePlayer > span {
@@ -1378,10 +1403,7 @@ body {
 .indDashGamePlayer:hover > div {
   color: black;
 }
-.indDashGamePlayer > div {
-  text-decoration: none;
-  color: black;
-}
+
 
 #gamePageGameDets {
   width: 100%;
@@ -1392,8 +1414,8 @@ body {
   align-items: flex-start;
 }
 #gamePageGameDets > div > img {
-  height: 50px;
-  width: 50px;
+  height: 75px;
+  width: 75px;
 }
 #gamePageGameDets > div {
   width: 100%;
@@ -1403,6 +1425,13 @@ body {
   justify-content: space-evenly;
   height: 100%;
   align-items: center;
+}
+#gamePageGameDets > div > div{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
 }
 #gamePageGameDets > div > p {
   font-size: 12px;
@@ -1432,8 +1461,11 @@ body {
   margin-top: 25px;
 }
 #gamePageChatContainer {
-  border: 3px solid black;
   width: 100%;
+  margin-left: 4px;
+  border-radius: 12px;
+  background-color: #16bac5;
+  padding: 2px;
   box-sizing: border-box;
   min-height: fit-content;
   margin-top: 40px;
@@ -1441,17 +1473,19 @@ body {
 }
 
 #gamePageChatContainer > input {
-  width: 98%;
-  margin-left: 1%;
-  margin-right: 1%;
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
   padding: 8px;
   box-sizing: border-box;
-  height: 80px;
+  height: 33px;
+  padding-right: 80px;
   margin-bottom: 2px;
+  margin-top: 15px;
 }
 #gameCommentSendButton {
   margin-right: 2px;
-  background-color: #5fbff9;
+  background-color: #171d1c;
   border-radius: 2px;
   width: 75px;
   border: none;
@@ -1470,52 +1504,158 @@ body {
   color: black;
 }
 #gameCommentButtonsContainer {
-  width: 100%;
+  width: 10%;
   display: flex;
+  position: relative;
+  top: -34px;
+  left: 80%;
+  z-index: 10;
   align-items: center;
   flex-direction: row;
-  justify-content: center;
+  justify-content: flex-end;
   margin-bottom: 8px;
 }
-
-#gamePageChatContainer > div {
+.gameAllCommentsContainer{
+  width: 100%;
   display: flex;
   flex-direction: column;
-  border: 2px solid black;
-  border-radius: 3px;
-  margin-bottom: 10px;
+  justify-content: flex-start;
+  min-height: fit-content;
+  max-height: 500px;
+  border-radius: 8px;
+  border: 6px groove rgba(0,0,0,0.14);
+  overflow: scroll;
+  box-sizing: border-box;
 }
-#gamePageChatContainer > div > p {
-  text-align: center;
-}
-#gamePageChatContainer > div > div {
+.gamePageCommentContainer{
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
-  background-color: #979797;
-  justify-content: center;
-  padding: 6px;
+  justify-content: flex-start;
+  align-items: center;
+  width: fit-content;
+  box-sizing: border-box;
+  padding-left: 50px;
+  margin-top: 20px;
+  padding-right: 0px;
 }
-#gamePageChatContainer > div > div > span > span {
-  margin-left: 12px;
-  font-size: 12px;
-}
-#gamePageChatContainer > div > div > h3 {
-  font-size: 16px;
-  margin: 0px;
-}
-#gamePageChatContainer > div > div > a > img {
-  height: 30px;
-  width: 30px;
+.gamePageCommentContainer > a > img{
+  height: 65px;
+  width: 65px;
   border-radius: 50%;
-  margin-right: 10px;
+  
 }
 
+.gameCommentsComment > span{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.gameCommentsComment > span > div  >span{
+  font-size: 20px;
+  font-weight: 500;
+  margin-right: 5px;
+}
+.gameCommentsComment > span >div{
+  font-size: 16px;
+  height: 100%;
+}
+.gameCommentsComment > div {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  justify-content: space-between;
+  flex-direction: column;
+  margin-left: 85px;
+}
+.gameCommentsComment > div >span{
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  
+}
+.gameCommentsComment > div >span > span{
+  width: fit-content !important;
+  text-align: center;
+  font-size: 10px;
+  
+  
+}
+@media (max-width: 600px){
+  .gameCommentsComment{
+    transform: scale(.5) !important;
+  }
+  .gameAllCommentsContainer{
+    width: 100%;
+    min-height: fit-content;
+    max-height: 500px;
+    border-radius: 8px;
+    border: 6px groove rgba(0,0,0,0.14);
+    overflow: visible;
+    box-sizing: border-box;
+  }
+  
+  .gameCommentsComment{
+    left: -80px !important;
+  }
+  
+  
+}
+.gameCommentsComment{
+   position: relative;
+   left: -20px;
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+   padding: 10px;
+   width: 100%;
+   min-height: 100px;
+   box-sizing: border-box;
+   background: #efe9f4;
+   -webkit-border-radius: 14px;
+   -moz-border-radius: 14px;
+   border-radius: 14px;
+    border: #171d1c solid 10px;
+        transform: scale(.8);
+
+}
+
+.gameCommentsComment:after{
+    content: '';
+    position: absolute;
+    border-style: solid;
+    border-width: 20px 20px 20px 0;
+    border-color: transparent #efe9f4;
+    display: block;
+    width: 0;
+    z-index: 1;
+    left: -17px;
+    top: 27px;
+}
+
+.gameCommentsComment:before{
+    content: '';
+    position: absolute;
+    border-style: solid;
+    border-width: 29px 29px 29px 0;
+    border-color: transparent #171d1c;
+    display: block;
+    width: 0;
+    z-index: 0;
+    left: -29px;
+    top: 18px;
+}
+
+
+
+
+
 /*Map*/
-#mapFilter{
+#mapFilter {
   background-color: #5fbff9;
   border: 1px solid black;
-  width: 100px;
   border-radius: 6px;
   height: fit-content;
   z-index: 100;
@@ -1531,11 +1671,8 @@ body {
   box-sizing: border-box;
   transform: translateX(-52.5%);
   width: 300px;
- 
-  
-  
 }
-#loadingGames{
+#loadingGames {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -1543,44 +1680,37 @@ body {
   height: 100px;
   z-index: 100;
 }
-#mapFilter > div{
- background-color: #efe9f4;
- width: 100%;
- box-sizing: border-box;
- display: flex;
- flex-direction: row;
- align-items: center;
- justify-content: space-between;
- padding:8px;
-  
+#mapFilter > div {
+  background-color: #efe9f4;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
 }
-#mapFilter > div:last-child{
-
- border-bottom-left-radius: 4px;
- border-bottom-right-radius: 4px;
-  
+#mapFilter > div:last-child {
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
-#mapFilter > div:first-child{
-
- border-top-right-radius: 4px;
- border-top-left-radius: 4px;
-  
+#mapFilter > div:first-child {
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
 }
-#mapFilter > div > button{
- background-color:inherit;
- border: none;
-  
+#mapFilter > div > button {
+  background-color: inherit;
+  border: none;
 }
-#mapSetFilter{
-  z-index: 50 !important ;
+#mapSetFilter {
   width: 100vw;
-  background-color:#efe9f4;
+  background-color: #efe9f4;
   position: absolute;
   display: flex;
   justify-content: center;
   top: 0px;
 }
-#mapSetFilter > span > button{
+#mapSetFilter > span > button {
   margin-left: 30px;
   margin-right: 30px;
   background-color: inherit;
@@ -1600,7 +1730,7 @@ body {
   box-sizing: border-box;
   transform: translateX(-52.5%);
   width: 350px;
-  z-index: 10;
+  z-index: 1;
 }
 
 .mapSearchBar input {
@@ -1637,7 +1767,6 @@ body {
   padding: 8px;
   border: none;
   border-radius: 4px;
-  
 }
 /*Friends Page*/
 
@@ -1677,7 +1806,7 @@ body {
 }
 .friendsPageFriendBox {
   width: 600px;
-  border: 1px solid black;
+  border: 1px solid rgb(177, 176, 176);
   box-sizing: border-box;
   background-color: #efe9f4;
   padding: 10px;
@@ -1708,11 +1837,11 @@ body {
   box-sizing: content-box;
   width: 100%;
   margin-bottom: 6px;
-  background-color:#5fbff9;
+  background-color: #5fbff9;
   margin-top: 6px;
   justify-content: flex-start;
 }
-.friendsPageFriendBox > div > div > div:nth-child(even){
+.friendsPageFriendBox > div > div > div:nth-child(even) {
   background-color: lightgray;
 }
 .friendsPageFriendBox > div > div {
@@ -1720,7 +1849,7 @@ body {
   flex-direction: column;
   align-items: flex-start;
   margin-top: 4px;
-  border: 1px solid black;
+  border: 1px solid rgb(196, 191, 191);
   border-radius: 6px;
   height: 100px;
   width: 175px;
@@ -1745,33 +1874,65 @@ body {
 }
 
 /*Dms*/
-.profilePicExtraSmall{
+.profilePicExtraSmall {
   height: 20px;
   width: 20px;
   border-radius: 50%;
 }
-.dmsFriend > span{
+.dmsFriend > div > span {
   font-size: 12px;
   margin-left: 2px;
   color: black;
 }
-.dmsFriend{
+.dmsFriend {
   width: 100%;
   box-sizing: border-box;
+  height: 50px;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  margin-top: 10px;
   padding-left: 2px;
-} 
-@media (max-width: 400px){
-  #dmsContainer{
-    right: 0px !important;
+  padding-right: 2px;
+}
+.dmsFriend:last-child {
+  height: 54px;
+}
+.dmsFriend:hover {
+  cursor: pointer;
+  background-color: #999a9b !important ;
+}
+@media (max-width: 420px) {
+  #dmsContainer {
+    right: 2px !important;
     width: 340px !important;
+    max-width: 100vw !important;
+    border: 3px groove rgba(0, 0, 0, 0.62) !important;
+  }
+  #dmsFriendsContainer {
+    border-left: 3px groove rgba(0, 0, 0, 0.19) !important;
+  }
+  .dmsFriend {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 14px;
+    padding-left: 2px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-right: 2px;
+    height:fit-content !important;
+  }
+  
+  
+  .dmsFriend > span {
+    text-align: center;
   }
 }
-#chatBoxFriendsTitle{
+#chatBoxFriendsTitle {
   color: black;
   display: flex;
   width: 100%;
@@ -1781,100 +1942,112 @@ body {
   text-align: center;
   box-sizing: border-box;
 }
-#chatBoxFriendsTitle > span{
+#chatBoxFriendsTitle > span {
   color: black;
   font-size: 18px;
-  border-bottom: 1px solid black;
+  text-align: center;
 }
-#dmsContainer{
-  z-index: 10000;
+#dmsContainer {
+  z-index: 500 !important;
   position: absolute;
   top: 60px;
   right: 10px;
   height: 400px;
   border-radius: 8px !important;
   width: 400px;
-  border: 10px groove rgba(0,0,0,0.62);
+  border: 10px groove rgba(155, 152, 152, 0.62);
   box-sizing: border-box;
   transform: translateY(0px);
   background-color: #efe9f4;
   display: flex;
   flex-direction: row;
 }
-#dmsChatBox{
+#dmsChatBox {
   box-sizing: border-box;
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
   height: 100%;
-  width: 70%;
+  z-index: 500 !important;
+  width: 66%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
-#dmsChatBox > form{
+#dmsChatBox > form {
   box-sizing: border-box;
-  border-top: 6px groove rgba(0,0,0,0.19);
+  border-top: 6px groove rgba(0, 0, 0, 0.19);
   border-bottom-left-radius: 6px;
   height: 13%;
+  padding: 4px 10px;
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
 }
-#dmsChatBox > form > input{
+#dmsChatBox > form > input {
   box-sizing: border-box;
   height: 25px;
 
   border-radius: 2px;
   border: 1px solid black;
 }
-#dmSendInput{
+#dmSendInput {
   border: none;
   padding: 4px;
   border-radius: 3px;
-  background-color: #efe9f4;
 }
-#dmsFriendsContainer{
-  border-left: 6px groove rgba(0,0,0,0.19);
+#dmSendInput.active {
+  border: none;
+  padding: 4px;
+  border-radius: 3px;
+  animation: dmsend 1s infinite ;
+}
+@keyframes dmsend{
+  0%{
+    transform: translateY(0px)
+  }
+  
+  50%{
+    transform: translateY(3px)
+  }
+  100%{
+    transform: translateY(0px)
+  }
+}
+#dmsFriendsContainer {
+  border-left: 6px groove rgba(65, 64, 64, 0.19);
 
-  width: 30%;
+  width: 33%;
   box-sizing: border-box;
   height: 100%;
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
   overflow: scroll;
 }
-#dmsFriendsContainer > button{
+#dmsFriendsContainer > button {
   background-color: inherit;
   border: none;
   float: right;
   font-size: 16px;
 }
 
-.dmToUsername{
+.dmToUsername {
   display: flex;
   justify-content: center;
   padding-top: 5px;
   align-items: center;
   color: black;
 }
-#testing{
-  
-}
-#testing:hover{
-  background-color: #5fbff9;
-  
-}
 
-#dmsChatBoxChat{
+#dmsChatBoxChat {
   border-top-left-radius: 8px;
   padding: 2px;
   box-sizing: border-box;
- height: 80%;
- overflow: scroll;
- background-color: #efe9f4;
+  height: 80%;
+  overflow: scroll;
+  background-color: #efe9f4;
 }
-.rightChatBubble{
+.rightChatBubble {
   width: 100%;
   box-sizing: border-box;
   margin-top: 5px;
@@ -1882,50 +2055,51 @@ body {
   padding-right: 10px;
   justify-content: flex-end;
 }
- .leftChatBubble > div{
+.leftChatBubble > div {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
-.rightChatBubble > div{
+.rightChatBubble > div {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
 }
-.rightChatBubble > div > span, .leftChatBubble > div > span{
+.rightChatBubble > div > span,
+.leftChatBubble > div > span {
   font-size: 8px;
   color: black;
 }
-.chatProfilePicSmall{
+.chatProfilePicSmall {
   border-radius: 50%;
   height: 55px;
   width: 55px;
 }
-.rightChatBubble > div > div{
+.rightChatBubble > div > div {
   position: relative;
-	background: #5fbff9;
+  background: #5fbff9;
   text-align: left;
-	border-radius: 6px;
+  border-radius: 6px;
   width: fit-content;
   box-sizing: border-box;
-  padding-left: 8px;
+  padding: 0px 4px;
   max-width: 100px;
 }
-.rightChatBubble > div > div::after{
-  content: '';
-	position: absolute;
-	right: 0;
-	top: 50%;
-	width: 0;
-	height: 0;
-	border: 10px solid transparent;
-	border-left-color: #5fbff9;
-	border-right: 0;
-	border-bottom: 0;
-	margin-top: -6.5px;
-	margin-right: -10px;
+.rightChatBubble > div > div::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+  border-left-color: #5fbff9;
+  border-right: 0;
+  border-bottom: 0;
+  margin-top: -6.5px;
+  margin-right: -10px;
 }
-.leftChatBubble{
+.leftChatBubble {
   margin-top: 5px;
   padding-left: 10px;
   width: 100%;
@@ -1933,27 +2107,39 @@ body {
   display: flex;
   justify-content: flex-start;
 }
-.leftChatBubble > div > div{
+.dmFriendMessageAlerts {
+  color: rgb(241, 240, 240) !important;
+  height: 16px;
+  width: 16px;
+  padding: 1px 6px !important;
+  font-size: 12px !important;
+  background-color: rgb(238, 8, 8);
+  border-radius: 50%;
+  box-sizing: border-box;
+  font-weight: 800 !important;
+  text-align: center;
+}
+.leftChatBubble > div > div {
   position: relative;
-	background: #999a9b;
-	border-radius: 6px;
+  background: #999a9b;
+  border-radius: 6px;
   width: fit-content;
   box-sizing: border-box;
   text-align: center;
-  padding: 2px;
+  padding: 0px 4px;
   max-width: 100px;
 }
-.leftChatBubble > div > div::after{
-  content: '';
-	position: absolute;
-	left: 0;
-	top: 50%;
-	width: 0;
-	height: 0;
-	border: 10px solid transparent;
-	border-right-color: #999a9b;
-	border-left: 0;
-	border-bottom: 0;
-	margin-top: -6.5px;
-	margin-left: -10px;
+.leftChatBubble > div > div::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+  border-right-color: #999a9b;
+  border-left: 0;
+  border-bottom: 0;
+  margin-top: -6.5px;
+  margin-left: -10px;
 }
