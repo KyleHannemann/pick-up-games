@@ -3,32 +3,32 @@
 //button to see page
 
 //discover people
-import {FaRegHandshake} from 'react-icons/fa'
-import {IconContext} from 'react-icons';
+import { FaRegHandshake } from "react-icons/fa";
+import { IconContext } from "react-icons";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import {dropDownDm, dmToRed} from '../redux/dmsReducer';
-import {BiMessageDetail} from 'react-icons/bi';
+import { dropDownDm, dmToRed } from "../redux/dmsReducer";
+import { BiMessageDetail } from "react-icons/bi";
 const Friends = (props) => {
   const { user } = useSelector((store) => store.auth);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [discoverPeople, setDiscoverPeople] = useState(false);
   const [allUsers, setAllUsers] = useState([]);
   const [searchPeople, setSearchPeople] = useState([]);
   const [friends, setFriends] = useState([]);
   const [searchFriends, setSearchFriends] = useState([]);
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     axios
       .get("/users/friends/all")
       .then((res) => {
-       
         let data = res.data.filter((el) => {
           if (el.user_id === user.user_id) {
-            return;
+            return null;
           }
+
           for (let i = 0; i < user.friends.length; i++) {
             if (
               user.friends[i].accepted === true &&
@@ -38,15 +38,18 @@ const Friends = (props) => {
               return el;
             }
           }
+          return null;
         });
-
+        setLoading(false);
         setFriends(data);
         setSearchFriends(data);
         axios
           .get("/users/get/all")
           .then((res) => {
+            
             setAllUsers(res.data);
             setSearchPeople(res.data);
+            
           })
           .catch((err) => {
             console.log(err);
@@ -95,20 +98,28 @@ const Friends = (props) => {
             placeholder="search all people.."
             onChange={handleSearchPeople}
           />
-          <h2>{allUsers.length - friends.length} Friend Suggestions</h2>
+          {loading ? (
+            <div className="loadingBarContainer" id="friendsLoadingBarContainer">
+              <div className="loadingBar" id="mapLoadingBar"></div>
+              <span>..loading</span>
+            </div>
+          ) : (
+            <h2>{allUsers.length - friends.length} Friend Suggestions</h2>
+          )}
+
           {searchPeople
             .filter((u) => {
               for (let i = 0; i < friends.length; i++) {
                 if (friends[i].user_id === u.user_id) {
-                  return;
+                  return null;
                 }
               }
               if (parseInt(u.user_id) === parseInt(user.user_id)) {
-                return;
+                return null;
               }
 
               if (u.user_id === user.user_id) {
-                return;
+                return null;
               }
               return u;
             })
@@ -133,39 +144,50 @@ const Friends = (props) => {
               return (
                 <div key={u.user_id} className="friendsPageFriendBox">
                   <Link to={`users/${u.user_id}`}>
-                    <img className="profilePicLarge" src={u.picture} />
+                    <img
+                      alt={`friend profile ${u.username}`}
+                      className="profilePicLarge"
+                      src={u.picture}
+                    />
                   </Link>
                   <div>
-                    <h2 onClick={()=>{
-                      props.history.push(`users/${u.user_id}`)
-                    }}>{u.username}</h2>
+                    <h2
+                      onClick={() => {
+                        props.history.push(`users/${u.user_id}`);
+                      }}
+                    >
+                      {u.username}
+                    </h2>
                     <IconContext.Provider
-                    value={{
-                      style: {
-                        height: "35px",
-                        width: "35px",
-                        color: "#D52217",
-                      },
-                    }}
-                  >
-                    <FaRegHandshake onClick={()=>{
-                      props.history.push(`users/${u.user_id}`)
-                    }} />
-                  </IconContext.Provider>
+                      value={{
+                        style: {
+                          height: "35px",
+                          width: "35px",
+                          color: "#D52217",
+                        },
+                      }}
+                    >
+                      <FaRegHandshake
+                        onClick={() => {
+                          props.history.push(`users/${u.user_id}`);
+                        }}
+                      />
+                    </IconContext.Provider>
                   </div>
                   <div>
                     <span>{mutualFriends.length} mutual friends</span>
-                    {mutualFriends.length === 0 ? null :
-                    <div>
-                      {mutualFriends.map((e) => {
-                        return (
-                          <div>
-                            <img src={e.picture} />
-                            <span>{e.username}</span>
-                          </div>
-                        );
-                      })}
-                    </div> }
+                    {mutualFriends.length === 0 ? null : (
+                      <div>
+                        {mutualFriends.map((e) => {
+                          return (
+                            <div>
+                              <img alt={`${e.username}`} src={e.picture} />
+                              <span>{e.username}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
                   </div>
                 </div>
               );
@@ -173,10 +195,15 @@ const Friends = (props) => {
         </div>
       ) : (
         <div className="friendsPageFriendsContainer">
-          {friends.length === 1 ? (
-            <h1>1 Friend</h1>
+          {loading ? (
+            <div className="loadingBarContainer" id="friendsLoadingBarContainer">
+              <div className="loadingBar" id="mapLoadingBar"></div>
+              <span>..loading</span>
+            </div>
           ) : (
-            <h1>{friends.length} Friends</h1>
+            <h1>
+              {friends.length} {friends.length === 1 ? "Friend" : "Friends"}
+            </h1>
           )}
           <input
             placeholder="search friends.."
@@ -186,7 +213,11 @@ const Friends = (props) => {
             return (
               <div key={f.user_id} className="friendsPageFriendBox">
                 <Link to={`/users/${f.user_id}`}>
-                  <img className="profilePicLarge" src={f.picture} />
+                  <img
+                    alt={`${f.username}`}
+                    className="profilePicLarge"
+                    src={f.picture}
+                  />
                 </Link>
                 <div>
                   <h2>{f.username}</h2>
@@ -203,13 +234,21 @@ const Friends = (props) => {
                   </IconContext.Provider>
                 </div>
 
-                <div style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
-                    <BiMessageDetail size={40}onClick={()=>{
-                      dispatch(dmToRed(f.user_id))
-                      dispatch(dropDownDm(true))
-                    }}/>
-                 
-                 
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: "100px"
+                  }}
+                >
+                  <BiMessageDetail
+                    size={40}
+                    onClick={() => {
+                      dispatch(dmToRed(f.user_id));
+                      dispatch(dropDownDm(true));
+                    }}
+                  />
                 </div>
               </div>
             );

@@ -9,15 +9,13 @@ import { useHistory } from "react-router-dom";
 import io from "socket.io-client";
 import {setGamesRed} from './redux/joinedGamesReducer';
 import {placeSocket} from './redux/socketReducer';
-import {setDms, addDm, dmSeen} from "./redux/dmsReducer";
+import {setDms, addDm} from "./redux/dmsReducer";
 import {setNotifications, addNotification} from './redux/notificationsReducer'
 //Get User INFO, FRIENDS, GAMES JOINED, SAVE TO STATE 
 function App(props) {
   const dispatch = useDispatch()
   const { user } = useSelector((store) => store.auth);
   const [socket, setSocket] = useState(null);
-  const {dmToState} = useSelector((store)=> store.dmsReducer)
-  console.log(dmToState)
   useEffect(() => {
     if (!user){
       return;
@@ -49,7 +47,9 @@ function App(props) {
   }, [user]);
   
   useEffect(() => {
-   
+   if (!user){
+     return 
+   }
     if (socket) {
       socket.on("friend added", (body) => {
         if (parseInt(body.friend_id) === parseInt(user.user_id) ||
@@ -79,8 +79,6 @@ function App(props) {
       })
 
       socket.on("newDm", (body) => {
-        console.log(body)
-        console.log(dmToState)
         if (parseInt(body.user_id) === parseInt(user.user_id) || parseInt(body.dm_to) === parseInt(user.user_id)){
           dispatch(addDm(body))
          
@@ -108,7 +106,6 @@ function App(props) {
         }
       })
       .catch((err) => {
-        console.log("error on user find");
         history.push("/");
       });
   }, []);

@@ -13,8 +13,18 @@
 }
 #mapLoadingBarContainer {
   position: absolute;
-  top: 20%;
-  left: 45vw;
+  top: 200px;
+  left: 0vw;
+   width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#friendsLoadingBarContainer{
+  position: absolute;
+  top: 200px;
+  left: 0vw;
+   width: 100vw;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -328,7 +338,7 @@ body {
   font-weight: bolder;
   top: 0px;
   right: 11px;
-  background-color: rgb(230, 86, 86);
+  background-color: rgb(238, 8, 8);
   border-radius: 50%;
   z-index: 10;
 }
@@ -863,7 +873,6 @@ body {
   .createGameReviewContainer {
     background-color: #5fbff9;
     padding: 24px 36px;
-    box-shadow: 0.25px 0.25px 10px 0.25px;
     display: flex;
     width: 75vw;
   }
@@ -1203,6 +1212,7 @@ body {
 }
 #topHalfTopHalfProfile > div > h1 {
   margin: 0px;
+  text-align: center;
 }
 
 #bottomHalfTopHalfProfil {
@@ -1324,6 +1334,17 @@ body {
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-start;
+  }
+  #gamePageGameDets >div > div > div{
+    text-align: center;
+    font-size: 12px;
+    margin-top: 3px;
+    width: 100%;
+  }
+  #gamePageGameDets >div > p, #gamePageGameDets >div > div {
+    width: 100%;
+    text-align: center;
+    font-size: 12px !important;
   }
   #gamePageContainer {
     height: fit-content !important;
@@ -1509,7 +1530,6 @@ body {
   position: relative;
   top: -34px;
   left: 80%;
-  z-index: 10;
   align-items: center;
   flex-direction: row;
   justify-content: flex-end;
@@ -1585,7 +1605,6 @@ body {
 }
 @media (max-width: 600px){
   .gameCommentsComment{
-    transform: scale(.5) !important;
   }
   .gameAllCommentsContainer{
     width: 100%;
@@ -1593,14 +1612,37 @@ body {
     max-height: 500px;
     border-radius: 8px;
     border: 6px groove rgba(0,0,0,0.14);
-    overflow: visible;
+    overflow: scroll;
     box-sizing: border-box;
   }
   
   .gameCommentsComment{
-    left: -80px !important;
+    position: inherit !important;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column !important;
+    
   }
-  
+  .gamePageCommentContainer{
+    padding-left: 0px !important;
+    flex-direction: column;
+    
+    justify-content: center  !important;
+    align-items: center !important;
+  }
+  .gamePageCommentContainer > a > img{
+    height: 65px;
+    width: 65px;
+    border-radius: 50%;
+    
+  }
+  .gameCommentsComment:after{
+    display: none !important;
+}
+
+.gameCommentsComment:before{
+    display: none !important;
+}
   
 }
 .gameCommentsComment{
@@ -1608,6 +1650,7 @@ body {
    left: -20px;
    display: flex;
    flex-direction: row;
+   align-items: center;
    justify-content: space-between;
    padding: 10px;
    width: 100%;
@@ -1617,7 +1660,7 @@ body {
    -webkit-border-radius: 14px;
    -moz-border-radius: 14px;
    border-radius: 14px;
-    border: #171d1c solid 10px;
+    border: #171d1c solid 4px;
         transform: scale(.8);
 
 }
@@ -1639,13 +1682,13 @@ body {
     content: '';
     position: absolute;
     border-style: solid;
-    border-width: 29px 29px 29px 0;
+    border-width: 22px 22px 22px 0;
     border-color: transparent #171d1c;
     display: block;
     width: 0;
     z-index: 0;
-    left: -29px;
-    top: 18px;
+    left: -23px;
+    top: 25px;
 }
 
 
@@ -1702,6 +1745,24 @@ body {
   background-color: inherit;
   border: none;
 }
+@media (max-width: 650px){
+  #mapSetFilter >span >span {
+    margin-right: 0px !important;
+    font-size: 11px !important;
+  }
+  #mapSetFilter > span > span > button {
+    margin-right: 0px !important;
+    font-size: 11px !important;
+  }
+  #mapSetFilter >span{
+    display: flex;
+    flex-direction: column !important;
+    align-items: center;
+  }
+  .mapSearchBar{
+    top: 45px !important;
+  }
+}
 #mapSetFilter {
   width: 100vw;
   background-color: #efe9f4;
@@ -1710,8 +1771,12 @@ body {
   justify-content: center;
   top: 0px;
 }
-#mapSetFilter > span > button {
-  margin-left: 30px;
+
+#mapSetFilter >span >span {
+  margin-right: 30px;
+  font-size: 14px;
+}
+#mapSetFilter > span > span > button {
   margin-right: 30px;
   background-color: inherit;
   font-size: 16px;
@@ -1926,9 +1991,20 @@ body {
     padding-right: 2px;
     height:fit-content !important;
   }
+  .dmsFriend > div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  #dmsFriendsScroll{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
   
   
-  .dmsFriend > span {
+  .dmsFriend > div >span {
     text-align: center;
   }
 }
@@ -2022,7 +2098,13 @@ body {
   height: 100%;
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
+}
+#dmsFriendsScroll{
+  border-top: 6px groove rgba(65, 64, 64, 0.19);
   overflow: scroll;
+  height: 87%;
+  width: 103%;
+  box-sizing: border-box;
 }
 #dmsFriendsContainer > button {
   background-color: inherit;
@@ -2040,12 +2122,11 @@ body {
 }
 
 #dmsChatBoxChat {
-  border-top-left-radius: 8px;
   padding: 2px;
   box-sizing: border-box;
   height: 80%;
+  width: 100%;
   overflow: scroll;
-  background-color: #efe9f4;
 }
 .rightChatBubble {
   width: 100%;

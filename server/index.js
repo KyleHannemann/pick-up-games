@@ -53,7 +53,6 @@ io.on("connection", (socket) => {
   });
   socket.on("friend accept", async (body) => {
     const db = app.get("db");
-    console.log(body);
     const {
       user_id,
       friend_id,
@@ -85,7 +84,7 @@ io.on("connection", (socket) => {
         body.reply_to,
       ])
       .then((data) => {
-        io.emit("game comment", data);
+         return io.emit("game comment", data);
       })
       .catch((err) => {
         io.emit("game comment", err);
@@ -99,21 +98,11 @@ io.on("connection", (socket) => {
     io.emit('newDm', dm)
   })
 
-
-  // socket.on('notification', async (body) => {
-  //   const db = app.get('db')
-  //   await db.users.add_notification([body.user_id,
-  //     body.description, body.game_id, body.user_interaction])
-  //   db.users.get_notifications(body.user_id).then(data=>{
-  //     io.emit('notification', data)
-  //   }).catch(err=>{
-  //     console.log(err)
-  //   })
-  // })
   socket.on("invites", async (body) => {
     const db = app.get("db");
-    console.log(body);
     const { invites, game_id, username, user_id, picture } = body;
+    console.log(invites)
+
     for (let i = 0; i < invites.length; i++) {
       if (parseInt(invites[i]) !== parseInt(user_id)) {
         const noti = await db.users.add_notification([
@@ -124,7 +113,8 @@ io.on("connection", (socket) => {
           username,
           picture,
         ]);
-        io.emit("notification", noti);
+        console.log(noti)
+        await io.emit("notification", noti);
       }
     }
     //node mailer send email invites
@@ -163,7 +153,6 @@ io.on("connection", (socket) => {
   });
   socket.on("friend request notification", async (body) => {
     const db = app.get("db");
-    console.log(body);
     const {
       user_id,
       description,

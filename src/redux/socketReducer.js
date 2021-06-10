@@ -17,7 +17,7 @@ export function placeSocket(socket){
     }
 }
 
-export default function (state=initialState, action){
+export default function reducer(state=initialState, action){
     switch(action.type){
         case SET_SOCKET:
             return {...state, socket:action.payload}

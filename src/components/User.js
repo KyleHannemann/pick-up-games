@@ -8,13 +8,13 @@ import { FaRegHandshake } from "react-icons/fa";
 import { IconContext } from "react-icons";
 import TimePicker from "react-time-picker";
 import EditProfile from "./EditProfile";
-import {BiMessageDetail} from 'react-icons/bi'
-import {dmToRed, dropDownDm} from '../redux/dmsReducer'
+import { BiMessageDetail } from "react-icons/bi";
+import { dmToRed, dropDownDm } from "../redux/dmsReducer";
 
 const User = (props) => {
   const { socket } = useSelector((store) => store.socketReducer);
   const { user } = useSelector((store) => store.auth);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   //display user details,
   //if user = user display edit options
 
@@ -30,19 +30,14 @@ const User = (props) => {
 
   //edit own profile
   const [edit, setEdit] = useState(false);
+  useEffect(() => {}, [props.match.params.userId]);
   useEffect(() => {
-    console.log("is is changing", props.match.params.userId);
-  }, [props.match.params.userId]);
-  useEffect(() => {
-    console.log("user check", user);
     if (!user) {
-      console.log("how?");
       return;
     }
     axios
       .get(`/users/get/users/friends/${props.match.params.userId}`)
       .then((res) => {
-        console.log(res);
         setThisUserFriends(res.data);
       })
       .catch((err) => {
@@ -111,6 +106,11 @@ const User = (props) => {
   }, [props.match.params.userId, user]);
 
   const addFriend = () => {
+    if (!socket) {
+      return;
+    }
+    setFriends("pending");
+
     socket.emit("friend update", {
       user_id: user.user_id,
       friend_id: parseInt(props.match.params.userId),
@@ -130,14 +130,15 @@ const User = (props) => {
       .post("/users/addFriend", { friendId: userProfile.user_id })
       .then((res) => {
         console.log(res.data);
-        //dispatch(setUserFriends(res.data));
-        setFriends("pending");
       })
       .catch((err) => {
         console.log(err);
       });
   };
   const handleFriendRequest = (e) => {
+    if (!socket) {
+      return;
+    }
     if (e.target.value === "accept") {
       socket.emit("friend accept", {
         user_id: parseInt(props.match.params.userId),
@@ -240,14 +241,14 @@ const User = (props) => {
                       comp.setHours(time[0], time[1]);
                       if (comp <= today) {
                         return game;
-                      }
+                      } else return null;
                     }).length
                   }
                 </div>
                 <div>Games Played</div>
               </div>
               <div>
-                <img src={userProfile.picture} />
+                <img alt={userProfile.username} src={userProfile.picture} />
               </div>
 
               {ownProfile ? (
@@ -362,11 +363,15 @@ const User = (props) => {
 
             {friends === true || ownProfile === true ? (
               <div id="bottomHalfTopHalfProfil">
-                {friends === true && !ownProfile ? <BiMessageDetail size={40}onClick={()=>{
-                      dispatch(dmToRed(userProfile.user_id))
-                      dispatch(dropDownDm(true))
-                    }}/> : null}
-                
+                {friends === true && !ownProfile ? (
+                  <BiMessageDetail
+                    size={40}
+                    onClick={() => {
+                      dispatch(dmToRed(userProfile.user_id));
+                      dispatch(dropDownDm(true));
+                    }}
+                  />
+                ) : null}
               </div>
             ) : (
               <div id="profileLockContainer">
@@ -393,7 +398,7 @@ const User = (props) => {
                       comp.setHours(time[0], time[1]);
                       if (comp >= today) {
                         return game;
-                      }
+                      } else return null;
                     }).length
                   }{" "}
                   games scheduled
@@ -407,7 +412,7 @@ const User = (props) => {
                     comp.setHours(time[0], time[1]);
                     if (comp >= today) {
                       return game;
-                    }
+                    } else return null;
                   })
                   .sort((a, b) => {
                     if (new Date(a.date) >= new Date(b.date)) {
@@ -420,7 +425,7 @@ const User = (props) => {
                     return (
                       <div>
                         <Link to={`/game/${game.game_id}`}>
-                          <img src={game.icon} />
+                          <img alt="sport icon" src={game.icon} />
                         </Link>
                         <Link to={`/game/${game.game_id}`}>
                           <span>{game.title}</span>
@@ -461,9 +466,18 @@ const User = (props) => {
                   return (
                     <div>
                       <Link to={`/users/${el.user_id}`}>
-                        <img className="profilePicSmall" src={el.picture} />
+                        <img
+                          alt={el.username}
+                          className="profilePicSmall"
+                          src={el.picture}
+                        />
                       </Link>
-                      <span>{el.username}</span>
+                      {areFriends === null ? (
+                        <span>You</span>
+                      ) : (
+                        <span>{el.username}</span>
+                      )}
+
                       {areFriends === true ? (
                         <IconContext.Provider
                           value={{
@@ -498,46 +512,10 @@ const User = (props) => {
           ) : null}
         </div>
       ) : (
-        // <div>
-        //   <h1>{userProfile.username}</h1>
-        //   <h1>
-        //     <img className="profilePicLarge" src={userProfile.picture} />
-        //   </h1>
-        //   <h3>{user.email}</h3>
-        //   <h3>{userProfile.email}</h3>
-        // {ownProfile ? null : (
-        //   <div>
-        //     {friends === true ? <div>you are friends</div> : null}
-        //     {friends === "pending" ? <div>request sent</div> : null}
-        //     {friends === false ? (
-        //       <button onClick={addFriend}>add friend</button>
-        //     ) : null}
-        //     {friends === "requested" ? (
-        //       <div>
-        //         <button value="accept" onClick={handleFriendRequest}>
-        //           accept friend request
-        //         </button>
-        //         <button value="decline" onClick={handleFriendRequest}>
-        //           decline friend request
-        //         </button>
-        //       </div>
-        //     ) : null}
-        //   </div>
-        // )}
-        //   {friends === true ? (
-        //     <div>
-        //       {joinedGames.map((game) => {
-        //         return (
-        //           <div>
-        //             <h1>{game.title}</h1>
-        //             <h2>{game.date}</h2>
-        //           </div>
-        //         );
-        //       })}
-        //     </div>
-        //   ) : null}
-        // </div>
-        <div>Loading...</div>
+        <div className="loadingBarContainer" id="friendsLoadingBarContainer">
+          <div className="loadingBar" id="mapLoadingBar"></div>
+          <span>..loading</span>
+        </div>
       )}
     </div>
   );

@@ -14,11 +14,6 @@ let transporter = nodemailer.createTransport({
     refreshToken: process.env.OAUTH_REFRESH_TOKEN,
   }
 })
-// transporter.verify((err, success) => {
-//   err
-//     ? console.log(err)
-//     : console.log(success);
-//  });
 
 
 
@@ -110,7 +105,6 @@ module.exports = {
     return res.sendStatus(200);
   },
   checkSession: async (req, res) => {
-    console.log(req.session.user)
     const db = req.app.get('db')
     try{
     if (req.session.user) {
@@ -141,7 +135,6 @@ module.exports = {
   edit: async (req, res) => {
     const db = req.app.get("db");
     const { username, password, email, picture } = req.body;
-    console.log(req.body)
     const [user] = await db.auth.get_user(req.session.user.email);
     const [checkEmail] =  await db.auth.get_user(email);
     if (checkEmail){

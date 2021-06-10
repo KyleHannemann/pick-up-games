@@ -30,7 +30,7 @@ const EditProfile = (props) => {
       setPicture(user.picture);
       setEmail(user.email);
     }
-  }, []);
+  }, [user]);
   const handleSuccess = () => {
     setSuccess(true);
   };
@@ -186,7 +186,9 @@ const EditProfile = (props) => {
       </div>
       <div>
         <span>Picture</span>
-        <img className="profilePicExtraLarge" src={picture} />
+        <img
+        alt={`your profile`}
+         className="profilePicExtraLarge" src={picture} />
         {editOptions.picture ? (
           <div>
             <button

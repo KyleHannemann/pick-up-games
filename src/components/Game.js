@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import TimePicker from "react-time-picker";
 import { useSelector, useDispatch } from "react-redux";
 import { addGamesRed, removeGameRed } from "../redux/joinedGamesReducer";
 import { Link } from "react-router-dom";
@@ -14,15 +13,18 @@ const Game = (props) => {
   const [game, setGame] = useState(null);
   const { socket } = useSelector((store) => store.socketReducer);
   const { user } = useSelector((store) => store.auth);
-  console.log(user);
   const [joined, setJoined] = useState(false);
 
   const dispatch = useDispatch();
   //messaging
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
-  const [reply, setReply] = useState("");
-  const [replyArray, setReplyArray] = useState([]);
+
+  
+  /*beggingn on implementing replies*/
+  // const [reply, setReply] = useState("");
+  const reply = ""
+  // const [replyArray, setReplyArray] = useState([]);
 
   //get messages
   useEffect(() => {
@@ -77,7 +79,13 @@ const Game = (props) => {
       socket.on("game comment", (body) => {
         console.log(body);
         if (parseInt(body[0].game_id) === parseInt(props.match.params.gameId)) {
-          console.log(comments);
+          let checkDuplicate = [...comments];
+          for (let i = 0; i < checkDuplicate.length; i++){
+            if (checkDuplicate[i].comment_id === body[0].comment_id){
+              console.log("duplicate comment", body[0], checkDuplicate[i])
+              return
+            }
+          }
           setComments((comments) => [...comments, body[0]]);
         }
       });
@@ -103,7 +111,6 @@ const Game = (props) => {
         setJoined(true);
       }
     }
-    console.log(thisGame);
     setGame(thisGame);
   };
 
@@ -152,7 +159,7 @@ const Game = (props) => {
           <div id="gamePageGameContainer">
             <div id="gamePageGameDets">
               <div>
-                <div style={{fontStyle: "italic", fontSize: "14px"}}>
+                <div style={{ fontStyle: "italic", fontSize: "14px" }}>
                   Created by{" "}
                   {game.players.map((p) => {
                     if (p.user_id === game.creator) {
@@ -162,38 +169,38 @@ const Game = (props) => {
                   })}
                 </div>
                 <div>
-                <div>{game.date.slice(0, game.date.indexOf("00:"))}</div>
-                <div>{game.time
-                  .toString()
-                  .split(":")
-                  .reduce((acc, el, i) => {
-                    if (i === 0) {
-                      if (12 % el >= 12) {
-                        console.log("o");
-                        acc.push(el % 12);
-                        acc.push("Pm");
-                      } else if (parseInt(el) === 12) {
-                        acc.push(el);
-                        acc.push("Pm");
-                      } else {
-                        acc.push(el);
-                        acc.push("Am");
-                      }
-                    } else {
-                      return [acc[0], ":", el, " ", acc[1]];
-                    }
+                  <div>{game.date.slice(0, game.date.indexOf("00:"))}</div>
+                  <div>
+                    {game.time
+                      .toString()
+                      .split(":")
+                      .reduce((acc, el, i) => {
+                        if (i === 0) {
+                          if (12 % el >= 12) {
+                            console.log("o");
+                            acc.push(el % 12);
+                            acc.push("Pm");
+                          } else if (parseInt(el) === 12) {
+                            acc.push(el);
+                            acc.push("Pm");
+                          } else {
+                            acc.push(el);
+                            acc.push("Am");
+                          }
+                        } else {
+                          return [acc[0], ":", el, " ", acc[1]];
+                        }
 
-                    return acc;
-                  }, [])
-                  .join("")}
+                        return acc;
+                      }, [])
+                      .join("")}
                   </div>
-                  </div>
-                  <p style={{fontSize: "10px"}}>{game.address}</p>
+                </div>
+                <p style={{ fontSize: "10px" }}>{game.address}</p>
               </div>
               <div>
                 <h1>{game.title}</h1>
-                <img src={game.icon} />
-                
+                <img alt={game.title} src={game.icon} />
               </div>
 
               {game.public ||
@@ -209,7 +216,7 @@ const Game = (props) => {
               game.creator === user.user_id ? (
                 <div>
                   <p>{game.description}</p>
-                  {joined ? (
+                  {joined && game.creator !== user.user_id ? (
                     <button onClick={leaveGame}>leave game</button>
                   ) : null}
                   {!joined && game.max_players > game.players.length ? (
@@ -256,7 +263,7 @@ const Game = (props) => {
                           ) {
                             return (
                               <Link to={`/users/${comment.user_id}`}>
-                                <img src={player.picture} />{" "}
+                                <img alt={comment.username} src={player.picture} />{" "}
                               </Link>
                             );
                           }
@@ -280,42 +287,10 @@ const Game = (props) => {
                               </span>
                               <span>{readableTime}</span>
                             </span>
-                            <div>
-                              <span>like</span>
-                              <span>dislike</span>
-                            </div>
+                            
                           </div>
                         </div>
                       </div>
-
-                      // <div key={comment.comment_id}>
-                      //   <p >{comment.content}</p>
-                      //   <div>
-                      //     {game.players.map((player) => {
-                      //       if (
-                      //         parseInt(comment.user_id) ===
-                      //         parseInt(player.user_id)
-                      //       ) {
-                      //         return (
-                      //           <Link to={`/users/${comment.user_id}`}>
-                      //             <img src={player.picture} />{" "}
-                      //           </Link>
-                      //         );
-                      //       }
-                      //       return null;
-                      //     })}
-                      //     <h3>{comment.comment_username}</h3>
-                      //     <span>
-                      //       <span>
-                      //         {comment.time_stamp.slice(
-                      //           0,
-                      //           comment.time_stamp.indexOf("T")
-                      //         )}
-                      //       </span>
-                      //       <span>{readableTime}</span>
-                      //     </span>
-                      //   </div>
-                      // </div>
                     );
                   })}
                 </div>
@@ -415,6 +390,7 @@ const Game = (props) => {
                                   {p.username}
                                 </span>
                                 <img
+                                alt={p.username}
                                   src={p.picture}
                                   className="profilePicSmall"
                                 />
@@ -469,7 +445,9 @@ const Game = (props) => {
                     id={`playerPicCommentLink${player.user_id}`}
                     className="indDashGamePlayer"
                   >
-                    <img src={player.picture} />
+                    <img
+                    alt={player.username}
+                     src={player.picture} />
                     {friends === null ? (
                       <div>You</div>
                     ) : (

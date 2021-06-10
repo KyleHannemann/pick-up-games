@@ -76,12 +76,7 @@ module.exports = {
       data[i].players = players;
     }
     res.status(200).send(data)
-      // .then((data) => {
-      //   res.status(200).send(data);
-      // })
-      // .catch((err) => {
-      //   console.log(err);
-      // });
+      
   },
   getGame: (req, res) => {
     const db = req.app.get("db");

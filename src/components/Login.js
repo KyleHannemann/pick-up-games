@@ -2,11 +2,9 @@ import { useState } from "react";
 import { Widget } from "@uploadcare/react-widget";
 import axios from "axios";
 import user from "../miscImgs/user.svg";
-import loading from "../miscImgs/loading-wheel-trans.svg";
 import { AiOutlineArrowLeft } from "react-icons/ai";
-import {setUser} from '../redux/authReducer';
-import {connect} from 'react-redux';
-
+import { setUser } from "../redux/authReducer";
+import { connect } from "react-redux";
 
 const Login = (props) => {
   //login
@@ -15,76 +13,73 @@ const Login = (props) => {
   //register
   const [register, setRegister] = useState(false);
   const [username, setUsername] = useState("");
-  const [birthDate, setBirthDate] = useState(null);
-  const [gender, setGender] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [loggedInPic, setLoggedInPic] = useState(user);
+  //decided not to use gender or age, could change in future
+
+  // const [birthDate, setBirthDate] = useState(null);
+
+  // const [gender, setGender] = useState(null);
   const [picture, setPicture] = useState("/static/media/user.80f5bb20.svg");
 
-  const [demo, setDemo] = useState(false)
-  const [success, setSuccess] = useState(null)
+  const [demo, setDemo] = useState(false);
+  const [success, setSuccess] = useState(null);
 
   const handleDemo = (e) => {
-    setDemo(true)
+    setLoading(true);
     e.preventDefault();
-    
-    document.getElementById("loginPic").src = loading;
-    document.getElementById("loginPic").classList.add("active")
-    
+
     axios
       .post("/auth/login", {
         email: "demo_account@email.com",
         password: "demo",
       })
       .then((res) => {
-        setSuccess(res.data.username)
-       document.getElementById("loginPic").src = res.data.picture;
-       document.getElementById("loginPic").classList.remove("active")
-        setPicture(res.data.picture)
+        setLoggedInPic(res.data.picture);
+        setPicture(res.data.picture);
         setTimeout(()=>{
-          props.setUser(res.data)
-          props.history.push('/dash')
-        }, 1000 )
-
+          setLoading(false);
+          setDemo(true);
+        }, 500)
+        setTimeout(() => {
+          props.setUser(res.data);
+          props.history.push("/dash");
+        }, 1500);
       })
       .catch((err) => {
-        document.getElementById("loginPic").classList.remove("active")
-        document.getElementById("loginPic").src = user;
-
         console.log(err);
-        setSuccess("invalid")
+        setLoading(false)
+        setSuccess("invalid");
       });
-  }
+  };
   const handleLogin = (e) => {
-   
-      e.preventDefault();
+    setLoading(true);
+    e.preventDefault();
     if (email === "" || password === "") {
+      setLoading(false)
       alert("please enter your email and password");
       return;
     }
-    document.getElementById("loginPic").src = loading;
-    document.getElementById("loginPic").classList.add("active")
-    
+
     axios
       .post("/auth/login", {
         email: email,
         password: password,
       })
       .then((res) => {
-        setSuccess(res.data.username)
-       document.getElementById("loginPic").src = res.data.picture;
-       document.getElementById("loginPic").classList.remove("active")
-        setPicture(res.data.picture)
-        setTimeout(()=>{
-          props.setUser(res.data)
-          props.history.push('/dash')
-        }, 1000 )
-
+        setSuccess(res.data.username);
+        setLoggedInPic(res.data.picture);
+        setPicture(res.data.picture);
+        setLoading(false);
+        setTimeout(() => {
+          props.setUser(res.data);
+          props.history.push("/dash");
+        }, 1000);
       })
       .catch((err) => {
-        document.getElementById("loginPic").classList.remove("active")
-        document.getElementById("loginPic").src = user;
-
         console.log(err);
-        setSuccess("invalid")
+        setSuccess("invalid");
+        setLoading(false)
       });
   };
   const handlePicture = async (e) => {
@@ -93,43 +88,36 @@ const Login = (props) => {
   };
 
   const handleRegister = (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    if (
-      email === "" ||
-      password === "" ||
-      username === "" ||
-      birthDate === "" ||
-      gender === ""
-    ) {
+    if (email === "" || password === "" || username === "") {
       alert("please enter an email, password, username, gender, and age ");
       return;
     }
-   
-    axios.post("/auth/register", {
-      username: username,
-      password: password,
-      email: email,
-      birth_year: birthDate,
-      gender: gender,
-      picture: picture,
-    }).then(res=>{
-      setSuccess(res.data.username)
-      setTimeout(()=>{
-        props.setUser(res.data)
-        props.history.push('/dash')
-      }, 1000 )
-     
-    }).catch(err=>{
-      console.log(err)
-    })
 
+    axios
+      .post("/auth/register", {
+        username: username,
+        password: password,
+        email: email,
+        birth_year: null,
+        gender: null,
+        picture: picture,
+      })
+      .then((res) => {
+        setSuccess(res.data.username);
+        setTimeout(() => {
+          props.setUser(res.data);
+          props.history.push("/dash");
+        }, 1000);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   return (
     <div id="authContainer">
-      
       {register ? (
-        
         //register
         <form id="register">
           <AiOutlineArrowLeft
@@ -137,13 +125,23 @@ const Login = (props) => {
               setRegister(false);
             }}
           />
-          {success !== null && success !== "invalid"? <h2 id="loginSuccess"style={{textAlign: "center"}}>Welcome {success}!</h2> : null}
+          {success !== null && success !== "invalid" ? (
+            <h2 id="loginSuccess" style={{ textAlign: "center" }}>
+              Welcome {success}!
+            </h2>
+          ) : null}
           <div>
-            <img id="authProfilePic" style={{backgroundColor: "#efe9f4"}} className="profilePicLarge" src={user} alt="profile pic" />
+            <img
+              id="authProfilePic"
+              style={{ backgroundColor: "#efe9f4" }}
+              className="profilePicLarge"
+              src={user}
+              alt="profile pic"
+            />
           </div>
           <div>
             <input
-            maxLength="150"
+              maxLength="150"
               type="text"
               name="email"
               placeholder="Email"
@@ -155,9 +153,10 @@ const Login = (props) => {
           </div>
           <div>
             <input
-            maxLength="100"
+              maxLength="100"
               type="password"
               name="password"
+              autoComplete="on"
               placeholder="Password"
               value={password}
               onChange={(e) => {
@@ -167,7 +166,7 @@ const Login = (props) => {
           </div>
           <div>
             <input
-            maxLength="20"
+              maxLength="20"
               type="text"
               name="Username"
               placeholder="Username"
@@ -177,14 +176,12 @@ const Login = (props) => {
               }}
             />
           </div>
-          
+
           <div id="uploadImageWidget">
             <Widget
-            
               buttons={{
-                choose:{}
-              }
-              }
+                choose: {},
+              }}
               imagesOnly="true"
               previewStep
               onChange={handlePicture}
@@ -194,19 +191,45 @@ const Login = (props) => {
             />
           </div>
           <div>
-            <input type="submit" value="Register" id="regSubmitButton" onClick={handleRegister}/>
-              
-           
+            <input
+              type="submit"
+              value="Register"
+              id="regSubmitButton"
+              onClick={handleRegister}
+            />
           </div>
         </form>
       ) : (
         //login
         <form id="login">
-          {success !== null && success !== "invalid" && demo === false ?<h2 id="loginSuccess"style={{textAlign: "center"}}>Welcome Back {success}!</h2>
-          : success === "invalid"? <h2 style={{color: "red", textAlign:"center"}}>Invalid Email and/or Password</h2> : null }
-          {demo === true? <h2 id="loginSuccess"style={{textAlign: "center"}}>Welcome To The Demo Version!</h2> : null}
+          {success !== null && success !== "invalid" && demo === false ? (
+            <h2 id="loginSuccess" style={{ textAlign: "center" }}>
+              Welcome Back {success}!
+            </h2>
+          ) : success === "invalid" ? (
+            <h2 style={{ color: "red", textAlign: "center" }}>
+              Invalid Email and/or Password
+            </h2>
+          ) : null}
+          {demo === true ? (
+            <h2 id="loginSuccess" style={{ textAlign: "center" }}>
+              Welcome To The Demo Version!
+            </h2>
+          ) : null}
           <div>
-            <img style={{backgroundColor: "#efe9f4"}} id="loginPic" className="profilePicLarge" src={user} alt="profile pic" />
+            {!loading ? (
+              <img
+                style={{ backgroundColor: "#efe9f4" }}
+                id="loginPic"
+                className="profilePicLarge"
+                src={loggedInPic}
+                alt="profile pic"
+              />
+            ) : (
+                <div className="loadingBar" id="mapLoadingBar"></div>
+                
+              
+            )}
           </div>
           <div>
             <input
@@ -222,6 +245,7 @@ const Login = (props) => {
           <div>
             <input
               type="password"
+              autoComplete="on"
               name="password"
               placeholder="Password"
               value={password}
@@ -232,12 +256,20 @@ const Login = (props) => {
           </div>
           <div>
             <div>
-            <input type="submit" value="Login" className="submitButton" onClick={handleLogin}/>
-               
-              </div>
+              <input
+                type="submit"
+                value="Login"
+                className="submitButton"
+                onClick={handleLogin}
+              />
+            </div>
           </div>
-          <div><button onClick={handleDemo} className="submitButton">Demo Version</button></div>
-          
+          <div>
+            <button onClick={handleDemo} className="submitButton">
+              Demo Version
+            </button>
+          </div>
+
           <div id="newUserRegister">
             <span>Not a Member?</span>
 
@@ -248,7 +280,6 @@ const Login = (props) => {
             >
               Sign Up Here
             </span>
-            
           </div>
         </form>
       )}
@@ -256,4 +287,4 @@ const Login = (props) => {
   );
 };
 
-export default connect(null, {setUser})(Login);
+export default connect(null, { setUser })(Login);

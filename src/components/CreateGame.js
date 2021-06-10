@@ -2,27 +2,26 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Map from "./Map";
 import axios from "axios";
-import {addGamesRed} from "../redux/joinedGamesReducer";
+import { addGamesRed } from "../redux/joinedGamesReducer";
 import DatePicker from "react-date-picker";
 import TimePicker from "react-time-picker";
-import {Link} from 'react-router-dom';
+import { Link } from "react-router-dom";
 const reqSvgs = require.context("../imgs", true, /\.svg$/);
 const paths = reqSvgs.keys();
 const svg = paths.map((path) => reqSvgs(path));
 
-
 const CreateGame = (props) => {
   const [selectingIcon, setSelectingIcon] = useState(false);
   const { location } = useSelector((store) => store.createGameReducer);
-  const {user} = useSelector((store)=>store.auth);
-  const {socket} = useSelector((store)=>store.socketReducer);
-  const dispatch = useDispatch()
-  if(!user){
-    props.history.push('/')
+  const { user } = useSelector((store) => store.auth);
+  const { socket } = useSelector((store) => store.socketReducer);
+  const dispatch = useDispatch();
+  if (!user) {
+    props.history.push("/");
   }
   //status bar
   const [status, setStatus] = useState(1);
-  const [friends, setFriends] = useState([])
+  const [friends, setFriends] = useState([]);
   //game details
   const [title, setTitle] = useState("");
   const [icon, setIcon] = useState(svg[0].default);
@@ -31,49 +30,47 @@ const CreateGame = (props) => {
   const [time, setTime] = useState("12:00");
   const [description, setDescription] = useState("");
   const [maxPlayers, setMaxPlayers] = useState(1000);
-  const [gender, setGender] = useState("Coed");
-  const [invites, setInvites] = useState([])
+  const [invites, setInvites] = useState([]);
 
-  const [success, setSuccess] = useState(false)
-  const [createdGameId, setCreatedGameId] = useState(null)
+  const [success, setSuccess] = useState(false);
+  const [createdGameId, setCreatedGameId] = useState(null);
   const updateInvites = (e) => {
-    console.log(e.target.checked)
-    if (e.target.checked === true){
-    console.log(e.target.value)
-    setInvites([...invites, e.target.value])
+    console.log(e.target.checked);
+    
+    if (e.target.checked === true) {
+      let invitesBeforeSet = [...invites, e.target.value];
+      let asSet = new Set(invitesBeforeSet)
+      setInvites(Array.from(asSet));
+    } else {
+      let newInvites = invites.filter((el) => el !== e.target.value);
+      let invitesFilteredAndAsSet = new Set(newInvites)
+      setInvites(Array.from(invitesFilteredAndAsSet));
     }
-    else{
-      let newInvites = invites.filter(el=>el !== e.target.value)
-      setInvites(newInvites)
-    }
-  }
-  useEffect(()=>{
-    axios.get("/users/friends/all").then(res=>{
-      // let data = res.data;
-      // // let friendsArr = [{key: 'invite all friends', id: 'all'}]
-      // // for (let i = 0; i < data.length; i++){
-      // //   if(parseInt(data[i].user_id) !== parseInt(user.user_id)){
-      // //      friendsArr.push({
-      // //        key: data[i].username,
-      // //        id: data[i].user_id
-      // //      })
-      // //   }
-      // // }
-      // console.log(friendsArr)
-      let data = res.data.filter(el=>el.user_id !== user.user_id)
-      
-      setFriends(data)
-      console.log(res.data)
-    }).catch(err=>{
-      console.log(err)
-    })
-  }, [])
+  };
+  useEffect(() => {
+    axios
+      .get("/users/friends/all")
+      .then((res) => {
+        let data = res.data.filter((el) => el.user_id !== user.user_id);
+
+        setFriends(data);
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [user]);
+
   const handleIconChange = (e) => {
     e.preventDefault();
     setIcon(e.target.dataset.id);
     setSelectingIcon(false);
   };
   const handleSubmit = (e) => {
+
+    if (!socket) {
+      return;
+    }
     e.preventDefault();
     const createdGame = {
       title: title,
@@ -83,7 +80,7 @@ const CreateGame = (props) => {
       time: time,
       description: description,
       maxPlayers: maxPlayers,
-      gender: gender,
+      gender: "Coed",
       location: location,
     };
     for (let el in createdGame) {
@@ -98,19 +95,24 @@ const CreateGame = (props) => {
       .then((res) => {
         console.log(res);
         dispatch(addGamesRed(res.data));
-        setSuccess(true)
-        setCreatedGameId(res.data.game_id)
+        setSuccess(true);
+        setCreatedGameId(res.data.game_id);
         let finalInvites;
-    if (invites.includes('all') === true){
-      finalInvites = friends.map(el=>{
-        return el.user_id
-      })
-    }
-    else{
-      finalInvites = invites;
-    }
-    socket.emit('invites', {invites: finalInvites, game_id: res.data.game_id, 
-      username: user.username, user_id: user.user_id, picture: user.picture})
+        if (invites.includes("all") === true) {
+          finalInvites = friends.map((el) => {
+            return el.user_id;
+          });
+        } else {
+    
+          finalInvites = invites.map(el=>parseInt(el));
+        }
+        socket.emit("invites", {
+          invites: finalInvites,
+          game_id: res.data.game_id,
+          username: user.username,
+          user_id: user.user_id,
+          picture: user.picture,
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -264,6 +266,7 @@ const CreateGame = (props) => {
                 {svg.map((el) => {
                   return (
                     <img
+                      alt={`sport icon ${el.default} `}
                       key={el.default}
                       data-id={el.default}
                       onClick={handleIconChange}
@@ -280,7 +283,7 @@ const CreateGame = (props) => {
             <div>
               <div>Title</div>
               <input
-              maxLength="18"
+                maxLength="18"
                 value={title}
                 onChange={(e) => {
                   setTitle(e.target.value);
@@ -290,8 +293,9 @@ const CreateGame = (props) => {
             </div>
             <div>
               <div>Description</div>
-              <textarea id="createGameFormDescription"
-              maxLength="100"
+              <textarea
+                id="createGameFormDescription"
+                maxLength="100"
                 value={description}
                 onChange={(e) => {
                   setDescription(e.target.value);
@@ -317,7 +321,11 @@ const CreateGame = (props) => {
             </div>
             <div>
               <div>Game Type</div>
-              <img className="createGameIconPreview" src={icon} />
+              <img
+                className="createGameIconPreview"
+                alt="sport icon"
+                src={icon}
+              />
 
               <button
                 onClick={() => {
@@ -335,7 +343,6 @@ const CreateGame = (props) => {
               <div>Date</div>
               <div style={{ backgroundColor: "white" }}>
                 <DatePicker
-                
                   value={date}
                   onChange={(e) => {
                     setDate(e);
@@ -359,10 +366,7 @@ const CreateGame = (props) => {
         ) : null}
         {status === 3 ? (
           <div>
-            <h2 id="createGameMapHint">
-              
-              * Click Location To Set Game
-            </h2>
+            <h2 id="createGameMapHint">* Click Location To Set Game</h2>
             <div id="createGameMapContainer">
               <Map createGame={true} height={"100%"} width={"100%"} />
             </div>
@@ -373,26 +377,74 @@ const CreateGame = (props) => {
         {status === 4 ? (
           <div className="createGameFormContainer">
             <div>
-            <div>Invite Friends</div>
-            <span>{invites.includes('all') === true? "All" : invites.length}</span>
-            <div id="createGameSelectInvitesContainer">
-              <div>
-              <input value="all" onChange={updateInvites} type="checkbox"/>
-              <div>Invite all</div>
-              <span></span></div>
-              {friends.map(f=>{
-                return(
-                  <div>
-                    <input value={f.user_id} onChange={updateInvites} type="checkbox"/>
-                    <span>{f.username}</span>
-                    <img className="profilePicSmall"src={f.picture}/>
-                  </div>
-                )
-              })}
-            </div>
+              <div>Invite Friends</div>
+              <span>
+                {invites.includes("all") === true ? "All" : invites.length}
+              </span>
+              <div id="createGameSelectInvitesContainer">
+                <div>
+                  {invites.includes("all") === true ? (
+                    <input
+                      value="all"
+                      onChange={updateInvites}
+                      type="checkbox"
+                      checked={true}
+                    />
+                  ) : (
+                    <input
+                      value="all"
+                      onChange={updateInvites}
+                      type="checkbox"
+                    />
+                  )}
+                  <div>Invite all</div>
+                  <span></span>
+                </div>
+                {friends.map((f) => {
+                  let check = false;
+                  let match_id_as_string = f.user_id + ""
+                  if (invites.includes(match_id_as_string) === true) {
+                    return (
+                      <div>
+                        <input
+                          value={f.user_id}
+                          onChange={updateInvites}
+                          type="checkbox"
+                          checked={true}
+                        />
+                        <span>{f.username}</span>
+                        <img
+                          alt="friend profile"
+                          className="profilePicSmall"
+                          src={f.picture}
+                        />
+                      </div>
+                    )
+                  }
+                  else {
+                  return (
+                    <div>
+                      <input
+                        value={f.user_id}
+                        onChange={updateInvites}
+                        type="checkbox"
+                      />
+                      <span>{f.username}</span>
+                      <img
+                        alt="friend profile"
+                        className="profilePicSmall"
+                        src={f.picture}
+                      />
+                    </div>
+                  )};
+                })}
+              </div>
             </div>
             <div>
-            <div>Public <span style={{fontSize: "10px"}}>*anyone can join</span></div>
+              <div>
+                Public{" "}
+                <span style={{ fontSize: "10px" }}>*anyone can join</span>
+              </div>
 
               <input
                 className="slider"
@@ -404,22 +456,30 @@ const CreateGame = (props) => {
                 id="switch"
               />
               <label className="sliderLabel" htmlFor="switch"></label>
-
             </div>
-           </div>
+          </div>
         ) : null}
 
         {status === 5 ? (
-          
           <div className="createGameReviewContainer">
-            {success ?  <div id="createGameSuccessBox">
-             <div><Link to={`/game/${createdGameId}`}><button>View Game Page</button></Link></div>
-              <h1>Game Successfully Created!</h1>
-            </div> : null}
+            {success ? (
+              <div id="createGameSuccessBox">
+                <div>
+                  <Link to={`/game/${createdGameId}`}>
+                    <button>View Game Page</button>
+                  </Link>
+                </div>
+                <h1>Game Successfully Created!</h1>
+              </div>
+            ) : null}
             <button id="createGameCreateButton" onClick={handleSubmit}>
               Create
             </button>
-            <img className="createGameIconPreview" src={icon} />
+            <img
+              alt="sport icon"
+              className="createGameIconPreview"
+              src={icon}
+            />
 
             <h1 style={{ margin: "0px" }}>
               {title ? (
@@ -458,7 +518,11 @@ const CreateGame = (props) => {
             <div>
               Max Players: {maxPlayers === 1000 ? "Unlimited" : maxPlayers}
             </div>
-            <div>{publicGame ? "Public Game *anyone can join" : "Private Game *only your friends can join"}</div>
+            <div>
+              {publicGame
+                ? "Public Game *anyone can join"
+                : "Private Game *only your friends can join"}
+            </div>
             <div>
               {location ? (
                 location.addy

@@ -9,7 +9,6 @@ import { IoIosNotificationsOutline } from "react-icons/io";
 import { useState } from "react";
 import { IconContext } from "react-icons";
 import { removeNotification } from "../redux/notificationsReducer";
-import { BiMessageDetail } from "react-icons/bi";
 import Dms from "./Dms";
 import { dropDownDm, dmToRed } from "../redux/dmsReducer";
 import {AiOutlineCalendar} from "react-icons/ai";
@@ -28,8 +27,10 @@ const Navbar = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log(dmToState);
     if (!dms) {
+      return;
+    }
+    if (!user){
       return;
     }
     let alert = [];
@@ -49,9 +50,9 @@ const Navbar = () => {
       setDmAlert(alert);
     };
     checkDmsForSeen();
-  }, [dms]);
-  const logout = () => {
-    axios.get("/auth/logout").then((res) => {
+  }, [dms, dmToState, user]);
+  const logout = async () => {
+     await axios.get("/auth/logout").then((res) => {
       if (res.status === 200) {
         if (navDrop === false) {
           history.push("/");
@@ -68,6 +69,17 @@ const Navbar = () => {
   const [navDrop, setNavDrop] = useState(false);
   //change to conditional rendering
   const navDropDown = () => {
+    if(!user){
+      return
+    }
+    let checkForDomElements = {w: null, x: null, y: null, z : null}  
+    checkForDomElements.w = document.getElementById("navBar")
+    checkForDomElements.x = document.getElementById("navBarPageLinks")
+    checkForDomElements.y = document.getElementById("navBarAuthLinks")
+    checkForDomElements.z = document.getElementById("navHamburger")
+    if (!checkForDomElements.w || !checkForDomElements.x || !checkForDomElements.y || !checkForDomElements.z){
+      return;
+    }
     if (navDrop === false) {
       document.getElementById("navBar").classList.add("active");
       document.getElementById("navBarPageLinks").classList.add("active");
@@ -190,7 +202,9 @@ const Navbar = () => {
             }}
             id="navBarUserInfo"
           >
-            <img className="profilePicMedium" src={user.picture} />
+            <img className="profilePicMedium"
+            alt={user.username}
+             src={user.picture} />
             <div id="navBarUserName">{user.username}</div>
           </div>
           <div id="navBarPageLinks">
@@ -212,7 +226,7 @@ const Navbar = () => {
           </div>
           <div id="navBarAuthLinks">
             <div>
-              <Link className="navBarLink"
+              <a className="navBarLink"
               
               onClick={()=>{
                 dispatch(dropDownDm(true))
@@ -241,7 +255,7 @@ const Navbar = () => {
                 </div>
 
                 {dmAlert.length > 0 ? <span>{dmAlert.length}</span> : null}
-              </Link>
+              </a>
             </div>
             <div id="logout" onClick={logout}>
               Logout
@@ -274,6 +288,7 @@ const Navbar = () => {
               return (
                 <div key={n.notification_id}>
                   <img
+                    alt={n.user_interaction_username}
                     className="profilePicSmall"
                     src={n.user_interaction_picture}
                   ></img>

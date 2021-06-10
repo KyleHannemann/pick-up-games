@@ -148,7 +148,18 @@ const Map = (props) => {
         {props.createGame ? null : (
           <div id="mapSetFilter">
             <span>
-              <span>Between Dates: {" "}
+              <span>Search By Date and Time
+              <button
+                onClick={() => {
+                  setFilter(true);
+                }}
+              >
+              <span style={{fontSize: "10px"}}>&#9660;</span> 
+              </button>{" "}
+              </span>
+              
+              <span> {" "}
+              <span style={{marginRight: "4px"}}>Dates:</span>
                 {filterBy.startDate === null
                   ? "Any"
                   : filterBy.startDate
@@ -164,15 +175,9 @@ const Map = (props) => {
                       .toString()
                       .slice(0, filterBy.endDate.toString().indexOf("00:"))}
               </span>
-              <button
-                onClick={() => {
-                  setFilter(true);
-                }}
-              >
-                Filter <span style={{fontSize: "10px"}}>&#9660;</span> 
-              </button>{" "}
+              
               <span>
-                Between Times: {"  "}
+                <span style={{marginRight: "4px"}}>Times:</span>
                 {filterBy.startTime === null
                   ? "Any"
                   : filterBy.startTime
@@ -282,10 +287,13 @@ const Map = (props) => {
                 }}
               />
             </div>
+            <button style={{marginTop: "10px", borderRadius:"6px", border: "none", backgroundColor: "#efe9f4", padding: "4px 8px"}}onClick={()=>{
+              setFilter(false)
+            }}>Apply</button>
           </div>
         ) : null}
         <Search panTo={panTo} createGame={props.createGame} />
-        {loadingGames? <div className="loadingBarContainer" id="mapLoadingBarContainer" >
+        {loadingGames && !props.createGame ? <div className="loadingBarContainer" id="mapLoadingBarContainer" >
 
         <div className="loadingBar" id="mapLoadingBar"></div>
         <span>..loading games</span></div> : null}
@@ -293,18 +301,19 @@ const Map = (props) => {
         {gameMarkers
           .filter((game) => {
             if (game.public !== true){
-              return
+              return null
             }
+
             let startDate = filterBy.startDate;
             if (startDate !== null) {
               if (new Date(game.date) < new Date(startDate)) {
-                return;
+                return null;
               }
             }
             let endDate = filterBy.endDate;
             if (endDate !== null) {
               if (new Date(game.date) > new Date(endDate)) {
-                return;
+                return null;
               }
             }
             let startHours = filterBy.startTime;
@@ -313,7 +322,7 @@ const Map = (props) => {
                 parseInt(startHours.toString().split(":")[0]) >
                 parseInt(game.time.toString().split(":")[0])
               ) {
-                return;
+                return null;
               }
             }
             let startMin = filterBy.startTime;
@@ -322,7 +331,7 @@ const Map = (props) => {
                 parseInt(startMin.toString().split(":")[1]) >
                 parseInt(game.time.toString().split(":")[1])
               ) {
-                return;
+                return null;
               }
             }
             let endHours = filterBy.endTime;
@@ -331,7 +340,7 @@ const Map = (props) => {
                 parseInt(endHours.toString().split(":")[0]) <
                 parseInt(game.time.toString().split(":")[0])
               ) {
-                return;
+                return null;
               }
             }
             let endMin = filterBy.endTime;
@@ -340,7 +349,7 @@ const Map = (props) => {
                 parseInt(endMin.toString().split(":")[1]) <
                 parseInt(game.time.toString().split(":")[1])
               ) {
-                return;
+                return null;
               }
             }
             return game;

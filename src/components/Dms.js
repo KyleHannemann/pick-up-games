@@ -8,7 +8,7 @@ import { FiArrowUpCircle } from "react-icons/fi";
 const Dms = (props) => {
   const { socket } = useSelector((store) => store.socketReducer);
   const { user } = useSelector((store) => store.auth);
-  const { dms, dmToState, dmDrop } = useSelector((store) => store.dmsReducer);
+  const { dms, dmToState} = useSelector((store) => store.dmsReducer);
   const dispatch = useDispatch();
   const [dmTo, setDmTo] = useState(null);
   const [message, setMessage] = useState("");
@@ -51,6 +51,9 @@ const Dms = (props) => {
   }, [dms]);
 
   const handleDm = (e) => {
+    if(!socket){
+      return
+    }
     e.preventDefault();
     if (message === "") {
       return alert("enter a message to send");
@@ -82,8 +85,8 @@ const Dms = (props) => {
           ? user.friends.map((f) => {
               if (f.friendInfo.user_id === dmTo) {
                 return (
-                  <div className="dmToUsername">
-                    <img
+                  <div key={f.friendInfo.picture}className="dmToUsername">
+                    <img alt="friend profile"
                       className="chatProfilePicSmall"
                       src={f.friendInfo.picture}
                     />
@@ -99,7 +102,7 @@ const Dms = (props) => {
                   if (d.user_id === dmTo || d.dm_to === dmTo) {
                     return d;
                   }
-                  //check if applies to this user
+                  else return null
                 })
                 .sort((a, b) => {
                   if (new Date(a.timestamp) >= new Date(b.timestamp)) {
@@ -129,7 +132,7 @@ const Dms = (props) => {
                     classCss = "leftChatBubble";
                   }
                   return (
-                    <div className={classCss}>
+                    <div key={d.timestamp} className={classCss}>
                       <div>
                         <div>{d.content}</div>
                         <span>{readableTime}</span>
@@ -142,6 +145,7 @@ const Dms = (props) => {
             if (f.accepted === true) {
               return f;
             }
+            else return null
           }).length === 0 ? (
             <div style={{ color: "red" }}>Make some friends to DM!</div>
           ) : null}
@@ -174,6 +178,7 @@ const Dms = (props) => {
         </form>
       </div>
       <div id="dmsFriendsContainer">
+       
         <button
           onClick={async () => {
             if (dmTo !== null) {
@@ -195,11 +200,13 @@ const Dms = (props) => {
         <div id="chatBoxFriendsTitle">
           <span style={{fontWeight: "500"}}>Friends</span>
         </div>
+        <div id="dmsFriendsScroll">
         {user.friends
           .filter((f) => {
             if (f.accepted === true) {
               return f;
             }
+            else return null
           })
           .map((f) => {
             let alerts = 0;
@@ -226,6 +233,7 @@ const Dms = (props) => {
                 style={{ backgroundColor: highlight }}
               >
                 <img
+                alt={`friend profile ${f.friendInfo.username}`}
                   className="profilePicExtraSmall"
                   src={f.friendInfo.picture}
                 />
@@ -238,6 +246,7 @@ const Dms = (props) => {
               </div>
             );
           })}
+          </div>
       </div>
     </div>
   );
