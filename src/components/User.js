@@ -91,7 +91,7 @@ const User = (props) => {
       .then((res) => {
         setUserProfile(res.data);
         axios
-          .get(`game/joined/${userId}`)
+          .get(`/game/joined/${userId}`)
           .then((res) => {
             setJoinedGames(res.data);
             console.log(res.data);
@@ -177,6 +177,7 @@ const User = (props) => {
   };
 
   return (
+    
     <div>
       {edit ? (
         <div id="userPageEditProfileFauxContainer">

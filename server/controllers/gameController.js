@@ -45,6 +45,7 @@ module.exports = {
   getJoinedGames: (req, res) => {
     const db = req.app.get("db");
     const {userId} = req.params
+    console.log(userId)
     db.game
       .get_joined_games(userId)
       .then((data) => {

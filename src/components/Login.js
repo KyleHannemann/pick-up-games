@@ -80,6 +80,7 @@ const Login = (props) => {
         console.log(err);
         setSuccess("invalid");
         setLoading(false)
+        alert('invalid email and/or password')
       });
   };
   const handlePicture = async (e) => {
@@ -112,6 +113,7 @@ const Login = (props) => {
         }, 1000);
       })
       .catch((err) => {
+        alert('email already in use')
         console.log(err);
       });
   };

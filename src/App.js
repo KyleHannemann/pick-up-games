@@ -23,7 +23,7 @@ function App(props) {
     const getGamesAndPlayers = async () => {
       let allGames = await axios.get(`/game/joined/${user.user_id}`);
       dispatch(setGamesRed([...allGames.data]));
-      let notifications = await axios.get(`users/notifications/${user.user_id}`);
+      let notifications = await axios.get(`/users/notifications/${user.user_id}`);
       dispatch(setNotifications(notifications.data))
       let dms = await axios.get(`/users/getdms/${user.user_id}`);
       dispatch(setDms(dms.data))
